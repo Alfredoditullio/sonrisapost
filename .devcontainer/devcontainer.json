@@ -1,6 +1,6 @@
 {
-	"name": "Postiz Dev Container",
-	"image": "localhost/postiz-devcontainer",
+	"name": "DentalCore Social Dev Container",
+	"image": "localhost/dentalcore-devcontainer",
 	"features": {},
 	"customizations": {
 		"vscode": {

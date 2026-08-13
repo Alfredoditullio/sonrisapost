@@ -1,7 +1,7 @@
 services:
-  postiz:
-    image: ghcr.io/gitroomhq/postiz-app:latest
-    container_name: postiz
+  dentalcore:
+    image: ghcr.io/dentalcoresocial/dentalcore-app:latest
+    container_name: dentalcore
     restart: always
     environment:
       # === Required Settings
@@ -9,8 +9,8 @@ services:
       FRONTEND_URL: 'http://localhost:4007'
       NEXT_PUBLIC_BACKEND_URL: 'http://localhost:4007/api'
       JWT_SECRET: 'random string that is unique to every install - just type random characters here!'
-      DATABASE_URL: 'postgresql://postiz-user:postiz-password@postiz-postgres:5432/postiz-db-local'
-      REDIS_URL: 'redis://postiz-redis:6379'
+      DATABASE_URL: 'postgresql://dentalcore-user:dentalcore-password@dentalcore-postgres:5432/dentalcore-db-local'
+      REDIS_URL: 'redis://dentalcore-redis:6379'
       BACKEND_INTERNAL_URL: 'http://localhost:3000'
       TEMPORAL_ADDRESS: 'temporal:7233'
       IS_GENERAL: 'true'
@@ -67,16 +67,16 @@ services:
       MASTODON_CLIENT_SECRET: ''
 
       # === OAuth & Authentik Settings
-      # NEXT_PUBLIC_POSTIZ_OAUTH_DISPLAY_NAME: 'Authentik'
-      # NEXT_PUBLIC_POSTIZ_OAUTH_LOGO_URL: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/authentik.png'
-      # POSTIZ_GENERIC_OAUTH: 'false'
-      # POSTIZ_OAUTH_URL: 'https://auth.example.com'
-      # POSTIZ_OAUTH_AUTH_URL: 'https://auth.example.com/application/o/authorize'
-      # POSTIZ_OAUTH_TOKEN_URL: 'https://auth.example.com/application/o/token'
-      # POSTIZ_OAUTH_USERINFO_URL: 'https://authentik.example.com/application/o/userinfo'
-      # POSTIZ_OAUTH_CLIENT_ID: ''
-      # POSTIZ_OAUTH_CLIENT_SECRET: ''
-      # POSTIZ_OAUTH_SCOPE: "openid profile email"  # Optional: uncomment to override default scope
+      # NEXT_PUBLIC_DENTALCORE_OAUTH_DISPLAY_NAME: 'Authentik'
+      # NEXT_PUBLIC_DENTALCORE_OAUTH_LOGO_URL: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/authentik.png'
+      # DENTALCORE_GENERIC_OAUTH: 'false'
+      # DENTALCORE_OAUTH_URL: 'https://auth.example.com'
+      # DENTALCORE_OAUTH_AUTH_URL: 'https://auth.example.com/application/o/authorize'
+      # DENTALCORE_OAUTH_TOKEN_URL: 'https://auth.example.com/application/o/token'
+      # DENTALCORE_OAUTH_USERINFO_URL: 'https://authentik.example.com/application/o/userinfo'
+      # DENTALCORE_OAUTH_CLIENT_ID: ''
+      # DENTALCORE_OAUTH_CLIENT_SECRET: ''
+      # DENTALCORE_OAUTH_SCOPE: "openid profile email"  # Optional: uncomment to override default scope
 
       # === Sentry
 
@@ -112,39 +112,39 @@ services:
       # LINK_DRIP_SHORT_LINK_DOMAIN: "dripl.ink"
 
     volumes:
-      - postiz-config:/config/
-      - postiz-uploads:/uploads/
+      - dentalcore-config:/config/
+      - dentalcore-uploads:/uploads/
     ports:
       - '4007:5000'
     networks:
-      - postiz-network
+      - dentalcore-network
       - temporal-network
     depends_on:
-      postiz-postgres:
+      dentalcore-postgres:
         condition: service_healthy
-      postiz-redis:
+      dentalcore-redis:
         condition: service_healthy
 
-  postiz-postgres:
+  dentalcore-postgres:
     image: postgres:17-alpine
-    container_name: postiz-postgres
+    container_name: dentalcore-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: postiz-password
-      POSTGRES_USER: postiz-user
-      POSTGRES_DB: postiz-db-local
+      POSTGRES_PASSWORD: dentalcore-password
+      POSTGRES_USER: dentalcore-user
+      POSTGRES_DB: dentalcore-db-local
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     networks:
-      - postiz-network
+      - dentalcore-network
     healthcheck:
-      test: pg_isready -U postiz-user -d postiz-db-local
+      test: pg_isready -U dentalcore-user -d dentalcore-db-local
       interval: 10s
       timeout: 3s
       retries: 3
-  postiz-redis:
+  dentalcore-redis:
     image: redis:7.2
-    container_name: postiz-redis
+    container_name: dentalcore-redis
     restart: always
     healthcheck:
       test: redis-cli ping
@@ -152,9 +152,9 @@ services:
       timeout: 3s
       retries: 3
     volumes:
-      - postiz-redis-data:/data
+      - dentalcore-redis-data:/data
     networks:
-      - postiz-network
+      - dentalcore-network
 
   # For Application Monitoring / Debugging
   spotlight:
@@ -164,7 +164,7 @@ services:
       - 8969:8969/tcp
     image: ghcr.io/getsentry/spotlight:latest
     networks:
-      - postiz-network
+      - dentalcore-network
 
   # -----------------------
   # Temporal Stack
@@ -254,17 +254,17 @@ volumes:
   postgres-volume:
     external: false
 
-  postiz-redis-data:
+  dentalcore-redis-data:
     external: false
 
-  postiz-config:
+  dentalcore-config:
     external: false
 
-  postiz-uploads:
+  dentalcore-uploads:
     external: false
 
 networks:
-  postiz-network:
+  dentalcore-network:
     external: false
   temporal-network:
     driver: bridge

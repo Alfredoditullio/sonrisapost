@@ -1,36 +1,36 @@
-# This docker-compose file is used for development purposes. It sets up the necessary services for the Postiz application.
+# This docker-compose file is used for development purposes. It sets up the necessary services for the DentalCore Social application.
 # It is **not** intended for production use. For production, please refer to the official documentation.
 
 services:
-  postiz-postgres:
+  dentalcore-postgres:
     # ref: https://hub.docker.com/_/postgres
     image: postgres:17-alpine # 17.0
-    container_name: postiz-postgres
+    container_name: dentalcore-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: postiz-local-pwd
-      POSTGRES_USER: postiz-local
-      POSTGRES_DB: postiz-db-local
+      POSTGRES_PASSWORD: dentalcore-local-pwd
+      POSTGRES_USER: dentalcore-local
+      POSTGRES_DB: dentalcore-db-local
       TEMPORAL_ADDRESS: "temporal:7233"
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
-      - postiz-network
-  postiz-redis:
+      - dentalcore-network
+  dentalcore-redis:
     # ref: https://hub.docker.com/_/redis
     image: redis:7-alpine # 7.4.0
-    container_name: postiz-redis
+    container_name: dentalcore-redis
     restart: always
     ports:
       - 6379:6379
     networks:
-      - postiz-network
-  postiz-pg-admin:
+      - dentalcore-network
+  dentalcore-pg-admin:
     # ref: https://hub.docker.com/r/dpage/pgadmin4/tags
     image: dpage/pgadmin4:latest
-    container_name: postiz-pg-admin
+    container_name: dentalcore-pg-admin
     restart: always
     ports:
       - 8085:80
@@ -38,19 +38,19 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
-      - postiz-network
-  postiz-redisinsight:
+      - dentalcore-network
+  dentalcore-redisinsight:
     # ref: https://hub.docker.com/r/redis/redisinsight
     image: redis/redisinsight:latest
-    container_name: postiz-redisinsight
+    container_name: dentalcore-redisinsight
     links:
-      - postiz-redis
+      - dentalcore-redis
     ports:
       - '5540:5540'
     volumes:
       - redisinsight:/data
     networks:
-      - postiz-network
+      - dentalcore-network
     restart: always
 
   temporal-elasticsearch:
@@ -140,7 +140,7 @@ volumes:
     external: false
 
 networks:
-  postiz-network:
+  dentalcore-network:
     external: false
   temporal-network:
     driver: bridge

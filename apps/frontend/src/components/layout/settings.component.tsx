@@ -32,6 +32,7 @@ import { useT } from '@gitroom/react/translation/get.transation.service.client';
 import { SVGLine } from '@gitroom/frontend/components/launches/launches.component';
 import { GlobalSettings } from '@gitroom/frontend/components/settings/global.settings';
 import { ApprovedAppsComponent } from '@gitroom/frontend/components/approved-apps/approved-apps.component';
+import { SourceLinkComponent } from '@gitroom/frontend/components/ui/source-link.component';
 export const SettingsPopup: FC<{
   getRef?: Ref<any>;
 }> = (props) => {
@@ -146,6 +147,9 @@ export const SettingsPopup: FC<{
               <LogoutComponent />
             </div>
           )}
+          <div className="mt-4">
+            <SourceLinkComponent />
+          </div>
         </div>
       </div>
       <div className="bg-newBgColorInner flex-1 flex-col flex p-[20px] gap-[12px]">

@@ -1,72 +1,47 @@
-# Contributing
+# Contributing to DentalCore Social
 
-Contributions are welcome - code, docs, whatever it might be! If this is your first contribution to an Open Source project or you're a core maintainer of multiple projects, your time and interest in contributing to this project is most welcome.
+Thanks for wanting to help.
 
-## Read the developers guide
+## Licensing of contributions
 
-The main documentation site has a [developer guide](https://docs.postiz.com/developer-guide) . That guide provides you a good understanding of the project structure, and how to setup your development environment. Read this document after you have read that guide. This document is intended to provide you a good understanding of how to submit your first contribution.
+There is **no CLA**. By opening a pull request you agree that your contribution
+is licensed under the **GNU Affero General Public License v3**, the same license
+as the rest of this project. You keep the copyright on your own work.
 
-## Apply via the contribution form
+(The upstream Postiz project uses a CLA that assigns rights to its maintainers.
+That agreement does not apply here, and its files were removed from this fork.)
 
-To submit your contribution, please fill out the [contribution form](https://contribute.postiz.com/p/postiz). This helps us evaluate whether your contribution is a good fit for the project. We will review your submission and get back to you as soon as possible.
+## Before you start
 
-## Sign the Contributor License Agreement (CLA)
+- This is a fork of [Postiz](https://github.com/gitroomhq/postiz-app). If your fix
+  applies to unmodified upstream code, consider sending it **upstream first** —
+  everyone downstream benefits, and it lands here on the next merge.
+- Read [`CLAUDE.md`](CLAUDE.md) — it documents the architecture, the layering
+  rules (DTO → Controller → Service → Repository), and the frontend conventions.
+- Upstream's [developer guide](https://docs.postiz.com/developer-guide) still
+  describes most of the project structure accurately.
 
-Before we can merge your contribution, you must agree to our Contributor License Agreement (CLA). This documents the rights you grant us and helps ensure that Postiz can always remain Free and Open Source Software.
+## Ground rules
 
-- Contributing as an individual? The [Individual Contributor License Agreement (ICLA)](./ICLA.md) applies.
-- Contributing on behalf of a company or other legal entity? The [Entity Contributor License Agreement (CCLA)](./CCLA.md) applies.
+- **pnpm only.** No npm, no yarn.
+- **Prisma only.** Never write raw SQL.
+- **No new frontend dependencies** from npm for UI components — write native ones.
+- **Never edit a Temporal workflow that is already on the default branch.** Create
+  a new versioned workflow instead; editing one breaks every in-flight activity.
+- Lint from the repo root: `pnpm run lint`.
+- Match the surrounding code. If your change looks like a new pattern, it probably
+  is one — reuse what exists.
 
-You accept the agreement by following the instructions on the [CLA page](https://contribute.postiz.com/p/postiz/cla). You only need to do this once, and it covers your present and future contributions to Postiz.
+## Rebranding note
 
-## Write code with others
+If you touch user-visible strings or artwork, do not reintroduce "Postiz" or
+"Gitroom" branding. Attribution belongs in [`NOTICE.md`](NOTICE.md) and in the
+source-code link component — not in the product chrome.
 
-This is an open source project, with an open and welcoming community that is always keen to welcome new contributors. We recommend the two best ways to interact with the community are:
+If you change how this fork differs from upstream, add it to the modifications
+list in [`NOTICE.md`](NOTICE.md). AGPL-3.0 §5(a) requires that list to be accurate.
 
-- **GitHub issues**: To discuss more slowly, or longer-written messages.
-- **[Discord chat](https://discord.postiz.com)**: To chat with people [Discord chat](https://discord.postiz.com/) and a quicker feedback.
+## Pull requests
 
-As a general rule;
-
-- **If a change is less than 3 lines**: You're probably safe just to submit the change without a discussion. This includes typos, dependency changes, and quick fixes, etc.
-- **If a change is more than 3 lines**: It's probably best to discuss the change in an issue or on discord first. This is simply because you might not be aware of the roadmap for the project, or understand the impact this change might have. We're just trying to save you time here, and importantly, avoid you being disappointed if your change isn't accepted.
-
-## Types of Contributions
-
-Contributions can include:
-
-- **Code improvements:** Fixing bugs or adding new features.
-- **Documentation updates:** Enhancing clarity or adding missing information.
-- **Feature requests:** Suggesting new capabilities or integrations.
-- **Bug reports:** Identifying and reporting issues.
-
-## AI
-
-To ensure the quality and maintainability of the codebase, **we do not accept Pull Requests generated primarily by AI tools** (e.g., ChatGPT, GitHub Copilot, Claude Code, etc.). 
-All contributions must be the original work of the author. We reserve the right to close any PR that appears to be AI-generated without further review.
-
-## How to contribute
-
-This project follows a Fork/Feature Branch/Pull Request model. If you're not familiar with this, here's how it works:
-
-1. **Fork the project:** Create a personal copy of the repository on your GitHub account.
-2. **Clone your fork:** Bring a copy of your fork to your local machine.
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/postiz.git
-   ```
-3. **Create a new branch**: Start a new branch for your changes
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-4. **Make your changes**: Implement the changes you wish to contribute.
-5. **Push your changes**: Upload your changes to your fork.
-   ```bash
-   git push -u origin feature/your-feature-name
-   ```
-6. **Create a pull request**: Propose your changes **to the main branch**.
-
-# Need Help?
-
-Again, do check the [developer guide](https://docs.postiz.com/developer-guide). Much of what you probably need to know is in there.
-
-If you encounter any issues, please visit our [support page](https://docs.postiz.com/support) or check the community forums. Your contributions help make Postiz better!
+Follow [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md).
+Keep PRs focused — one concern each.

@@ -21,7 +21,8 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   return (
     <html>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon.png" />
       </head>
       <body
         className={clsx(jakartaSans.className, 'dark text-primary !bg-primary')}
@@ -39,9 +40,9 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           discordUrl={process.env.NEXT_PUBLIC_DISCORD_SUPPORT!}
           frontEndUrl={process.env.FRONTEND_URL!}
           isGeneral={!!process.env.IS_GENERAL}
-          genericOauth={!!process.env.POSTIZ_GENERIC_OAUTH}
-          oauthLogoUrl={process.env.NEXT_PUBLIC_POSTIZ_OAUTH_LOGO_URL!}
-          oauthDisplayName={process.env.NEXT_PUBLIC_POSTIZ_OAUTH_DISPLAY_NAME!}
+          genericOauth={!!process.env.DENTALCORE_GENERIC_OAUTH}
+          oauthLogoUrl={process.env.NEXT_PUBLIC_DENTALCORE_OAUTH_LOGO_URL!}
+          oauthDisplayName={process.env.NEXT_PUBLIC_DENTALCORE_OAUTH_DISPLAY_NAME!}
           uploadDirectory={process.env.NEXT_PUBLIC_UPLOAD_STATIC_DIRECTORY!}
           cloudflareUrl={process.env.CLOUDFLARE_BUCKET_URL || ''}
           mainUrl={process.env.MAIN_URL || ''}
