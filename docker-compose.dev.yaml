@@ -15,7 +15,9 @@ services:
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      # 5433 en el host: el 5432 suele estar tomado por un Postgres local
+      # (Homebrew/Postgres.app). Si lo cambiás, actualizá DATABASE_URL en .env.
+      - 5433:5432
     networks:
       - dentalcore-network
   dentalcore-redis:

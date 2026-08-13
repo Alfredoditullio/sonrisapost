@@ -52,7 +52,7 @@ cp .env.example .env
 Editá `.env` — como mínimo:
 
 ```
-DATABASE_URL="postgresql://dentalcore-user:dentalcore-password@localhost:5432/dentalcore-db-local"
+DATABASE_URL="postgresql://dentalcore-local:dentalcore-local-pwd@localhost:5433/dentalcore-db-local"
 REDIS_URL="redis://localhost:6379"
 NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
 FRONTEND_URL="http://localhost:4200"
