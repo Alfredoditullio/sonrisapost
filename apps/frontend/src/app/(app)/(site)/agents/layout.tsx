@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Agent } from '@gitroom/frontend/components/agents/agent';
 export const metadata: Metadata = {
-  title: 'DentalCore Social - Agent',
+  title: 'DentalCore Social · Agente',
   description: 'agents',
 };
 export default async function Layout({

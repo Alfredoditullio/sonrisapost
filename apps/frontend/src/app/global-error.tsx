@@ -18,8 +18,8 @@ export default function GlobalError({
     const eventId = Sentry.captureException(error);
     Sentry.showReportDialog({
       eventId,
-      title: 'Something broke!',
-      subtitle: 'Please help us fix the issue by providing some details.',
+      title: 'Algo se rompió',
+      subtitle: 'Ayudanos a resolverlo contándonos qué pasó.',
       labelComments: 'What happened?',
       labelName: 'Your name',
       labelEmail: 'Your email',
