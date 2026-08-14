@@ -436,4 +436,26 @@ export class OrganizationRepository {
       },
     });
   }
+
+  getSpecialty(orgId: string) {
+    return this._organization.model.organization.findUnique({
+      where: {
+        id: orgId,
+      },
+      select: {
+        specialty: true,
+      },
+    });
+  }
+
+  updateSpecialty(orgId: string, specialty: string) {
+    return this._organization.model.organization.update({
+      where: {
+        id: orgId,
+      },
+      data: {
+        specialty,
+      },
+    });
+  }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, Fragment, useCallback, useMemo, useState } from 'react';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import useSWR from 'swr';
 import { orderBy } from 'lodash';
@@ -9,6 +9,7 @@ import SafeImage from '@gitroom/react/helpers/safe.image';
 import { AddProviderComponent } from '@gitroom/frontend/components/launches/add.provider.component';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
 import { useModals } from '@gitroom/frontend/components/layout/new-modal';
+import { SpecialtyStep } from '@gitroom/frontend/components/onboarding/specialty.step';
 
 interface OnboardingModalProps {
   onClose: () => void;
@@ -49,58 +50,47 @@ export const OnboardingModal: FC<OnboardingModalProps> = ({ onClose }) => {
           <div className="flex flex-col gap-[24px] flex-1">
             {/* Step indicators */}
             <div className="flex items-center justify-center gap-[16px]">
-              <div className="flex items-center gap-[8px]">
-                <div
-                  className={clsx(
-                    'w-[32px] h-[32px] rounded-full flex items-center justify-center text-[14px] font-semibold transition-colors',
-                    step === 1
-                      ? 'bg-boxFocused text-textItemFocused'
-                      : 'bg-newTableHeader'
-                  )}
-                >
-                  1
-                </div>
-                <span
-                  className={clsx(
-                    'text-[14px]',
-                    step === 1 ? 'font-medium' : 'text-textColor'
-                  )}
-                >
-                  {t('connect_channels', 'Connect Channels')}
-                </span>
-              </div>
-              <div className="w-[40px] h-[2px] bg-boxFocused" />
-              <div className="flex items-center gap-[8px]">
-                <div
-                  className={clsx(
-                    'w-[32px] h-[32px] rounded-full flex items-center justify-center text-[14px] font-semibold transition-colors',
-                    step === 2
-                      ? 'bg-boxFocused text-textItemFocused'
-                      : 'bg-newTableHeader'
-                  )}
-                >
-                  2
-                </div>
-                <span
-                  className={clsx(
-                    'text-[14px]',
-                    step === 2 ? 'font-medium' : 'text-textColor'
-                  )}
-                >
-                  {t('watch_tutorial', 'Watch Tutorial')}
-                </span>
-              </div>
+              {[
+                t('your_specialty', 'Tu especialidad'),
+                t('connect_channels', 'Connect Channels'),
+                t('watch_tutorial', 'Watch Tutorial'),
+              ].map((label, index) => (
+                <Fragment key={label}>
+                  {index > 0 && <div className="w-[40px] h-[2px] bg-boxFocused" />}
+                  <div className="flex items-center gap-[8px]">
+                    <div
+                      className={clsx(
+                        'w-[32px] h-[32px] rounded-full flex items-center justify-center text-[14px] font-semibold transition-colors',
+                        step === index + 1
+                          ? 'bg-boxFocused text-textItemFocused'
+                          : 'bg-newTableHeader'
+                      )}
+                    >
+                      {index + 1}
+                    </div>
+                    <span
+                      className={clsx(
+                        'text-[14px]',
+                        step === index + 1 ? 'font-medium' : 'text-textColor'
+                      )}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                </Fragment>
+              ))}
             </div>
 
             {/* Step content */}
-            {step === 1 && (
+            {step === 1 && <SpecialtyStep onNext={() => setStep(2)} />}
+            {step === 2 && (
               <OnboardingStep1
-                onNext={() => setStep(2)}
-                onSkip={() => setStep(2)}
+                onNext={() => setStep(3)}
+                onSkip={() => setStep(3)}
               />
             )}
-            {step === 2 && (
-              <OnboardingStep2 onBack={() => setStep(1)} onFinish={onClose} />
+            {step === 3 && (
+              <OnboardingStep2 onBack={() => setStep(2)} onFinish={onClose} />
             )}
           </div>
         </div>

@@ -191,4 +191,12 @@ export class OrganizationService {
       shortlink
     );
   }
+
+  getSpecialty(orgId: string) {
+    return this._organizationRepository.getSpecialty(orgId);
+  }
+
+  updateSpecialty(orgId: string, specialty: string) {
+    return this._organizationRepository.updateSpecialty(orgId, specialty);
+  }
 }

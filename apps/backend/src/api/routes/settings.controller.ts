@@ -15,6 +15,7 @@ import { OrganizationService } from '@gitroom/nestjs-libraries/database/prisma/o
 import { AddTeamMemberDto } from '@gitroom/nestjs-libraries/dtos/settings/add.team.member.dto';
 import { AdminAddTeamMemberDto } from '@gitroom/nestjs-libraries/dtos/settings/admin.add.team.member.dto';
 import { ShortlinkPreferenceDto } from '@gitroom/nestjs-libraries/dtos/settings/shortlink-preference.dto';
+import { SpecialtyDto } from '@gitroom/nestjs-libraries/dtos/settings/specialty.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthorizationActions, Sections } from '@gitroom/backend/services/auth/permissions/permission.exception.class';
 
@@ -87,5 +88,19 @@ export class SettingsController {
       org.id,
       body.shortlink
     );
+  }
+
+  @Get('/specialty')
+  async getSpecialty(@GetOrgFromRequest() org: Organization) {
+    return this._organizationService.getSpecialty(org.id);
+  }
+
+  @Post('/specialty')
+  @CheckPolicies([AuthorizationActions.Create, Sections.ADMIN])
+  async updateSpecialty(
+    @GetOrgFromRequest() org: Organization,
+    @Body() body: SpecialtyDto
+  ) {
+    return this._organizationService.updateSpecialty(org.id, body.specialty);
   }
 }

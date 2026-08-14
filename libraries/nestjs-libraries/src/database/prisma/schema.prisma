@@ -20,6 +20,9 @@ model Organization {
   allowTrial          Boolean              @default(false)
   isTrailing          Boolean              @default(false)
   shortlink           ShortLinkPreference  @default(ASK)
+  /// Especialidad odontologica del consultorio (slug de DENTAL_SPECIALTIES).
+  /// Personaliza el calendario editorial y las plantillas de contenido.
+  specialty           String?
   autoPost            AutoPost[]
   Comments            Comments[]
   credits             Credits[]
