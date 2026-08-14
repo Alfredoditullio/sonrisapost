@@ -737,5 +737,16 @@
   "republish_the_post": "Volver a publicar la publicación",
   "post_already_published_republish_warning": "Esta publicación ya fue publicada. Volver a publicarla la publicará nuevamente en",
   "republish_at": "a las",
-  "republish_recurring_note": "Esta es una publicación recurrente: tus cambios se aplican a todas las recurrencias futuras a partir de ahora."
+  "republish_recurring_note": "Esta es una publicación recurrente: tus cambios se aplican a todas las recurrencias futuras a partir de ahora.",
+  "auth_headline": "Todas tus redes,",
+  "auth_headline_accent": "un solo calendario",
+  "auth_free_forever": "DentalCore Social es gratuito y de código abierto. Sin límite de publicaciones, sin tarjeta de crédito.",
+  "auth_feature_calendar": "Calendario",
+  "auth_feature_calendar_body": "Planificá y arrastrá tus publicaciones por fecha y hora.",
+  "auth_feature_channels": "28+ canales",
+  "auth_feature_channels_body": "Instagram, TikTok, LinkedIn, X, YouTube y más.",
+  "auth_feature_team": "Equipo",
+  "auth_feature_team_body": "Invitá a tu equipo y aprobá el contenido antes de publicar.",
+  "auth_feature_analytics": "Analíticas",
+  "auth_feature_analytics_body": "Mirá qué funciona en cada red desde un solo lugar."
 }
