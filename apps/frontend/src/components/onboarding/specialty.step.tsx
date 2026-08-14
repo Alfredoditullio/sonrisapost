@@ -2,26 +2,15 @@
 
 import { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
-import useSWR from 'swr';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
 import { DENTAL_SPECIALTIES } from '@gitroom/helpers/dental/dental.specialties';
-
-const useSpecialty = () => {
-  const fetch = useFetch();
-  const load = useCallback(async () => {
-    return (await fetch('/settings/specialty')).json();
-  }, []);
-
-  return useSWR('settings-specialty', load, {
-    revalidateOnFocus: false,
-  });
-};
+import { useDentalSpecialty } from '@gitroom/frontend/components/dental/use.dental.specialty';
 
 export const SpecialtyStep: FC<{ onNext: () => void }> = ({ onNext }) => {
   const fetch = useFetch();
   const t = useT();
-  const { data, mutate } = useSpecialty();
+  const { data, mutate } = useDentalSpecialty();
   const [saving, setSaving] = useState(false);
   const [selected, setSelected] = useState<string>('');
 

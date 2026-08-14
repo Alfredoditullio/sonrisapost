@@ -123,6 +123,31 @@ export function resolveEventDate(event: DentalEvent, year: number): Date {
   return new Date(year, month - 1, 1 + desplazamiento + (nth - 1) * 7);
 }
 
+/**
+ * Evento que cae en una fecha concreta, si lo hay.
+ * `specialty` filtra: un evento con `specialties` vacío le sirve a todos.
+ */
+export function getEventForDate(
+  date: Date,
+  specialty?: string
+): DentalEvent | undefined {
+  const year = date.getFullYear();
+  return DENTAL_EVENTS.find((event) => {
+    if (
+      specialty &&
+      event.specialties.length &&
+      !event.specialties.includes(specialty)
+    ) {
+      return false;
+    }
+    const resuelta = resolveEventDate(event, year);
+    return (
+      resuelta.getMonth() === date.getMonth() &&
+      resuelta.getDate() === date.getDate()
+    );
+  });
+}
+
 /** Eventos de un año, ordenados, opcionalmente filtrados por especialidad. */
 export function getEventsForYear(year: number, specialty?: string) {
   return DENTAL_EVENTS.filter(

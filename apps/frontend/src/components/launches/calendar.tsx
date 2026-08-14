@@ -581,6 +581,10 @@ export const Calendar = () => {
     </>
   );
 };
+import { DentalEventChip } from '@gitroom/frontend/components/dental/dental.event.chip';
+import { useDentalSpecialty } from '@gitroom/frontend/components/dental/use.dental.specialty';
+import { getEventForDate } from '@gitroom/helpers/dental/dental.calendar';
+
 export const CalendarColumn: FC<{
   getDate: dayjs.Dayjs;
   randomHour?: boolean;
@@ -758,7 +762,20 @@ export const CalendarColumn: FC<{
     }),
   }), [posts]);
 
-  const addModal = useCallback(async () => {
+  const { data: specialtyData } = useDentalSpecialty();
+  const dentalEvent = useMemo(() => {
+    // Solo en vista mensual: en dia/semana cada celda es una hora y el chip
+    // se repetiria 24 veces.
+    if (display !== 'month') {
+      return undefined;
+    }
+    return getEventForDate(
+      getDate.toDate(),
+      specialtyData?.specialty || undefined
+    );
+  }, [display, getDate, specialtyData?.specialty]);
+
+  const addModal = useCallback(async (presetContent?: string) => {
     const set: any = !sets.length
       ? undefined
       : await new Promise((resolve) => {
@@ -807,15 +824,12 @@ export const CalendarColumn: FC<{
             ...p,
           }))}
           mutate={reloadCalendarView}
-          {...(signature?.id && !set
-            ? {
-                onlyValues: [
-                  {
-                    content: '\n' + signature.content,
-                  },
-                ],
-              }
-            : {})}
+          {...(() => {
+            // La efemeride precarga el post; la firma se sigue respetando.
+            const firma = signature?.id && !set ? '\n' + signature.content : '';
+            const contenido = (presetContent || '') + firma;
+            return contenido ? { onlyValues: [{ content: contenido }] } : {};
+          })()}
           date={
             randomHour
               ? getDate.hour(Math.floor(Math.random() * 24))
@@ -830,7 +844,7 @@ export const CalendarColumn: FC<{
       ),
       size: '80%',
     });
-  }, [integrations, getDate, sets, signature]);
+  }, [integrations, getDate, sets, signature, randomHour, reloadCalendarView]);
 
   const addProvider = useAddProvider();
   return (
@@ -908,10 +922,20 @@ export const CalendarColumn: FC<{
             </div>
           )}
         </div>
+        {!!dentalEvent && !isBeforeNow && (
+          <div className="px-[5px] pb-[3px]">
+            <DentalEventChip
+              event={dentalEvent}
+              onUse={(content) =>
+                integrations.length ? addModal(content) : addProvider()
+              }
+            />
+          </div>
+        )}
         {!isBeforeNow && (
           <div
             className="pb-[2.5px] px-[5px] flex-1 flex"
-            onClick={integrations.length ? addModal : addProvider}
+            onClick={integrations.length ? () => addModal() : addProvider}
           >
             <div
               className={clsx(
