@@ -1,15 +1,15 @@
 # NOTICE — Attribution and modifications
 
-DentalCore Social is a **modified version** of **Postiz**
+SonrisaPost is a **modified version** of **Postiz**
 (<https://github.com/gitroomhq/postiz-app>), copyright © Nevo David and the Postiz
 contributors, licensed under the **GNU Affero General Public License, version 3**.
 
-DentalCore Social is **not** affiliated with, endorsed by, or sponsored by Postiz,
+SonrisaPost is **not** affiliated with, endorsed by, or sponsored by Postiz,
 Gitroom, or Nevo David. "Postiz" and "Gitroom" are names used by the upstream
 project and are **not** licensed to this project; they appear here only to
 identify the origin of the code, as required for attribution.
 
-DentalCore Social is distributed under the same license — **AGPL-3.0**. See
+SonrisaPost is distributed under the same license — **AGPL-3.0**. See
 [`LICENSE`](LICENSE) for the full text. The original copyright notice in
 `LICENSE` is preserved unchanged, as the license requires.
 
@@ -27,12 +27,12 @@ DentalCore Social is distributed under the same license — **AGPL-3.0**. See
 Required by AGPL-3.0 §5(a) — "carry prominent notices stating that you modified it".
 
 1. **Rebranding.** All user-visible occurrences of "Postiz" and "Gitroom" replaced
-   with "DentalCore Social". Environment-variable prefix `POSTIZ_*` renamed to
-   `DENTALCORE_*`.
+   with "SonrisaPost". Environment-variable prefix `POSTIZ_*` renamed to
+   `SONRISAPOST_*`.
 2. **Logo and icon artwork replaced.** The Postiz wordmark and glyph (an original
    creative work of the upstream authors) were removed entirely and replaced with
-   original DentalCore Social artwork. Affected: `apps/frontend/public/logo.svg`,
-   `logo-text.svg`, `dentalcore.svg`, `dentalcore-text.svg`, favicons, the
+   original SonrisaPost artwork. Affected: `apps/frontend/public/logo.svg`,
+   `logo-text.svg`, `sonrisapost.svg`, `sonrisapost-text.svg`, favicons, the
    extension icons, and the inline SVG components `logo-text.component.tsx` and
    `new-layout/logo.tsx`.
 3. **Brand colour** changed from `#612BD3` (Postiz purple) to `#0F766E` /

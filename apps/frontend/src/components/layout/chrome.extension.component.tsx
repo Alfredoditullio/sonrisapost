@@ -6,7 +6,7 @@ export const ChromeExtensionComponent = () => {
   }
   return (
     <a
-      href="https://chromewebstore.google.com/detail/dentalcore/cidhffagahknaeodkplfbcpfeielnkjl"
+      href="https://chromewebstore.google.com/detail/sonrisapost/cidhffagahknaeodkplfbcpfeielnkjl"
       target="_blank"
       className="hover:text-newTextColor"
     >

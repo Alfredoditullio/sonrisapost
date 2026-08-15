@@ -39,7 +39,7 @@ export default async function AuthLayout({
         <div className="mt-[24px] text-center text-[16px] text-[#B5B5B5] max-w-[520px]">
           {t(
             'auth_free_forever',
-            'DentalCore Social is free and open source. No post limits, no credit card.'
+            'SonrisaPost is free and open source. No post limits, no credit card.'
           )}
         </div>
         <div className="mt-[40px] grid grid-cols-2 gap-[12px] w-full max-w-[560px]">

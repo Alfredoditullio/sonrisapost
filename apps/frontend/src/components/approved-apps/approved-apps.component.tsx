@@ -67,7 +67,7 @@ export const ApprovedAppsComponent: FC = () => {
         <div className="text-customColor18 mt-[4px]">
           {t(
             'apps_you_have_authorized',
-            'Applications you have authorized to access your DentalCore Social account.'
+            'Applications you have authorized to access your SonrisaPost account.'
           )}
         </div>
       </div>

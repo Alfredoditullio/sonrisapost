@@ -1,6 +1,6 @@
 {
-	"name": "DentalCore Social Dev Container",
-	"image": "localhost/dentalcore-devcontainer",
+	"name": "SonrisaPost Dev Container",
+	"image": "localhost/sonrisapost-devcontainer",
 	"features": {},
 	"customizations": {
 		"vscode": {

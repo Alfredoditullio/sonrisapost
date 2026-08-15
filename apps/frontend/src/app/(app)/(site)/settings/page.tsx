@@ -2,7 +2,7 @@ import { SettingsPopup } from '@gitroom/frontend/components/layout/settings.comp
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Ajustes',
+  title: 'SonrisaPost · Ajustes',
   description: '',
 };
 export default async function Index(props: {

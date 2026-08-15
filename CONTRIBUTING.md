@@ -1,4 +1,4 @@
-# Contributing to DentalCore Social
+# Contributing to SonrisaPost
 
 Thanks for wanting to help.
 

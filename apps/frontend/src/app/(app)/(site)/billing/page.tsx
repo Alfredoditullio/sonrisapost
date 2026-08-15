@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { BillingComponent } from '@gitroom/frontend/components/billing/billing.component';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Facturación',
+  title: 'SonrisaPost · Facturación',
   description: '',
 };
 export default async function Page() {

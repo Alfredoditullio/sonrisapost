@@ -1,7 +1,7 @@
 /**
  * AGPL-3.0 section 13 compliance.
  *
- * DentalCore Social is a modified version of Postiz (https://github.com/gitroomhq/postiz-app),
+ * SonrisaPost is a modified version of Postiz (https://github.com/gitroomhq/postiz-app),
  * licensed under the GNU Affero General Public License v3. Because this program is offered to
  * users over a network, every user must be given a prominent opportunity to receive the
  * corresponding source of THIS modified version — not just of upstream Postiz.
@@ -11,7 +11,7 @@
  */
 export const SOURCE_CODE_URL =
   process.env.NEXT_PUBLIC_SOURCE_CODE_URL ||
-  'https://github.com/dentalcoresocial/dentalcore-app';
+  'https://github.com/sonrisapost/sonrisapost-app';
 
 export const SourceLinkComponent = () => {
   return (

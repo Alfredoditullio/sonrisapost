@@ -41,46 +41,46 @@ const getMcpConfig = (
     switch (client) {
       case 'Claude Code':
         return {
-          config: `claude mcp add dentalcore --transport http "${urlWithKey}"`,
+          config: `claude mcp add sonrisapost --transport http "${urlWithKey}"`,
           hint: 'Run this command in your terminal.',
         };
       case 'Cursor':
         return {
-          config: json({ mcpServers: { dentalcore: { url: urlWithKey } } }),
+          config: json({ mcpServers: { sonrisapost: { url: urlWithKey } } }),
           hint: 'Add to .cursor/mcp.json in your project root.',
         };
       case 'VS Code / Copilot':
         return {
           config: json({
-            servers: { dentalcore: { type: 'http', url: urlWithKey } },
+            servers: { sonrisapost: { type: 'http', url: urlWithKey } },
           }),
           hint: 'Add to .vscode/mcp.json in your project root.',
         };
       case 'Windsurf':
         return {
           config: json({
-            mcpServers: { dentalcore: { serverUrl: urlWithKey } },
+            mcpServers: { sonrisapost: { serverUrl: urlWithKey } },
           }),
           hint: 'Add to ~/.codeium/windsurf/mcp_config.json',
         };
       case 'Amp':
         return {
-          config: `amp mcp add dentalcore ${urlWithKey}`,
+          config: `amp mcp add sonrisapost ${urlWithKey}`,
           hint: 'Run this command in your terminal.',
         };
       case 'Codex':
         return {
-          config: `# ~/.codex/config.toml\n\n[mcp_servers.dentalcore]\nurl = "${urlWithKey}"`,
+          config: `# ~/.codex/config.toml\n\n[mcp_servers.sonrisapost]\nurl = "${urlWithKey}"`,
           hint: 'Add to ~/.codex/config.toml',
         };
       case 'Gemini CLI':
         return {
-          config: json({ mcpServers: { dentalcore: { url: urlWithKey } } }),
+          config: json({ mcpServers: { sonrisapost: { url: urlWithKey } } }),
           hint: 'Add to ~/.gemini/settings.json',
         };
       case 'Warp':
         return {
-          config: json({ dentalcore: { url: urlWithKey } }),
+          config: json({ sonrisapost: { url: urlWithKey } }),
           hint: 'Settings > MCP Servers > + Add, then paste this config.',
         };
     }
@@ -89,14 +89,14 @@ const getMcpConfig = (
   switch (client) {
     case 'Claude Code':
       return {
-        config: `claude mcp add --transport http dentalcore ${urlBase} --header "Authorization: ${bearer}"`,
+        config: `claude mcp add --transport http sonrisapost ${urlBase} --header "Authorization: ${bearer}"`,
         hint: 'Run this command in your terminal.',
       };
     case 'Cursor':
       return {
         config: json({
           mcpServers: {
-            dentalcore: { url: urlBase, headers: { Authorization: bearer } },
+            sonrisapost: { url: urlBase, headers: { Authorization: bearer } },
           },
         }),
         hint: 'Add to .cursor/mcp.json in your project root.',
@@ -105,7 +105,7 @@ const getMcpConfig = (
       return {
         config: json({
           servers: {
-            dentalcore: {
+            sonrisapost: {
               type: 'http',
               url: urlBase,
               headers: { Authorization: bearer },
@@ -118,7 +118,7 @@ const getMcpConfig = (
       return {
         config: json({
           mcpServers: {
-            dentalcore: {
+            sonrisapost: {
               serverUrl: urlBase,
               headers: { Authorization: bearer },
             },
@@ -130,21 +130,21 @@ const getMcpConfig = (
       return {
         config: json({
           'amp.mcpServers': {
-            dentalcore: { url: urlBase, headers: { Authorization: bearer } },
+            sonrisapost: { url: urlBase, headers: { Authorization: bearer } },
           },
         }),
         hint: 'Add to your Amp settings.json',
       };
     case 'Codex':
       return {
-        config: `# ~/.codex/config.toml\n\n[mcp_servers.dentalcore]\nurl = "${urlBase}"\nhttp_headers = { "Authorization" = "${bearer}" }`,
+        config: `# ~/.codex/config.toml\n\n[mcp_servers.sonrisapost]\nurl = "${urlBase}"\nhttp_headers = { "Authorization" = "${bearer}" }`,
         hint: 'Add to ~/.codex/config.toml',
       };
     case 'Gemini CLI':
       return {
         config: json({
           mcpServers: {
-            dentalcore: { url: urlBase, headers: { Authorization: bearer } },
+            sonrisapost: { url: urlBase, headers: { Authorization: bearer } },
           },
         }),
         hint: 'Add to ~/.gemini/settings.json',
@@ -152,7 +152,7 @@ const getMcpConfig = (
     case 'Warp':
       return {
         config: json({
-          dentalcore: { url: urlBase, headers: { Authorization: bearer } },
+          sonrisapost: { url: urlBase, headers: { Authorization: bearer } },
         }),
         hint: 'Settings > MCP Servers > + Add, then paste this config.',
       };
@@ -234,7 +234,7 @@ const McpSection = ({
           <div className="text-[13px] text-customColor18 mt-[2px]">
             {t(
               'connect_your_mcp_client_to_postiz_to_schedule_your_posts_faster',
-              'Connect DentalCore Social MCP server to your client (Http streaming) to schedule your posts faster.'
+              'Connect SonrisaPost MCP server to your client (Http streaming) to schedule your posts faster.'
             )}
           </div>
         </div>
@@ -361,30 +361,30 @@ const McpSection = ({
 const localCliSteps = [
   {
     label: 'Install the CLI',
-    code: 'npm install -g dentalcore',
+    code: 'npm install -g sonrisapost',
   },
   {
-    label: 'Run: dentalcore auth:login',
-    code: 'dentalcore auth:login',
+    label: 'Run: sonrisapost auth:login',
+    code: 'sonrisapost auth:login',
   },
   {
-    label: 'Install the DentalCore Social skill for your AI agent',
-    code: 'npx skills add dentalcoresocial/dentalcore-agent',
+    label: 'Install the SonrisaPost skill for your AI agent',
+    code: 'npx skills add sonrisapost/sonrisapost-agent',
   },
 ] as const;
 
 const ciCliSteps = [
   {
     label: 'Install the CLI',
-    code: 'npm install -g dentalcore',
+    code: 'npm install -g sonrisapost',
   },
   {
     label: 'Set your API key as an environment variable',
-    code: 'export DENTALCORE_API_KEY="{API_KEY}"',
+    code: 'export SONRISAPOST_API_KEY="{API_KEY}"',
   },
   {
-    label: 'Install the DentalCore Social skill for your AI agent',
-    code: 'npx skills add dentalcoresocial/dentalcore-agent',
+    label: 'Install the SonrisaPost skill for your AI agent',
+    code: 'npx skills add sonrisapost/sonrisapost-agent',
   },
 ] as const;
 
@@ -422,7 +422,7 @@ const CliSection = ({ apiKey }: { apiKey: string }) => {
           <div className="text-[13px] text-customColor18 mt-[2px]">
             {t(
               'cli_description',
-              'Use the DentalCore Social CLI to automate posting from your terminal, or install the skill to let your AI agent schedule posts for you.'
+              'Use the SonrisaPost CLI to automate posting from your terminal, or install the skill to let your AI agent schedule posts for you.'
             )}
           </div>
         </div>
@@ -556,7 +556,7 @@ const PublicApiContent = () => {
         <br />
         {t(
           'api_auth_note_line2',
-          'If you are building a product that schedules posts on behalf of other DentalCore Social users,'
+          'If you are building a product that schedules posts on behalf of other SonrisaPost users,'
         )}
         <br />
         {t(
@@ -578,7 +578,7 @@ const PublicApiContent = () => {
             <div className="text-[13px] text-customColor18 mt-[2px]">
               {t(
                 'use_postiz_api_to_integrate_with_your_tools',
-                'Use DentalCore Social API to integrate with your tools.'
+                'Use SonrisaPost API to integrate with your tools.'
               )}
             </div>
           </div>
@@ -593,7 +593,7 @@ const PublicApiContent = () => {
             </a>
             <a
               className="cursor-pointer px-[16px] h-[36px] bg-[#0F766E] hover:bg-[#5520CB] text-white transition-colors rounded-[8px] text-[13px] font-[600] flex items-center gap-[6px]"
-              href="https://www.npmjs.com/package/n8n-nodes-dentalcore"
+              href="https://www.npmjs.com/package/n8n-nodes-sonrisapost"
               target="_blank"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>

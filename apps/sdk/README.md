@@ -1,24 +1,24 @@
-# DentalCore Social NodeJS SDK
+# SonrisaPost NodeJS SDK
 
-This is the NodeJS SDK for [DentalCore Social](https://dentalcore.social).
+This is the NodeJS SDK for [SonrisaPost](https://sonrisapost.com).
 
 You can start by installing the package:
 
 ```bash
-npm install @dentalcore/node
+npm install @sonrisapost/node
 ```
 
 ## Usage
 ```typescript
-import DentalCoreSocial from '@dentalcore/node';
-const dentalcore = new DentalCoreSocial('your api key', 'your self-hosted instance (optional)');
+import DentalCoreSocial from '@sonrisapost/node';
+const sonrisapost = new DentalCoreSocial('your api key', 'your self-hosted instance (optional)');
 ```
 
 The available methods are:
-- `post(posts: CreatePostDto)` - Schedule a post to DentalCore Social
+- `post(posts: CreatePostDto)` - Schedule a post to SonrisaPost
 - `postList(filters: GetPostsDto)` - Get a list of posts
-- `upload(file: Buffer, extension: string)` - Upload a file to DentalCore Social
+- `upload(file: Buffer, extension: string)` - Upload a file to SonrisaPost
 - `integrations()` - Get a list of connected channels
 - `deletePost(id: string)` - Delete a post by ID
 
-Alternatively you can use the SDK with curl, check the [DentalCore Social API documentation](https://docs.postiz.com/public-api) for more information.
+Alternatively you can use the SDK with curl, check the [SonrisaPost API documentation](https://docs.postiz.com/public-api) for more information.

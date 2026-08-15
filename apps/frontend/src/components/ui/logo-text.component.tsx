@@ -3,9 +3,9 @@ import React from 'react';
 export const LogoTextComponent = () => {
   return (
     <svg
-      width="220"
+      width="230"
       height="48"
-      viewBox="0 0 220 48"
+      viewBox="0 0 230 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -18,24 +18,14 @@ export const LogoTextComponent = () => {
       <circle cx="35.5" cy="13.5" r="2.5" fill="#F472B6" />
       <text
         x="60"
-        y="24"
-        fontSize="19"
+        y="25"
+        fontSize="21"
         fontWeight="700"
         fill="currentColor"
         dominantBaseline="middle"
       >
-        DentalCore
-      </text>
-      <text
-        x="60"
-        y="38"
-        fontSize="11"
-        fontWeight="500"
-        letterSpacing="3.4"
-        fill="#2DD4BF"
-        dominantBaseline="middle"
-      >
-        SOCIAL
+        Sonrisa
+        <tspan fill="#2DD4BF">Post</tspan>
       </text>
     </svg>
   );

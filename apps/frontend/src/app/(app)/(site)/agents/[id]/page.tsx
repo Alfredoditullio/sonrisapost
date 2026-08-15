@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { Agent } from '@gitroom/frontend/components/agents/agent';
 import { AgentChat } from '@gitroom/frontend/components/agents/agent.chat';
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Agente',
+  title: 'SonrisaPost · Agente',
   description: '',
 };
 export default async function Page() {

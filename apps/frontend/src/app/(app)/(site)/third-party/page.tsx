@@ -3,7 +3,7 @@ import { ThirdPartyComponent } from '@gitroom/frontend/components/third-parties/
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Integraciones',
+  title: 'SonrisaPost · Integraciones',
   description: '',
 };
 export default async function Index() {

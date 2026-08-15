@@ -57,7 +57,7 @@ export async function digestEmailWorkflow({
         user.user.email,
         toSend.length === 1
           ? toSend[0].title
-          : `[DentalCore Social] Your latest notifications`,
+          : `[SonrisaPost] Your latest notifications`,
         toSend.map((p) => p.message).join('<br/>'),
         'bottom'
       );

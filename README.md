@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="apps/frontend/public/logo-text.svg" alt="DentalCore Social" height="48" />
+  <img src="apps/frontend/public/logo-text.svg" alt="SonrisaPost" height="48" />
   <p><strong>Publicá en todas tus redes desde un solo calendario.</strong></p>
   <p>Gratis, self-hosted, código abierto (AGPL-3.0).</p>
 </div>
@@ -8,7 +8,7 @@
 
 ## Qué es
 
-DentalCore Social es una herramienta de programación de contenido para redes
+SonrisaPost es una herramienta de programación de contenido para redes
 sociales: calendario, publicación en 28+ canales, biblioteca de medios,
 analíticas y gestión de equipo. Se corre en tu propio servidor y no tiene
 límite de publicaciones ni planes pagos.
@@ -52,7 +52,7 @@ cp .env.example .env
 Editá `.env` — como mínimo:
 
 ```
-DATABASE_URL="postgresql://dentalcore-local:dentalcore-local-pwd@localhost:5433/dentalcore-db-local"
+DATABASE_URL="postgresql://sonrisapost-local:sonrisapost-local-pwd@localhost:5433/sonrisapost-db-local"
 REDIS_URL="redis://localhost:6379"
 NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
 FRONTEND_URL="http://localhost:4200"
@@ -77,7 +77,7 @@ La UI queda en <http://localhost:4200> y la API en <http://localhost:3000>.
 |---|---|
 | `NEXT_PUBLIC_SOURCE_CODE_URL` | **Obligatoria en producción.** URL pública del código que estás corriendo. Requisito del §13 de la AGPL. |
 | `NEXT_PUBLIC_ANALYTICS_DOMAIN` | Dominio propio para Plausible/Datafast. Vacío = sin analytics. |
-| `DENTALCORE_OAUTH_*` | OAuth genérico (antes `POSTIZ_OAUTH_*`). |
+| `SONRISAPOST_OAUTH_*` | OAuth genérico (antes `POSTIZ_OAUTH_*`). |
 
 El resto de las variables está documentado en `.env.example` y, para lo que este
 fork no cambió, en la [documentación de Postiz](https://docs.postiz.com/configuration/reference).

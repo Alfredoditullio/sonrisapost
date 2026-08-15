@@ -219,7 +219,7 @@ export function RegisterAfter({
                 )}
                 &nbsp;
                 <a
-                  href={`https://dentalcore.social/terms`}
+                  href={`https://sonrisapost.com/terms`}
                   className="underline hover:font-bold"
                   rel="nofollow"
                 >
@@ -228,7 +228,7 @@ export function RegisterAfter({
                 &nbsp;
                 {t('and', 'and')}&nbsp;
                 <a
-                  href={`https://dentalcore.social/privacy`}
+                  href={`https://sonrisapost.com/privacy`}
                   rel="nofollow"
                   className="underline hover:font-bold"
                 >

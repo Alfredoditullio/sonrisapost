@@ -15,7 +15,7 @@ function toQueryString(obj: Record<string, any>): string {
 export default class DentalCoreSocial {
   constructor(
     private _apiKey: string,
-    private _path = 'https://api.dentalcore.social'
+    private _path = 'https://api.sonrisapost.com'
   ) {}
 
   async post(posts: CreatePostDto) {

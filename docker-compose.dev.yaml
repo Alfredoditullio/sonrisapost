@@ -1,16 +1,16 @@
-# This docker-compose file is used for development purposes. It sets up the necessary services for the DentalCore Social application.
+# This docker-compose file is used for development purposes. It sets up the necessary services for the SonrisaPost application.
 # It is **not** intended for production use. For production, please refer to the official documentation.
 
 services:
-  dentalcore-postgres:
+  sonrisapost-postgres:
     # ref: https://hub.docker.com/_/postgres
     image: postgres:17-alpine # 17.0
-    container_name: dentalcore-postgres
+    container_name: sonrisapost-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: dentalcore-local-pwd
-      POSTGRES_USER: dentalcore-local
-      POSTGRES_DB: dentalcore-db-local
+      POSTGRES_PASSWORD: sonrisapost-local-pwd
+      POSTGRES_USER: sonrisapost-local
+      POSTGRES_DB: sonrisapost-db-local
       TEMPORAL_ADDRESS: "temporal:7233"
     volumes:
       - postgres-volume:/var/lib/postgresql/data
@@ -19,20 +19,20 @@ services:
       # (Homebrew/Postgres.app). Si lo cambiás, actualizá DATABASE_URL en .env.
       - 5433:5432
     networks:
-      - dentalcore-network
-  dentalcore-redis:
+      - sonrisapost-network
+  sonrisapost-redis:
     # ref: https://hub.docker.com/_/redis
     image: redis:7-alpine # 7.4.0
-    container_name: dentalcore-redis
+    container_name: sonrisapost-redis
     restart: always
     ports:
       - 6379:6379
     networks:
-      - dentalcore-network
-  dentalcore-pg-admin:
+      - sonrisapost-network
+  sonrisapost-pg-admin:
     # ref: https://hub.docker.com/r/dpage/pgadmin4/tags
     image: dpage/pgadmin4:latest
-    container_name: dentalcore-pg-admin
+    container_name: sonrisapost-pg-admin
     restart: always
     ports:
       - 8085:80
@@ -40,19 +40,19 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
-      - dentalcore-network
-  dentalcore-redisinsight:
+      - sonrisapost-network
+  sonrisapost-redisinsight:
     # ref: https://hub.docker.com/r/redis/redisinsight
     image: redis/redisinsight:latest
-    container_name: dentalcore-redisinsight
+    container_name: sonrisapost-redisinsight
     links:
-      - dentalcore-redis
+      - sonrisapost-redis
     ports:
       - '5540:5540'
     volumes:
       - redisinsight:/data
     networks:
-      - dentalcore-network
+      - sonrisapost-network
     restart: always
 
   temporal-elasticsearch:
@@ -142,7 +142,7 @@ volumes:
     external: false
 
 networks:
-  dentalcore-network:
+  sonrisapost-network:
     external: false
   temporal-network:
     driver: bridge

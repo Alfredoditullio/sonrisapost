@@ -57,7 +57,7 @@ export const DentalCorePromo: FC<{ placement?: string }> = ({
         )}
       </div>
       <a
-        href={`${PARENT_BRAND_URL}?utm_source=dentalcore-social&utm_medium=${placement}&utm_campaign=promo`}
+        href={`${PARENT_BRAND_URL}?utm_source=sonrisapost&utm_medium=${placement}&utm_campaign=promo`}
         target="_blank"
         rel="noreferrer"
         onClick={registrarClic}

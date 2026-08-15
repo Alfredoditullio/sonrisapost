@@ -188,7 +188,7 @@ export class StripeService {
       [...emailByCustomer].map(([customerId, email]) =>
         stripe.customers
           .update(customerId, {
-            email: email.indexOf('@') > -1 ? email : `${email}@dentalcore.social`,
+            email: email.indexOf('@') > -1 ? email : `${email}@sonrisapost.com`,
           })
           .catch(() => {})
       )
@@ -202,7 +202,7 @@ export class StripeService {
 
     const users = await this._organizationService.getTeam(organization.id);
     const customer = await stripe.customers.create({
-      email: users.users[0].user.email.indexOf('@') > -1 ? users.users[0].user.email : `${users.users[0].user.email}@dentalcore.social`,
+      email: users.users[0].user.email.indexOf('@') > -1 ? users.users[0].user.email : `${users.users[0].user.email}@sonrisapost.com`,
       name: organization.name,
     });
     await this._subscriptionService.updateCustomerId(
@@ -467,7 +467,7 @@ export class StripeService {
 
     try {
       await stripe.customers.update(customer, {
-        email: user.email.indexOf('@') > -1 ? user.email : `${user.email}@dentalcore.social`,
+        email: user.email.indexOf('@') > -1 ? user.email : `${user.email}@sonrisapost.com`,
         ...(body.dub
           ? {
               metadata: {

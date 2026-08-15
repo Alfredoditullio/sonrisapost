@@ -39,7 +39,7 @@ export const initializeSentry = (appName: string, allowLogs = false) => {
         },
         contexts: {
           app: {
-            name: `DentalCore Social ${capitalize(appName)}`,
+            name: `SonrisaPost ${capitalize(appName)}`,
           },
         },
       },

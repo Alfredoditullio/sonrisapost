@@ -1,7 +1,7 @@
 services:
-  dentalcore:
-    image: ghcr.io/dentalcoresocial/dentalcore-app:latest
-    container_name: dentalcore
+  sonrisapost:
+    image: ghcr.io/sonrisapost/sonrisapost-app:latest
+    container_name: sonrisapost
     restart: always
     environment:
       # === Required Settings
@@ -9,8 +9,8 @@ services:
       FRONTEND_URL: 'http://localhost:4007'
       NEXT_PUBLIC_BACKEND_URL: 'http://localhost:4007/api'
       JWT_SECRET: 'random string that is unique to every install - just type random characters here!'
-      DATABASE_URL: 'postgresql://dentalcore-user:dentalcore-password@dentalcore-postgres:5432/dentalcore-db-local'
-      REDIS_URL: 'redis://dentalcore-redis:6379'
+      DATABASE_URL: 'postgresql://sonrisapost-user:sonrisapost-password@sonrisapost-postgres:5432/sonrisapost-db-local'
+      REDIS_URL: 'redis://sonrisapost-redis:6379'
       BACKEND_INTERNAL_URL: 'http://localhost:3000'
       TEMPORAL_ADDRESS: 'temporal:7233'
       IS_GENERAL: 'true'
@@ -67,16 +67,16 @@ services:
       MASTODON_CLIENT_SECRET: ''
 
       # === OAuth & Authentik Settings
-      # NEXT_PUBLIC_DENTALCORE_OAUTH_DISPLAY_NAME: 'Authentik'
-      # NEXT_PUBLIC_DENTALCORE_OAUTH_LOGO_URL: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/authentik.png'
-      # DENTALCORE_GENERIC_OAUTH: 'false'
-      # DENTALCORE_OAUTH_URL: 'https://auth.example.com'
-      # DENTALCORE_OAUTH_AUTH_URL: 'https://auth.example.com/application/o/authorize'
-      # DENTALCORE_OAUTH_TOKEN_URL: 'https://auth.example.com/application/o/token'
-      # DENTALCORE_OAUTH_USERINFO_URL: 'https://authentik.example.com/application/o/userinfo'
-      # DENTALCORE_OAUTH_CLIENT_ID: ''
-      # DENTALCORE_OAUTH_CLIENT_SECRET: ''
-      # DENTALCORE_OAUTH_SCOPE: "openid profile email"  # Optional: uncomment to override default scope
+      # NEXT_PUBLIC_SONRISAPOST_OAUTH_DISPLAY_NAME: 'Authentik'
+      # NEXT_PUBLIC_SONRISAPOST_OAUTH_LOGO_URL: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/png/authentik.png'
+      # SONRISAPOST_GENERIC_OAUTH: 'false'
+      # SONRISAPOST_OAUTH_URL: 'https://auth.example.com'
+      # SONRISAPOST_OAUTH_AUTH_URL: 'https://auth.example.com/application/o/authorize'
+      # SONRISAPOST_OAUTH_TOKEN_URL: 'https://auth.example.com/application/o/token'
+      # SONRISAPOST_OAUTH_USERINFO_URL: 'https://authentik.example.com/application/o/userinfo'
+      # SONRISAPOST_OAUTH_CLIENT_ID: ''
+      # SONRISAPOST_OAUTH_CLIENT_SECRET: ''
+      # SONRISAPOST_OAUTH_SCOPE: "openid profile email"  # Optional: uncomment to override default scope
 
       # === Sentry
 
@@ -112,39 +112,39 @@ services:
       # LINK_DRIP_SHORT_LINK_DOMAIN: "dripl.ink"
 
     volumes:
-      - dentalcore-config:/config/
-      - dentalcore-uploads:/uploads/
+      - sonrisapost-config:/config/
+      - sonrisapost-uploads:/uploads/
     ports:
       - '4007:5000'
     networks:
-      - dentalcore-network
+      - sonrisapost-network
       - temporal-network
     depends_on:
-      dentalcore-postgres:
+      sonrisapost-postgres:
         condition: service_healthy
-      dentalcore-redis:
+      sonrisapost-redis:
         condition: service_healthy
 
-  dentalcore-postgres:
+  sonrisapost-postgres:
     image: postgres:17-alpine
-    container_name: dentalcore-postgres
+    container_name: sonrisapost-postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: dentalcore-password
-      POSTGRES_USER: dentalcore-user
-      POSTGRES_DB: dentalcore-db-local
+      POSTGRES_PASSWORD: sonrisapost-password
+      POSTGRES_USER: sonrisapost-user
+      POSTGRES_DB: sonrisapost-db-local
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     networks:
-      - dentalcore-network
+      - sonrisapost-network
     healthcheck:
-      test: pg_isready -U dentalcore-user -d dentalcore-db-local
+      test: pg_isready -U sonrisapost-user -d sonrisapost-db-local
       interval: 10s
       timeout: 3s
       retries: 3
-  dentalcore-redis:
+  sonrisapost-redis:
     image: redis:7.2
-    container_name: dentalcore-redis
+    container_name: sonrisapost-redis
     restart: always
     healthcheck:
       test: redis-cli ping
@@ -152,9 +152,9 @@ services:
       timeout: 3s
       retries: 3
     volumes:
-      - dentalcore-redis-data:/data
+      - sonrisapost-redis-data:/data
     networks:
-      - dentalcore-network
+      - sonrisapost-network
 
   # For Application Monitoring / Debugging
   spotlight:
@@ -164,7 +164,7 @@ services:
       - 8969:8969/tcp
     image: ghcr.io/getsentry/spotlight:latest
     networks:
-      - dentalcore-network
+      - sonrisapost-network
 
   # -----------------------
   # Temporal Stack
@@ -254,17 +254,17 @@ volumes:
   postgres-volume:
     external: false
 
-  dentalcore-redis-data:
+  sonrisapost-redis-data:
     external: false
 
-  dentalcore-config:
+  sonrisapost-config:
     external: false
 
-  dentalcore-uploads:
+  sonrisapost-uploads:
     external: false
 
 networks:
-  dentalcore-network:
+  sonrisapost-network:
     external: false
   temporal-network:
     driver: bridge

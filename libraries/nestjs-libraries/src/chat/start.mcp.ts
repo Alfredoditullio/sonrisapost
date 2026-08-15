@@ -32,14 +32,14 @@ export const startMcp = async (app: INestApplication) => {
   };
 
   const mastra = await mastraService.mastra();
-  const agent = mastra.getAgent('dentalcore');
+  const agent = mastra.getAgent('sonrisapost');
   const tools = await agent.listTools();
 
   const serverConfig = {
-    name: 'DentalCore Social MCP',
+    name: 'SonrisaPost MCP',
     version: '1.0.0',
     tools,
-    agents: { dentalcore: agent },
+    agents: { sonrisapost: agent },
   };
 
   const server = new MCPServer(serverConfig);

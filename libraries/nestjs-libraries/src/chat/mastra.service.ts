@@ -14,7 +14,7 @@ export class MastraService {
       new Mastra({
         storage: pStore,
         agents: {
-          dentalcore: await this._loadToolsService.agent(),
+          sonrisapost: await this._loadToolsService.agent(),
         },
         logger: new ConsoleLogger({
           level: 'info',

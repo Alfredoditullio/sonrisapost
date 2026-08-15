@@ -3,7 +3,7 @@ import { AdminFunnelComponent } from '@gitroom/frontend/components/admin/admin-f
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Embudo',
+  title: 'SonrisaPost · Embudo',
   description: '',
 };
 

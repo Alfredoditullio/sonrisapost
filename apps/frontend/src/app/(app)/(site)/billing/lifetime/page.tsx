@@ -2,7 +2,7 @@ import { LifetimeDeal } from '@gitroom/frontend/components/billing/lifetime.deal
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Plan de por vida',
+  title: 'SonrisaPost · Plan de por vida',
   description: '',
 };
 export default async function Page() {

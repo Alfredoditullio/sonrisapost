@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Autorizar aplicación',
+  title: 'SonrisaPost · Autorizar aplicación',
 };
 
 export default async function OAuthLayout({

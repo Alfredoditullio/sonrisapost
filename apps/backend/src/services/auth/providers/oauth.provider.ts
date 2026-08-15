@@ -7,31 +7,31 @@ import {
 export class OauthProvider extends AuthProviderAbstract {
   private getConfig() {
     const {
-      DENTALCORE_OAUTH_AUTH_URL,
-      DENTALCORE_OAUTH_CLIENT_ID,
-      DENTALCORE_OAUTH_CLIENT_SECRET,
-      DENTALCORE_OAUTH_TOKEN_URL,
-      DENTALCORE_OAUTH_USERINFO_URL,
+      SONRISAPOST_OAUTH_AUTH_URL,
+      SONRISAPOST_OAUTH_CLIENT_ID,
+      SONRISAPOST_OAUTH_CLIENT_SECRET,
+      SONRISAPOST_OAUTH_TOKEN_URL,
+      SONRISAPOST_OAUTH_USERINFO_URL,
       FRONTEND_URL,
     } = process.env;
 
     if (
-      !DENTALCORE_OAUTH_USERINFO_URL ||
-      !DENTALCORE_OAUTH_TOKEN_URL ||
-      !DENTALCORE_OAUTH_CLIENT_ID ||
-      !DENTALCORE_OAUTH_CLIENT_SECRET ||
-      !DENTALCORE_OAUTH_AUTH_URL ||
+      !SONRISAPOST_OAUTH_USERINFO_URL ||
+      !SONRISAPOST_OAUTH_TOKEN_URL ||
+      !SONRISAPOST_OAUTH_CLIENT_ID ||
+      !SONRISAPOST_OAUTH_CLIENT_SECRET ||
+      !SONRISAPOST_OAUTH_AUTH_URL ||
       !FRONTEND_URL
     ) {
-      throw new Error('DENTALCORE_OAUTH environment variables are not set');
+      throw new Error('SONRISAPOST_OAUTH environment variables are not set');
     }
 
     return {
-      authUrl: DENTALCORE_OAUTH_AUTH_URL,
-      clientId: DENTALCORE_OAUTH_CLIENT_ID,
-      clientSecret: DENTALCORE_OAUTH_CLIENT_SECRET,
-      tokenUrl: DENTALCORE_OAUTH_TOKEN_URL,
-      userInfoUrl: DENTALCORE_OAUTH_USERINFO_URL,
+      authUrl: SONRISAPOST_OAUTH_AUTH_URL,
+      clientId: SONRISAPOST_OAUTH_CLIENT_ID,
+      clientSecret: SONRISAPOST_OAUTH_CLIENT_SECRET,
+      tokenUrl: SONRISAPOST_OAUTH_TOKEN_URL,
+      userInfoUrl: SONRISAPOST_OAUTH_USERINFO_URL,
       frontendUrl: FRONTEND_URL,
     };
   }

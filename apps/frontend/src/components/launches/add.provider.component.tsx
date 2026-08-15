@@ -280,7 +280,7 @@ const ExtensionNotFound: FC = () => {
       <p className="text-[14px] text-textColor/80">
         {t(
           'extension_not_available',
-          'The DentalCore Social browser extension is not installed. You need to install it before connecting this channel.'
+          'The SonrisaPost browser extension is not installed. You need to install it before connecting this channel.'
         )}
       </p>
       <div className="flex gap-[10px]">
@@ -289,7 +289,7 @@ const ExtensionNotFound: FC = () => {
           className="flex-1"
           onClick={() => {
             window.open(
-              'https://chromewebstore.google.com/detail/dentalcore/cidhffagahknaeodkplfbcpfeielnkjl?hl=en',
+              'https://chromewebstore.google.com/detail/sonrisapost/cidhffagahknaeodkplfbcpfeielnkjl?hl=en',
               '_blank'
             );
             modals.closeCurrent();
@@ -346,7 +346,7 @@ const ChromeExtensionWarning: FC<{
           We will store your cookies securely to facilitate the connection.
         </li>
         <li>
-          DentalCore Social does not take responsibility for any issues arising or account
+          SonrisaPost does not take responsibility for any issues arising or account
           termination due to the use of this method.
         </li>
       </ul>
@@ -466,14 +466,14 @@ export const AddProviderComponent: FC<{
         };
         const gotoIntegration = async (externalUrl?: string) => {
           // Mobile WebView: reuse the existing `externalUrl` param to
-          // carry the `dentalcore://` deep link so the backend redirects
+          // carry the `sonrisapost://` deep link so the backend redirects
           // back to the iOS/Android app after OAuth completes, instead
           // of the default web redirect.
           const params = [
             `externalUrl=${encodeURIComponent(externalUrl)}`,
             onboardingParam,
             isMobile
-              ? `redirectUrl=${encodeURIComponent('dentalcore://integrations')}`
+              ? `redirectUrl=${encodeURIComponent('sonrisapost://integrations')}`
               : '',
           ]
             .filter(Boolean)
@@ -511,7 +511,7 @@ export const AddProviderComponent: FC<{
             // `window.open`/`location.href` aren't reliable here because
             // RN WebView doesn't always route them through the native
             // navigation intercept. The backend redirects back to the
-            // app via `dentalcore://` once OAuth completes.
+            // app via `sonrisapost://` once OAuth completes.
             const rn = (window as any).ReactNativeWebView;
             if (rn && typeof rn.postMessage === 'function') {
               rn.postMessage(JSON.stringify({ type: 'open-external', url }));
@@ -574,7 +574,7 @@ export const AddProviderComponent: FC<{
             toaster.show(
               t(
                 'extension_not_installed',
-                'DentalCore Social browser extension is not installed or not reachable.'
+                'SonrisaPost browser extension is not installed or not reachable.'
               ),
               'warning'
             );

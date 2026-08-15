@@ -86,6 +86,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', nextUrl.href));
   }
 
+  // La landing publica vive en la raiz. Es la puerta de entrada de quien
+  // todavia no tiene cuenta, asi que no debe rebotar al login.
+  if (nextUrl.pathname === '/' && !authCookie) {
+    return topResponse;
+  }
+
   const org = nextUrl.searchParams.get('org');
   const url = new URL(nextUrl).search;
   if (!nextUrl.pathname.startsWith('/auth') && !authCookie) {
@@ -95,7 +101,7 @@ export async function proxy(request: NextRequest) {
       ? ''
       : (url.indexOf('?') > -1 ? '&' : '?') +
         `provider=${(findIndex === 'settings'
-          ? process.env.DENTALCORE_GENERIC_OAUTH
+          ? process.env.SONRISAPOST_GENERIC_OAUTH
             ? 'generic'
             : 'github'
           : findIndex

@@ -32,7 +32,7 @@ export const Onboarding: FC = () => {
     }
     modalOpen.current = true;
     modal.openModal({
-      // title: t('onboarding', 'Welcome to DentalCore Social'),
+      // title: t('onboarding', 'Welcome to SonrisaPost'),
       withCloseButton: true,
       closeOnEscape: false,
       removeLayout: true,

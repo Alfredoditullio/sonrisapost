@@ -1,5 +1,5 @@
 /**
- * Firma de marca: DentalCore Social vive en su propio dominio, pero se presenta
+ * Firma de marca: SonrisaPost vive en su propio dominio, pero se presenta
  * como parte de DentalCore. Es tambien el puente del embudo hacia el producto
  * principal, asi que el enlace tiene que quedar visible y funcionando.
  *

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This policy covers **DentalCore Social** — this repository and the container
+This policy covers **SonrisaPost** — this repository and the container
 images and deployments published from it.
 
 It does **not** cover upstream [Postiz](https://github.com/gitroomhq/postiz-app),
@@ -18,7 +18,7 @@ self-hosters are out of scope here; report those to the relevant party.
 Please **do not** open a public issue for security problems.
 
 Report privately via GitHub's *Report a vulnerability* form on this repository's
-Security tab, or by email to `security@dentalcore.social`.
+Security tab, or by email to `security@sonrisapost.com`.
 
 Include: affected version or commit, a description of the impact, and steps to
 reproduce.

@@ -15,7 +15,7 @@ import { CreationMethodBadge } from '@gitroom/frontend/components/launches/creat
 
 dayjs.extend(utc);
 export const metadata: Metadata = {
-  title: 'DentalCore Social · Vista previa',
+  title: 'SonrisaPost · Vista previa',
   description: '',
 };
 export default async function Auth(
@@ -57,7 +57,7 @@ export default async function Auth(
                 >
                   <div className="max-w-[55px]">
                     <SafeImage
-                      src={'/dentalcore.svg'}
+                      src={'/sonrisapost.svg'}
                       width={55}
                       height={55}
                       alt="Logo"

@@ -70,7 +70,7 @@ export class AdminController {
       unknownOnly: unknownOnly === 'true' || unknownOnly === '1',
     });
   }
-  /** Embudo de DentalCore Social: activacion, retencion y derivacion. */
+  /** Embudo de SonrisaPost: activacion, retencion y derivacion. */
   @Get('/funnel')
   async getFunnel(
     @GetUserFromRequest() user: User,

@@ -8,7 +8,7 @@ const STORAGE_KEY = 'refreshEntries';
 
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https?:\/\/localhost(:\d+)?$/,
-  /^https?:\/\/([a-z0-9-]+\.)*dentalcore\.com$/,
+  /^https?:\/\/([a-z0-9-]+\.)*sonrisapost\.com$/,
 ];
 
 function isOriginAllowed(origin: string | undefined): boolean {
