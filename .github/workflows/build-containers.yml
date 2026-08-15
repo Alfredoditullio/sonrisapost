@@ -19,6 +19,11 @@ jobs:
           echo "containerver=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
 
   build-containers:
+    # GITHUB_TOKEN necesita este permiso explicito para publicar en GHCR;
+    # sin el, el push falla con 403.
+    permissions:
+      contents: read
+      packages: write
     needs: build-containers-common
     strategy:
       matrix:
@@ -50,15 +55,20 @@ jobs:
           NEXT_PUBLIC_VERSION: ${{ github.ref_name }}
         run: |
           docker buildx build --platform linux/${{ matrix.arch }} \
-            -f Dockerfile.dev \
-            -t ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-${{ matrix.arch }} \
+            -f Dockerfile --target runtime \
+            -t ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-${{ matrix.arch }} \
             --build-arg NEXT_PUBLIC_VERSION=${{ env.NEXT_PUBLIC_VERSION }} \
             --pull \
             --no-cache \
             --provenance=false --sbom=false \
-            --output "type=registry,name=ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-${{ matrix.arch }}" .
+            --output "type=registry,name=ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-${{ matrix.arch }}" .
 
   build-container-manifest:
+    # GITHUB_TOKEN necesita este permiso explicito para publicar en GHCR;
+    # sin el, el push falla con 403.
+    permissions:
+      contents: read
+      packages: write
     needs: [build-containers, build-containers-common]
     runs-on: ubuntu-latest
     steps:
@@ -75,29 +85,29 @@ jobs:
         run: |
           # Verify the architecture images
           echo "Verifying AMD64 image:"
-          docker buildx imagetools inspect ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-amd64
+          docker buildx imagetools inspect ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-amd64
           
           echo "Verifying ARM64 image:"
-          docker buildx imagetools inspect ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-arm64
+          docker buildx imagetools inspect ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-arm64
           
           # Try to remove any existing manifests first
-          docker manifest rm ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }} || true
-          docker manifest rm ghcr.io/sonrisapost/sonrisapost-app:latest || true
+          docker manifest rm ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }} || true
+          docker manifest rm ghcr.io/alfredoditullio/sonrisapost:latest || true
           
           # Create and push the version-specific manifest
-          docker manifest create ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }} \
-            --amend ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-amd64 \
-            --amend ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-arm64
+          docker manifest create ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }} \
+            --amend ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-amd64 \
+            --amend ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-arm64
 
-          docker manifest push ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}
+          docker manifest push ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}
 
           # Create and push the latest manifest
-          docker manifest create ghcr.io/sonrisapost/sonrisapost-app:latest \
-            --amend ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-amd64 \
-            --amend ghcr.io/sonrisapost/sonrisapost-app:${{ env.CONTAINERVER }}-arm64
+          docker manifest create ghcr.io/alfredoditullio/sonrisapost:latest \
+            --amend ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-amd64 \
+            --amend ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-arm64
 
-          docker manifest push ghcr.io/sonrisapost/sonrisapost-app:latest
+          docker manifest push ghcr.io/alfredoditullio/sonrisapost:latest
 
       - name: Verify Manifest
         run: |
-          docker manifest inspect ghcr.io/sonrisapost/sonrisapost-app:latest
+          docker manifest inspect ghcr.io/alfredoditullio/sonrisapost:latest

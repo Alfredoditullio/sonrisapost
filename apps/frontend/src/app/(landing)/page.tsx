@@ -8,7 +8,7 @@ const PARENT_BRAND_URL =
   process.env.NEXT_PUBLIC_PARENT_BRAND_URL || 'https://dentalcore.app';
 const SOURCE_CODE_URL =
   process.env.NEXT_PUBLIC_SOURCE_CODE_URL ||
-  'https://github.com/sonrisapost/sonrisapost-app';
+  'https://github.com/Alfredoditullio/sonrisapost';
 
 const TOTAL_PLANTILLAS = DENTAL_SPECIALTIES.reduce(
   (acc, e) => acc + e.templates.length,

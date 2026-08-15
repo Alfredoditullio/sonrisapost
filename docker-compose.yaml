@@ -1,6 +1,6 @@
 services:
   sonrisapost:
-    image: ghcr.io/sonrisapost/sonrisapost-app:latest
+    image: ghcr.io/alfredoditullio/sonrisapost:latest
     container_name: sonrisapost
     restart: always
     environment:

@@ -22,7 +22,7 @@
 # Ver DEPLOY.md para la lista completa.
 
 x-app-base: &app-base
-  image: ${SONRISAPOST_IMAGE:-ghcr.io/sonrisapost/sonrisapost-app:latest}
+  image: ${SONRISAPOST_IMAGE:-ghcr.io/alfredoditullio/sonrisapost:latest}
   restart: unless-stopped
   env_file:
     - .env

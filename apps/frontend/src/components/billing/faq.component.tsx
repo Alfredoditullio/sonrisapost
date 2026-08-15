@@ -35,7 +35,7 @@ const useFaqList = () => {
           isGeneral ? 'SonrisaPost' : 'SonrisaPost'
         } is proudly open-source! We believe in an ethical and transparent culture, meaning that ${
           isGeneral ? 'SonrisaPost' : 'SonrisaPost'
-        } will live forever. You can check out the entire code or use it for personal projects. To view the open-source repository, <a href="https://github.com/sonrisapost/sonrisapost-app" target="_blank" style="text-decoration: underline;">click here</a>.`
+        } will live forever. You can check out the entire code or use it for personal projects. To view the open-source repository, <a href="https://github.com/Alfredoditullio/sonrisapost" target="_blank" style="text-decoration: underline;">click here</a>.`
       ),
     },
     {

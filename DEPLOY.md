@@ -110,8 +110,8 @@ disco del VPS y se llevan puesta también a la otra aplicación.
 
 ```bash
 # 1. Construir y publicar la imagen
-docker build -t ghcr.io/TU_ORG/sonrisapost-app:v1 .
-docker push ghcr.io/TU_ORG/sonrisapost-app:v1
+docker build -t ghcr.io/alfredoditullio/sonrisapost:v1 .
+docker push ghcr.io/alfredoditullio/sonrisapost:v1
 
 # 2. En Coolify: nuevo recurso -> Docker Compose -> pegar docker-compose.prod.yaml
 #    Cargar las variables. Desplegar.

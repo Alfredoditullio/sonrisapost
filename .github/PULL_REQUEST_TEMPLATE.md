@@ -16,8 +16,7 @@ eg: Did you discuss this change with anybody before working on it (not required,
 
 Put a "X" in the boxes below to indicate you have followed the checklist;
 
-- [ ] I have read the [CONTRIBUTING](https://github.com/sonrisapost/sonrisapost-app/blob/main/CONTRIBUTING.md) guide.
-- [ ] I have signed the [Contributor License Agreement (CLA)](https://contribute.sonrisapost.com/p/sonrisapost/cla) ([ICLA](https://github.com/sonrisapost/sonrisapost-app/blob/main/ICLA.md) for individuals, [CCLA](https://github.com/sonrisapost/sonrisapost-app/blob/main/CCLA.md) for entities).
-- [ ] I confirm I have not used AI to submit this PR or generate code for it.
+- [ ] I have read the [CONTRIBUTING](https://github.com/Alfredoditullio/sonrisapost/blob/main/CONTRIBUTING.md) guide.
+- [ ] Entiendo que mi contribución se licencia bajo AGPL-3.0, igual que el resto del proyecto. Este fork no usa CLA.
 - [ ] I checked that there were no similar issues or PRs already open for this.
 - [ ] This PR fixes just ONE issue
