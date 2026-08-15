@@ -1,0 +1,268 @@
+# Despliegue de produccion de SonrisaPost.
+#
+# Pensado para Coolify sobre un VPS que YA corre otra aplicacion en produccion.
+# De ahi las dos decisiones que mas condicionan este archivo:
+#
+#   1. Cada servicio tiene limite de memoria. Sin limites, un pico del
+#      orchestrator dispara el OOM killer del host, que no elige por proyecto:
+#      mata el proceso mas grande, y ese puede ser la app del vecino.
+#
+#   2. No hay Elasticsearch. Temporal lo usa para busqueda avanzada de
+#      workflows; con Postgres como backend de visibilidad funciona igual a esta
+#      escala y se ahorran ~1.2 GB de RAM y el servicio que mas castiga el disco.
+#
+# El proxy y los certificados los pone Coolify (Traefik + Let's Encrypt). Este
+# archivo no expone puertos al host salvo los que Coolify necesita rutear.
+#
+# Los limites de memoria salen de medir los tres procesos corriendo en la
+# imagen real, no de estimaciones. Total en reposo: ~940 MB de aplicacion, mas
+# Postgres, Redis y Temporal.
+#
+# Las variables sensibles NO viven aca: se cargan desde el panel de Coolify.
+# Ver DEPLOY.md para la lista completa.
+
+x-app-base: &app-base
+  image: ${SONRISAPOST_IMAGE:-ghcr.io/sonrisapost/sonrisapost-app:latest}
+  restart: unless-stopped
+  env_file:
+    - .env
+  # Sin esto, los logs de un contenedor que falla en bucle llenan el disco del
+  # host en horas y se lleva puesta la otra aplicacion.
+  logging:
+    driver: json-file
+    options:
+      max-size: '10m'
+      max-file: '3'
+
+services:
+  # ------------------------------------------------------------------
+  # Web (Next.js) — sirve la landing y la aplicacion
+  # ------------------------------------------------------------------
+  frontend:
+    <<: *app-base
+    working_dir: /app/apps/frontend
+    command: ['node', '../../node_modules/.bin/next', 'start', '-p', '4200']
+    environment:
+      PORT: 4200
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://localhost:4200/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    # Medido en reposo: 68 MB. El limite deja margen para el SSR bajo carga.
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 256M
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks: [sonrisapost]
+
+  # ------------------------------------------------------------------
+  # API (NestJS)
+  # ------------------------------------------------------------------
+  backend:
+    <<: *app-base
+    working_dir: /app/apps/backend
+    command:
+      [
+        'node',
+        '--experimental-require-module',
+        './dist/apps/backend/src/main.js',
+      ]
+    environment:
+      PORT: 3000
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://localhost:3000/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    # Medido en reposo: 455 MB. Limite al doble para absorber picos.
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 512M
+    # El backend se registra contra Temporal en el arranque
+    # (TemporalRegister.onModuleInit): sin el motor disponible entra en bucle
+    # de reinicio. Verificado levantando la imagen sin esta dependencia.
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+    networks: [sonrisapost, temporal]
+
+  # ------------------------------------------------------------------
+  # Orchestrator (workers de Temporal) — es quien publica los posts
+  # ------------------------------------------------------------------
+  orchestrator:
+    <<: *app-base
+    working_dir: /app/apps/orchestrator
+    command:
+      [
+        'node',
+        '--experimental-require-module',
+        './dist/apps/orchestrator/src/main.js',
+      ]
+    environment:
+      ORCHESTRATOR_PORT: 3002
+    # Este healthcheck verifica de verdad la conexion con Temporal, no solo que
+    # el proceso este vivo. Un worker desconectado no publica nada y desde
+    # afuera se ve igual de "arriba" que uno sano.
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://localhost:3002/health/status']
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    # Medido en reposo: 415 MB. Sube con la cantidad de colas activas.
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 512M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+    networks: [sonrisapost, temporal]
+
+  # ------------------------------------------------------------------
+  # Datos de la aplicacion
+  # ------------------------------------------------------------------
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?falta POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-sonrisapost}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./var/docker/backup.sh:/usr/local/bin/backup.sh:ro
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 256M
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+    networks: [sonrisapost]
+
+  redis:
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    # appendonly deja los datos en disco: sin esto, un reinicio pierde la cola
+    # y los trabajos en vuelo.
+    command:
+      [
+        'redis-server',
+        '--appendonly',
+        'yes',
+        '--maxmemory',
+        '192mb',
+        '--maxmemory-policy',
+        'noeviction',
+      ]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+    networks: [sonrisapost]
+
+  # ------------------------------------------------------------------
+  # Temporal — motor de los posts programados
+  # ------------------------------------------------------------------
+  temporal-postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: temporal
+      POSTGRES_PASSWORD: ${TEMPORAL_DB_PASSWORD:?falta TEMPORAL_DB_PASSWORD}
+    volumes:
+      - temporal-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U temporal']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+    networks: [temporal]
+
+  temporal:
+    image: temporalio/auto-setup:1.28.1
+    restart: unless-stopped
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: ${TEMPORAL_DB_PASSWORD:?falta TEMPORAL_DB_PASSWORD}
+      POSTGRES_SEEDS: temporal-postgres
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
+      # Sin Elasticsearch: la visibilidad de workflows va a Postgres.
+      ENABLE_ES: 'false'
+      TEMPORAL_NAMESPACE: default
+    volumes:
+      - ./dynamicconfig:/etc/temporal/config/dynamicconfig:ro
+    depends_on:
+      temporal-postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+        reservations:
+          memory: 256M
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+    networks: [temporal]
+
+volumes:
+  postgres-data:
+  redis-data:
+  temporal-data:
+
+networks:
+  # El frontend queda fuera de la red de Temporal: solo habla con el backend,
+  # asi que no tiene por que alcanzar el motor de workflows.
+  # El backend y el orchestrator si lo necesitan.
+  sonrisapost:
+  temporal:

@@ -21,3 +21,16 @@ dist
 .git
 .github
 reports
+# --- Añadido para la imagen de produccion ---
+# Secretos: nunca deben entrar al contexto de build. Una imagen con .env
+# adentro filtra credenciales a cualquiera que haga docker pull.
+.env
+.env.*
+!.env.example
+
+# Artefactos de desarrollo que solo engordan el contexto
+apps/frontend/.next
+**/.turbo
+**/coverage
+**/*.log
+.claude

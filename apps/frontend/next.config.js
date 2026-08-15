@@ -22,8 +22,11 @@ const nextConfig = {
   },
   reactStrictMode: false,
   transpilePackages: ['crypto-hash'],
-  // Enable production sourcemaps for Sentry
-  productionBrowserSourceMaps: true,
+  // Sourcemaps de produccion: sirven para que Sentry desminifique los stack
+  // traces, y Sentry los borra despues de subirlos. Sin token de Sentry no se
+  // suben ni se borran: quedan en la imagen y agregan gigabytes sin darte nada.
+  // Por eso se generan solo cuando hay a donde subirlos.
+  productionBrowserSourceMaps: !!process.env.SENTRY_AUTH_TOKEN,
 
   // Custom webpack config to ensure sourcemaps are generated properly
   webpack: (config, { buildId, dev, isServer, defaultLoaders }) => {
