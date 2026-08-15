@@ -70,6 +70,25 @@ RUN rm -rf \
       /app/.git \
       /root/.cache
 
+# node_modules pesa ~3.9 GB y en una sola capa cualquier corte de red durante
+# el pull obliga a rebajar los 800 MB comprimidos desde cero. Separando los
+# paquetes mas grandes en dos grupos, la imagen queda en tres capas parejas y
+# Docker reintenta solo la que fallo.
+#
+# No se borra nada: los mismos archivos terminan en la misma ruta final.
+RUN set -eu; \
+    mkdir -p /nm-a /nm-b; \
+    for p in @walletconnect @next next @langchain @temporalio @mastra @meronex; do \
+      [ -e "/app/node_modules/$p" ] || continue; \
+      mkdir -p "/nm-a/$(dirname "$p")"; \
+      mv "/app/node_modules/$p" "/nm-a/$p"; \
+    done; \
+    for p in googleapis @blueprintjs @swc @opentelemetry @copilotkit posthog-js @nestjs @sentry; do \
+      [ -e "/app/node_modules/$p" ] || continue; \
+      mkdir -p "/nm-b/$(dirname "$p")"; \
+      mv "/app/node_modules/$p" "/nm-b/$p"; \
+    done
+
 # --------------------------------------------------------------------------
 # runtime — imagen final
 # --------------------------------------------------------------------------
@@ -86,7 +105,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && groupadd --system --gid 1001 sonrisapost \
  && useradd --system --uid 1001 --gid sonrisapost --home /app sonrisapost
 
+# Tres capas en lugar de una sola de 800 MB comprimidos.
 COPY --from=builder --chown=sonrisapost:sonrisapost /app /app
+COPY --from=builder --chown=sonrisapost:sonrisapost /nm-a/ /app/node_modules/
+COPY --from=builder --chown=sonrisapost:sonrisapost /nm-b/ /app/node_modules/
 
 # Nunca como root: si un proceso se compromete, no arranca con todos los
 # permisos del contenedor.
