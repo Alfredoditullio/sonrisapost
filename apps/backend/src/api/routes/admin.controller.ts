@@ -9,6 +9,7 @@ import { User } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { ErrorsService } from '@gitroom/nestjs-libraries/database/prisma/errors/errors.service';
 import { AdminStatsService } from '@gitroom/nestjs-libraries/database/prisma/admin-stats/admin-stats.service';
+import { PromoService } from '@gitroom/nestjs-libraries/database/prisma/promo/promo.service';
 import dayjs from 'dayjs';
 
 @ApiTags('Admin')
@@ -16,7 +17,8 @@ import dayjs from 'dayjs';
 export class AdminController {
   constructor(
     private _errorsService: ErrorsService,
-    private _adminStatsService: AdminStatsService
+    private _adminStatsService: AdminStatsService,
+    private _promoService: PromoService
   ) {}
 
   private assertSuperAdmin(user: User) {
@@ -66,6 +68,23 @@ export class AdminController {
       from: fromDate.startOf('day').toDate(),
       to: toDate.endOf('day').toDate(),
       unknownOnly: unknownOnly === 'true' || unknownOnly === '1',
+    });
+  }
+  /** Embudo de DentalCore Social: activacion, retencion y derivacion. */
+  @Get('/funnel')
+  async getFunnel(
+    @GetUserFromRequest() user: User,
+    @Query('from') from?: string,
+    @Query('to') to?: string
+  ) {
+    this.assertSuperAdmin(user);
+
+    const fromDate = from ? dayjs(from) : dayjs().subtract(30, 'day');
+    const toDate = to ? dayjs(to) : dayjs();
+
+    return this._promoService.getFunnel({
+      from: fromDate.startOf('day').toDate(),
+      to: toDate.endOf('day').toDate(),
     });
   }
 }

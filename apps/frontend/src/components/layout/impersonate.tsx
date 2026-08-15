@@ -829,6 +829,21 @@ const ViewStats = () => {
   );
 };
 
+const ViewFunnel = () => {
+  const t = useT();
+  const handleClick = useCallback(() => {
+    window.location.href = '/admin/funnel';
+  }, []);
+  return (
+    <div
+      className="px-[10px] rounded-[4px] bg-teal-700 text-white cursor-pointer whitespace-nowrap"
+      onClick={handleClick}
+    >
+      {t('view_funnel', 'Embudo')}
+    </div>
+  );
+};
+
 const ImportDebugPost = () => {
   const { openModal } = useModals();
   const t = useT();
@@ -1116,6 +1131,7 @@ export const Impersonate = () => {
                 <AddAnnouncement />
                 <ViewErrors />
                 <ViewStats />
+          <ViewFunnel />
               </div>
             )}
           </div>

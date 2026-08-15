@@ -1,6 +1,7 @@
 'use client';
 
 import { AddProviderButton } from '@gitroom/frontend/components/launches/add.provider.component';
+import { DentalCorePromo } from '@gitroom/frontend/components/dental/dentalcore.promo';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import SafeImage from '@gitroom/react/helpers/safe.image';
 import { capitalize, groupBy, orderBy } from 'lodash';
@@ -580,6 +581,11 @@ export const LaunchesComponent = () => {
                 />
               ))}
             </div>
+            {collapseMenu !== '1' && (
+              <div className="mt-[12px]">
+                <DentalCorePromo placement="sidebar" />
+              </div>
+            )}
             <div className="mt-[5px] text-center flex flex-col">
               {billingEnabled && user?.isLifetime && (
                 <div>{capitalize(user?.tier?.current || '')} tier</div>
