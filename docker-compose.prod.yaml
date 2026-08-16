@@ -7,9 +7,9 @@
 #      orchestrator dispara el OOM killer del host, que no elige por proyecto:
 #      mata el proceso mas grande, y ese puede ser la app del vecino.
 #
-#   2. No hay Elasticsearch. Temporal lo usa para busqueda avanzada de
-#      workflows; con Postgres como backend de visibilidad funciona igual a esta
-#      escala y se ahorran ~1.2 GB de RAM y el servicio que mas castiga el disco.
+#   2. Elasticsearch esta presente aunque consuma ~1 GB. Intentamos quitarlo
+#      usando Postgres para visibilidad, pero la aplicacion no arranca: con
+#      visibilidad SQL, Temporal solo admite 3 atributos de busqueda por tipo.
 #
 # El proxy y los certificados los pone Coolify (Traefik + Let's Encrypt). Este
 # archivo no expone puertos al host salvo los que Coolify necesita rutear.
@@ -98,7 +98,7 @@ services:
       redis:
         condition: service_healthy
       temporal:
-        condition: service_started
+        condition: service_healthy
     networks: [sonrisapost, temporal]
 
   # ------------------------------------------------------------------
@@ -137,7 +137,7 @@ services:
       redis:
         condition: service_healthy
       temporal:
-        condition: service_started
+        condition: service_healthy
     networks: [sonrisapost, temporal]
 
   # ------------------------------------------------------------------
@@ -204,6 +204,46 @@ services:
   # ------------------------------------------------------------------
   # Temporal — motor de los posts programados
   # ------------------------------------------------------------------
+  # Elasticsearch es el backend de visibilidad de Temporal.
+  #
+  # Lo habia quitado para ahorrar ~1.2 GB, con Postgres como reemplazo. Fue un
+  # error: con visibilidad SQL, Temporal admite como maximo 3 atributos de
+  # busqueda por tipo (son columnas fijas del esquema), y el backend no logra
+  # registrar los suyos. Falla al arrancar con:
+  #   "cannot have more than 3 search attribute of type Text"
+  #
+  # Con Elasticsearch ese limite no existe. Es la configuracion con la que
+  # upstream construye y prueba la aplicacion.
+  temporal-elasticsearch:
+    image: elasticsearch:7.17.27
+    restart: unless-stopped
+    environment:
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=512mb
+      - cluster.routing.allocation.disk.watermark.high=256mb
+      - cluster.routing.allocation.disk.watermark.flood_stage=128mb
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fsS http://localhost:9200/_cluster/health || exit 1']
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 512M
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+    networks: [temporal]
+
   temporal-postgres:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -241,12 +281,33 @@ services:
       POSTGRES_USER: temporal
       POSTGRES_PWD: ${TEMPORAL_DB_PASSWORD:?falta TEMPORAL_DB_PASSWORD}
       POSTGRES_SEEDS: temporal-postgres
-      # Sin Elasticsearch: la visibilidad de workflows va a Postgres.
-      ENABLE_ES: 'false'
+      ENABLE_ES: 'true'
+      ES_SEEDS: temporal-elasticsearch
+      ES_VERSION: v7
       TEMPORAL_NAMESPACE: default
+      # Temporal escucha en 127.0.0.1 por defecto: ningun otro contenedor lo
+      # alcanza, ni siquiera su propio script de arranque. Sin esto el proceso
+      # corre pero nadie puede conectarse, y el sintoma es un backend colgado
+      # con ECONNREFUSED contra un contenedor que figura "Up".
+      BIND_ON_IP: 0.0.0.0
     depends_on:
       temporal-postgres:
         condition: service_healthy
+      temporal-elasticsearch:
+        condition: service_healthy
+    # Temporal tarda entre 30 y 60 segundos en aceptar conexiones. Sin este
+    # healthcheck, quienes dependen de el arrancan demasiado pronto, fallan la
+    # inicializacion y quedan colgados aunque Temporal despues levante bien.
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'bash -c "exec 3<>/dev/tcp/127.0.0.1/7233" 2>/dev/null || exit 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
     deploy:
       resources:
         limits:
@@ -259,6 +320,7 @@ services:
     networks: [temporal]
 
 volumes:
+  elasticsearch-data:
   postgres-data:
   redis-data:
   temporal-data:
