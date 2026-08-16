@@ -18,6 +18,12 @@
 # imagen real, no de estimaciones. Total en reposo: ~940 MB de aplicacion, mas
 # Postgres, Redis y Temporal.
 #
+# NO se declaran redes a proposito. Coolify crea una red por stack y conecta
+# ahi su proxy. Al declarar redes propias, los contenedores quedaban con varias
+# interfaces y Traefik elegia la IP equivocada para rutear: el sintoma era un
+# 504 contra un contenedor sano. La separacion de redes es un lujo que no vale
+# lo que cuesta en este entorno.
+#
 # Las variables sensibles NO viven aca: se cargan desde el panel de Coolify.
 # Ver DEPLOY.md para la lista completa.
 
@@ -60,7 +66,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    networks: [sonrisapost]
 
   # ------------------------------------------------------------------
   # API (NestJS)
@@ -99,7 +104,6 @@ services:
         condition: service_healthy
       temporal:
         condition: service_healthy
-    networks: [sonrisapost, temporal]
 
   # ------------------------------------------------------------------
   # Orchestrator (workers de Temporal) — es quien publica los posts
@@ -138,7 +142,6 @@ services:
         condition: service_healthy
       temporal:
         condition: service_healthy
-    networks: [sonrisapost, temporal]
 
   # ------------------------------------------------------------------
   # Datos de la aplicacion
@@ -168,7 +171,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: '10m', max-file: '3' }
-    networks: [sonrisapost]
 
   redis:
     image: redis:7.2-alpine
@@ -199,7 +201,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: '10m', max-file: '3' }
-    networks: [sonrisapost]
 
   # ------------------------------------------------------------------
   # Temporal — motor de los posts programados
@@ -242,7 +243,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: '10m', max-file: '3' }
-    networks: [temporal]
 
   temporal-postgres:
     image: postgres:16-alpine
@@ -270,7 +270,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: '10m', max-file: '3' }
-    networks: [temporal]
 
   temporal:
     image: temporalio/auto-setup:1.28.1
@@ -317,7 +316,6 @@ services:
     logging:
       driver: json-file
       options: { max-size: '10m', max-file: '3' }
-    networks: [temporal]
 
 volumes:
   elasticsearch-data:
@@ -325,9 +323,3 @@ volumes:
   redis-data:
   temporal-data:
 
-networks:
-  # El frontend queda fuera de la red de Temporal: solo habla con el backend,
-  # asi que no tiene por que alcanzar el motor de workflows.
-  # El backend y el orchestrator si lo necesitan.
-  sonrisapost:
-  temporal:
