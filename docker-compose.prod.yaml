@@ -210,10 +210,16 @@ services:
     environment:
       POSTGRES_USER: temporal
       POSTGRES_PASSWORD: ${TEMPORAL_DB_PASSWORD:?falta TEMPORAL_DB_PASSWORD}
+      # Declarado explicitamente a proposito. Coolify inyecta las variables
+      # globales del proyecto en TODOS los contenedores del compose, asi que
+      # el POSTGRES_DB de la aplicacion se filtraba aca y Postgres creaba la
+      # base con el nombre equivocado. Temporal entraba en bucle de reinicio
+      # con "database temporal does not exist".
+      POSTGRES_DB: temporal
     volumes:
       - temporal-data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U temporal']
+      test: ['CMD-SHELL', 'pg_isready -U temporal -d temporal']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -235,12 +241,9 @@ services:
       POSTGRES_USER: temporal
       POSTGRES_PWD: ${TEMPORAL_DB_PASSWORD:?falta TEMPORAL_DB_PASSWORD}
       POSTGRES_SEEDS: temporal-postgres
-      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
       # Sin Elasticsearch: la visibilidad de workflows va a Postgres.
       ENABLE_ES: 'false'
       TEMPORAL_NAMESPACE: default
-    volumes:
-      - ./dynamicconfig:/etc/temporal/config/dynamicconfig:ro
     depends_on:
       temporal-postgres:
         condition: service_healthy
