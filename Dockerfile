@@ -110,6 +110,14 @@ COPY --from=builder --chown=sonrisapost:sonrisapost /app /app
 COPY --from=builder --chown=sonrisapost:sonrisapost /nm-a/ /app/node_modules/
 COPY --from=builder --chown=sonrisapost:sonrisapost /nm-b/ /app/node_modules/
 
+# WORKDIR crea /app como root: aunque el contenido se copie con --chown, el
+# directorio en si queda ajeno al usuario y este no puede crear nada nuevo
+# adentro. Rompe cualquier herramienta que necesite escribir cache (corepack,
+# pnpm dlx) al correr comandos dentro del contenedor.
+RUN chown sonrisapost:sonrisapost /app && mkdir -p /app/.cache \
+ && chown -R sonrisapost:sonrisapost /app/.cache
+ENV HOME=/app
+
 # Nunca como root: si un proceso se compromete, no arranca con todos los
 # permisos del contenedor.
 USER sonrisapost
