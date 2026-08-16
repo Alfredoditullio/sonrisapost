@@ -29,6 +29,11 @@
 
 x-app-base: &app-base
   image: ${SONRISAPOST_IMAGE:-ghcr.io/alfredoditullio/sonrisapost:latest}
+  # Solo descargar si la imagen no esta en disco. La ruta IPv6 de Contabo hacia
+  # GHCR se corta en transferencias largas, y volver a bajar 834 MB en cada
+  # despliegue convierte un cambio de texto en una loteria. Para actualizar,
+  # se cambia el tag en SONRISAPOST_IMAGE: al ser una imagen distinta, la baja.
+  pull_policy: missing
   restart: unless-stopped
   env_file:
     - .env
