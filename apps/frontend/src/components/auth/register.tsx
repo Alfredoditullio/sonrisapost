@@ -219,7 +219,7 @@ export function RegisterAfter({
                 )}
                 &nbsp;
                 <a
-                  href={`https://sonrisapost.com/terms`}
+                  href="/terms"
                   className="underline hover:font-bold"
                   rel="nofollow"
                 >
@@ -228,7 +228,7 @@ export function RegisterAfter({
                 &nbsp;
                 {t('and', 'and')}&nbsp;
                 <a
-                  href={`https://sonrisapost.com/privacy`}
+                  href="/privacy"
                   rel="nofollow"
                   className="underline hover:font-bold"
                 >

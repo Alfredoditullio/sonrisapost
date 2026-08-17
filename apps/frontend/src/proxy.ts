@@ -86,9 +86,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', nextUrl.href));
   }
 
-  // La landing publica vive en la raiz. Es la puerta de entrada de quien
-  // todavia no tiene cuenta, asi que no debe rebotar al login.
-  if (nextUrl.pathname === '/' && !authCookie) {
+  // Rutas publicas: no deben rebotar al login.
+  //
+  // La raiz es la landing, la puerta de entrada de quien todavia no tiene
+  // cuenta. Las paginas legales tienen que ser accesibles sin sesion porque
+  // Meta lo exige para aprobar el acceso a sus APIs: un revisor que entre a la
+  // politica de privacidad y vea un formulario de login rechaza la solicitud.
+  const RUTAS_PUBLICAS = ['/', '/privacy', '/terms', '/eliminar-datos'];
+  if (RUTAS_PUBLICAS.includes(nextUrl.pathname) && !authCookie) {
     return topResponse;
   }
 
