@@ -58,8 +58,8 @@ jobs:
             -f Dockerfile --target runtime \
             -t ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-${{ matrix.arch }} \
             --build-arg NEXT_PUBLIC_VERSION=${{ env.NEXT_PUBLIC_VERSION }} \
-            --pull \
-            --no-cache \
+            --cache-from type=gha,scope=${{ matrix.arch }} \
+            --cache-to type=gha,mode=max,scope=${{ matrix.arch }} \
             --provenance=false --sbom=false \
             --output "type=registry,name=ghcr.io/alfredoditullio/sonrisapost:${{ env.CONTAINERVER }}-${{ matrix.arch }}" .
 

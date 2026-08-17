@@ -89,6 +89,21 @@ RUN set -eu; \
       mv "/app/node_modules/$p" "/nm-b/$p"; \
     done
 
+# Separar dependencias de codigo.
+#
+# node_modules son 363.000 archivos que cambian solo al tocar package.json.
+# El codigo compilado son 3.145 y cambia en cada despliegue. Juntos en una
+# capa, editar un texto obliga a rebajar y re-extraer los 366.000 — eso
+# convertia un cambio trivial en media hora de espera.
+#
+# Separados, un cambio de codigo mueve 3.145 archivos y el resto se reutiliza
+# de lo que el servidor ya tiene en disco.
+RUN set -eu; \
+    mkdir -p /stage; \
+    mv /app/node_modules /stage/node_modules; \
+    mv /app/apps /stage/apps; \
+    mv /app/libraries /stage/libraries
+
 # --------------------------------------------------------------------------
 # runtime — imagen final
 # --------------------------------------------------------------------------
@@ -105,10 +120,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && groupadd --system --gid 1001 sonrisapost \
  && useradd --system --uid 1001 --gid sonrisapost --home /app sonrisapost
 
-# Tres capas en lugar de una sola de 800 MB comprimidos.
-COPY --from=builder --chown=sonrisapost:sonrisapost /app /app
+# Capas ordenadas de lo mas estable a lo que mas cambia. Docker reutiliza por
+# digest: si el contenido de una capa no cambia, el servidor no la vuelve a
+# descargar ni a extraer.
+
+# 1. Dependencias — 363.000 archivos, cambian solo al tocar package.json
+COPY --from=builder --chown=sonrisapost:sonrisapost /stage/node_modules /app/node_modules
 COPY --from=builder --chown=sonrisapost:sonrisapost /nm-a/ /app/node_modules/
 COPY --from=builder --chown=sonrisapost:sonrisapost /nm-b/ /app/node_modules/
+
+# 2. Configuracion de la raiz del monorepo — unos pocos archivos
+COPY --from=builder --chown=sonrisapost:sonrisapost /app /app
+
+# 3. Codigo compilado — 3.145 archivos, cambia en cada despliegue
+COPY --from=builder --chown=sonrisapost:sonrisapost /stage/libraries /app/libraries
+COPY --from=builder --chown=sonrisapost:sonrisapost /stage/apps /app/apps
 
 # WORKDIR crea /app como root: aunque el contenido se copie con --chown, el
 # directorio en si queda ajeno al usuario y este no puede crear nada nuevo
