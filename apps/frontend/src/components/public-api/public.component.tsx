@@ -360,7 +360,7 @@ const McpSection = ({
 
 const localCliSteps = [
   {
-    label: 'Install the CLI',
+    label: 'Instalar la CLI',
     code: 'npm install -g sonrisapost',
   },
   {
@@ -368,22 +368,22 @@ const localCliSteps = [
     code: 'sonrisapost auth:login',
   },
   {
-    label: 'Install the SonrisaPost skill for your AI agent',
+    label: 'Instalar la extensión de SonrisaPost para tu agente de IA',
     code: 'npx skills add sonrisapost/sonrisapost-agent',
   },
 ] as const;
 
 const ciCliSteps = [
   {
-    label: 'Install the CLI',
+    label: 'Instalar la CLI',
     code: 'npm install -g sonrisapost',
   },
   {
-    label: 'Set your API key as an environment variable',
+    label: 'Definí tu clave de API como variable de entorno',
     code: 'export SONRISAPOST_API_KEY="{API_KEY}"',
   },
   {
-    label: 'Install the SonrisaPost skill for your AI agent',
+    label: 'Instalar la extensión de SonrisaPost para tu agente de IA',
     code: 'npx skills add sonrisapost/sonrisapost-agent',
   },
 ] as const;

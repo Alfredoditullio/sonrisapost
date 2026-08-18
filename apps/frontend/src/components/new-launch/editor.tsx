@@ -217,7 +217,7 @@ export const EditorWrapper: FC<{
   );
 
   useCopilotReadable({
-    description: 'Current content of posts',
+    description: 'Contenido actual de las publicaciones',
     value: items.map((p) => p.content),
   });
 

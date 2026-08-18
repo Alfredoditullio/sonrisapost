@@ -20,11 +20,11 @@ import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 const roles = [
   {
-    name: 'User',
+    name: 'Usuario',
     value: 'USER',
   },
   {
-    name: 'Admin',
+    name: 'Administrador',
     value: 'ADMIN',
   },
 ];

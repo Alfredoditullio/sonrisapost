@@ -166,7 +166,7 @@ export const DeveloperComponent: FC = () => {
 
   const rotateSecret = useCallback(async () => {
     const approved = await decision.open({
-      title: 'Rotate Client Secret?',
+      title: '¿Rotar el secreto del cliente?',
       description:
         'This will generate a new client secret and invalidate the current one. Any integrations using the old secret will stop working.',
       approveLabel: 'Rotate',
@@ -192,7 +192,7 @@ export const DeveloperComponent: FC = () => {
 
   const deleteApp = useCallback(async () => {
     const approved = await decision.open({
-      title: 'Delete OAuth App?',
+      title: '¿Eliminar la aplicación OAuth?',
       description:
         'This will delete the OAuth application and revoke all user authorizations. This action cannot be undone.',
       approveLabel: 'Delete',

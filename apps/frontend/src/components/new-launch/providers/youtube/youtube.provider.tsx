@@ -14,15 +14,15 @@ import { Select } from '@gitroom/react/form/select';
 import { YoutubePreview } from '@gitroom/frontend/components/new-launch/providers/youtube/youtube.preview';
 const type = [
   {
-    label: 'Public',
+    label: 'Público',
     value: 'public',
   },
   {
-    label: 'Private',
+    label: 'Privado',
     value: 'private',
   },
   {
-    label: 'Unlisted',
+    label: 'No listado',
     value: 'unlisted',
   },
 ];

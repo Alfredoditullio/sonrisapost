@@ -66,7 +66,7 @@ export type ProviderPreviewProps = {
 
 const DEFAULT_INTEGRATION: MockIntegration = {
   id: 'preview',
-  name: 'Preview',
+  name: 'Vista previa',
   identifier: '',
   picture: '',
   display: '',

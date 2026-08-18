@@ -33,7 +33,7 @@ export const PreConditionComponent: FC = () => {
   useEffect(() => {
     if (query.get('precondition')) {
       modal.openModal({
-        title: 'Suspicious activity detected',
+        title: 'Actividad sospechosa detectada',
         withCloseButton: true,
         classNames: {
           modal: 'text-textColor',

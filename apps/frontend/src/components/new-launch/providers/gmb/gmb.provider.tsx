@@ -13,50 +13,50 @@ import { useWatch } from 'react-hook-form';
 
 const topicTypes = [
   {
-    label: 'Standard Update',
+    label: 'Actualización estándar',
     value: 'STANDARD',
   },
   {
-    label: 'Event',
+    label: 'Evento',
     value: 'EVENT',
   },
   {
-    label: 'Offer',
+    label: 'Oferta',
     value: 'OFFER',
   },
 ];
 
 const callToActionTypes = [
   {
-    label: 'None',
+    label: 'Ninguno',
     value: 'NONE',
   },
   {
-    label: 'Book',
+    label: 'Reservar',
     value: 'BOOK',
   },
   {
-    label: 'Order Online',
+    label: 'Pedir online',
     value: 'ORDER',
   },
   {
-    label: 'Shop',
+    label: 'Comprar',
     value: 'SHOP',
   },
   {
-    label: 'Learn More',
+    label: 'Ver más',
     value: 'LEARN_MORE',
   },
   {
-    label: 'Sign Up',
+    label: 'Crear cuenta',
     value: 'SIGN_UP',
   },
   {
-    label: 'Get Offer',
+    label: 'Obtener la oferta',
     value: 'GET_OFFER',
   },
   {
-    label: 'Call',
+    label: 'Llamar',
     value: 'CALL',
   },
 ];

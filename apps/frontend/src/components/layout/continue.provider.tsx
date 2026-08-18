@@ -125,7 +125,7 @@ const ContinueModal: FC<{
 
   useEffect(() => {
     modals.openModal({
-      title: 'Configure Channel',
+      title: 'Configurar canal',
       children: (close) => (
         <ModalContent
           {...props}

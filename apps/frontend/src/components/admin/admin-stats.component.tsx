@@ -52,11 +52,11 @@ const startOfMonth = () => {
 };
 
 const PRESETS: { label: string; range: () => { from: string; to: string } }[] = [
-  { label: 'Today', range: () => ({ from: today(), to: today() }) },
-  { label: 'This week', range: () => ({ from: startOfWeek(), to: today() }) },
-  { label: 'This month', range: () => ({ from: startOfMonth(), to: today() }) },
-  { label: 'Last 7 days', range: () => ({ from: isoDaysAgo(7), to: today() }) },
-  { label: 'Last 30 days', range: () => ({ from: isoDaysAgo(30), to: today() }) },
+  { label: 'Hoy', range: () => ({ from: today(), to: today() }) },
+  { label: 'Esta semana', range: () => ({ from: startOfWeek(), to: today() }) },
+  { label: 'Este mes', range: () => ({ from: startOfMonth(), to: today() }) },
+  { label: 'Últimos 7 días', range: () => ({ from: isoDaysAgo(7), to: today() }) },
+  { label: 'Últimos 30 días', range: () => ({ from: isoDaysAgo(30), to: today() }) },
 ];
 
 const useStats = (params: {

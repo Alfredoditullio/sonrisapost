@@ -81,7 +81,7 @@ export const FirstBillingComponent = () => {
 
   const showYouTube = () => {
     modals.openModal({
-      title: 'Grow Fast With SonrisaPost (Play the video)',
+      title: 'Hacé crecer tu consultorio con SonrisaPost',
       children: (
         <iframe
           className="h-full aspect-video min-w-[800px]"

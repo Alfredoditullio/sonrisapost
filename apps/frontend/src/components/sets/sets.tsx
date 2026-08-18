@@ -111,7 +111,7 @@ export const Sets: FC = () => {
             {...(params?.id ? { set: JSON.parse(params.content) } : {})}
             addEditSets={(data) => {
               modal.openModal({
-                title: 'Save as Set',
+                title: 'Guardar como conjunto',
                 children: (
                   <SaveSetModal
                     initialValue={params?.name || ''}

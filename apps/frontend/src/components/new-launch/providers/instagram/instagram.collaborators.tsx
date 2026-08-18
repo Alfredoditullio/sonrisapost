@@ -17,11 +17,11 @@ import { InstagramPreview } from '@gitroom/frontend/components/new-launch/provid
 const postType = [
   {
     value: 'post',
-    label: 'Post / Reel',
+    label: 'Publicación / Reel',
   },
   {
     value: 'story',
-    label: 'Story',
+    label: 'Historia',
   },
 ];
 
@@ -32,7 +32,7 @@ const graduationStrategies = [
   },
   {
     value: 'SS_PERFORMANCE',
-    label: 'Auto (based on performance)',
+    label: 'Automático (según rendimiento)',
   },
 ];
 const InstagramCollaborators: FC<{

@@ -33,7 +33,7 @@ export const YoutubeContinue = withContinueProvider<
     },
     {
       key: 'youtube_ensure_channel_exists',
-      text: 'Please ensure you have a YouTube channel created.',
+      text: 'Asegurate de tener un canal de YouTube creado.',
     },
     {
       key: 'youtube_try_again',

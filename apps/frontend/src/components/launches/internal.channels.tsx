@@ -14,7 +14,7 @@ import clsx from 'clsx';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
 const delayOptions = [
   {
-    name: 'Immediately',
+    name: 'Inmediatamente',
     value: 0,
   },
   {

@@ -49,7 +49,7 @@ export const CheckPaymentInner: FC<{
     }
     if (status === 1) {
       modal.open({
-        title: 'Invalid Payment',
+        title: 'Pago inválido',
         onlyApprove: true,
         approveLabel: 'OK',
         description:

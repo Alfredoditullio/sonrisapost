@@ -38,6 +38,29 @@ import { WhopProvider } from '@gitroom/nestjs-libraries/integrations/social/whop
 import { MeweProvider } from '@gitroom/nestjs-libraries/integrations/social/mewe.provider';
 import { TumblrProvider } from '@gitroom/nestjs-libraries/integrations/social/tumblr.provider';
 
+/**
+ * Redes que se le OFRECEN al usuario para conectar.
+ *
+ * Por defecto son las 35 que trae upstream, varias inexistentes en el mercado
+ * latinoamericano (Farcaster, Nostr, Lemmy, MeWe, Skool, VK) que solo agregan
+ * ruido a la pantalla de conexion. SOCIAL_PROVIDERS las acota a una lista
+ * blanca separada por comas.
+ *
+ * socialIntegrationList queda intacta a proposito: getSocialIntegration sigue
+ * resolviendo cualquier identificador, asi que una cuenta ya conectada a una
+ * red que despues se saca de la lista no se rompe.
+ */
+export const redesOfrecidas = () => {
+  const permitidas = (process.env.SOCIAL_PROVIDERS || '')
+    .split(',')
+    .map((x) => x.trim())
+    .filter(Boolean);
+
+  return permitidas.length
+    ? socialIntegrationList.filter((p) => permitidas.includes(p.identifier))
+    : socialIntegrationList;
+};
+
 export const socialIntegrationList: Array<SocialAbstract & SocialProvider> = [
   new XProvider(),
   new LinkedinProvider(),
@@ -81,7 +104,7 @@ export class IntegrationManager {
   async getAllIntegrations() {
     return {
       social: await Promise.all(
-        socialIntegrationList.map(async (p) => ({
+        redesOfrecidas().map(async (p) => ({
           name: p.name,
           identifier: p.identifier,
           toolTip: p.toolTip,
@@ -181,15 +204,7 @@ export class IntegrationManager {
    * una red que despues se saca de la lista no se rompe.
    */
   getAllowedSocialsIntegrations() {
-    const todas = socialIntegrationList.map((p) => p.identifier);
-    const permitidas = (process.env.SOCIAL_PROVIDERS || '')
-      .split(',')
-      .map((x) => x.trim())
-      .filter(Boolean);
-
-    return permitidas.length
-      ? todas.filter((i) => permitidas.includes(i))
-      : todas;
+    return redesOfrecidas().map((p) => p.identifier);
   }
   getSocialIntegration(integration: string): SocialProvider {
     return socialIntegrationList.find((i) => i.identifier === integration)!;

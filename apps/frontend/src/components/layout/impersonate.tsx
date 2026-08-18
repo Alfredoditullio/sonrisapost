@@ -607,9 +607,9 @@ export const Subscription = () => {
   );
 };
 const colorOptions = [
-  { value: 'INFO', label: 'Info (Blue)', className: 'bg-blue-600' },
-  { value: 'WARNING', label: 'Warning (Amber)', className: 'bg-amber-600' },
-  { value: 'ERROR', label: 'Error (Red)', className: 'bg-red-600' },
+  { value: 'INFO', label: 'Información (azul)', className: 'bg-blue-600' },
+  { value: 'WARNING', label: 'Advertencia (ámbar)', className: 'bg-amber-600' },
+  { value: 'ERROR', label: 'Error (rojo)', className: 'bg-red-600' },
 ];
 
 const AddAnnouncementModal: FC<{ close: () => void }> = ({ close }) => {

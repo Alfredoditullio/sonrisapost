@@ -15,23 +15,23 @@ import { MediaComponent } from '@gitroom/frontend/components/media/media.compone
 
 const whoCanReply = [
   {
-    label: 'Everyone',
+    label: 'Todos',
     value: 'everyone',
   },
   {
-    label: 'Accounts you follow',
+    label: 'Cuentas que seguís',
     value: 'following',
   },
   {
-    label: 'Mentioned accounts',
+    label: 'Cuentas mencionadas',
     value: 'mentionedUsers',
   },
   {
-    label: 'Subscribers',
+    label: 'Suscriptores',
     value: 'subscribers',
   },
   {
-    label: 'Verified accounts',
+    label: 'Cuentas verificadas',
     value: 'verified',
   },
 ];

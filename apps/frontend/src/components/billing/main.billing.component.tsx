@@ -320,7 +320,7 @@ export const MainBillingComponent: FC<{
             if (checkDiscount.offerCoupon) {
               const info = await new Promise((res) => {
                 modal.openModal({
-                  title: 'Before you cancel',
+                  title: 'Antes de cancelar',
                   withCloseButton: true,
                   classNames: {
                     modal: 'bg-transparent text-textColor',

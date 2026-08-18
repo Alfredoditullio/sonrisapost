@@ -12,34 +12,34 @@ import { useWatch } from 'react-hook-form';
 
 const messageTypes = [
   {
-    label: 'Chat Message',
+    label: 'Mensaje de chat',
     value: 'message',
   },
   {
-    label: 'Announcement',
+    label: 'Anuncio',
     value: 'announcement',
   },
 ];
 
 const announcementColors = [
   {
-    label: 'Primary (Default)',
+    label: 'Principal (por defecto)',
     value: 'primary',
   },
   {
-    label: 'Blue',
+    label: 'Azul',
     value: 'blue',
   },
   {
-    label: 'Green',
+    label: 'Verde',
     value: 'green',
   },
   {
-    label: 'Orange',
+    label: 'Naranja',
     value: 'orange',
   },
   {
-    label: 'Purple',
+    label: 'Violeta',
     value: 'purple',
   },
 ];

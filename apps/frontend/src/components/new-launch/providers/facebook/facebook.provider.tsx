@@ -20,11 +20,11 @@ import { useEffect } from 'react';
 const postType = [
   {
     value: 'post',
-    label: 'Post',
+    label: 'Publicación',
   },
   {
     value: 'story',
-    label: 'Story',
+    label: 'Historia',
   },
 ];
 
