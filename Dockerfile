@@ -46,12 +46,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       g++ make python3 \
  && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+# Primero SOLO lo que necesita la instalacion de dependencias.
+#
+# Copiar el repositorio entero antes de instalar hacia que cualquier cambio de
+# codigo —hasta un SVG— invalidara el install. pnpm se reejecutaba y generaba
+# node_modules con marcas de tiempo nuevas: mismo contenido, digest distinto, y
+# el servidor volvia a descargar los 750 MB de dependencias en cada version.
+#
+# Separando los manifiestos del codigo, el install solo se rehace cuando
+# cambian de verdad las dependencias.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/orchestrator/package.json ./apps/orchestrator/
+COPY apps/commands/package.json ./apps/commands/
+COPY apps/extension/package.json ./apps/extension/
+COPY apps/sdk/package.json ./apps/sdk/
+# Los postinstall necesitan estos dos: prisma generate lee el esquema, y el
+# del frontend ejecuta su propio script.
+COPY libraries/nestjs-libraries/src/database/prisma ./libraries/nestjs-libraries/src/database/prisma
+COPY apps/frontend/scripts ./apps/frontend/scripts
 
-# El store de pnpm se cachea entre builds: reconstruir tras un cambio de codigo
-# no vuelve a bajar el arbol entero de dependencias.
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile
+
+# Recien ahora el codigo. Un cambio aca ya no toca node_modules.
+COPY . .
 
 # El build de Next es lo que mas memoria consume del pipeline.
 RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
