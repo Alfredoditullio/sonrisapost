@@ -364,7 +364,7 @@ const localCliSteps = [
     code: 'npm install -g sonrisapost',
   },
   {
-    label: 'Run: sonrisapost auth:login',
+    label: 'Ejecutá: sonrisapost auth:login',
     code: 'sonrisapost auth:login',
   },
   {

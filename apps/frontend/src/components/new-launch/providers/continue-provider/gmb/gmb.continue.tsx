@@ -32,11 +32,11 @@ export const GmbContinue = withContinueProvider<GmbItem, GmbSelection>({
     },
     {
       key: 'gmb_ensure_business_verified',
-      text: 'Please ensure your business is verified on Google My Business.',
+      text: 'Verificá que tu negocio esté verificado en Google My Business.',
     },
     {
       key: 'gmb_try_again',
-      text: 'Please close this dialog, delete the integration and try again.',
+      text: 'Cerrá esta ventana, eliminá la integración y probá de nuevo.',
     },
   ],
   getItemId: (item) => item.id,

@@ -37,7 +37,7 @@ export const YoutubeContinue = withContinueProvider<
     },
     {
       key: 'youtube_try_again',
-      text: 'Please close this dialog, delete the integration and try again.',
+      text: 'Cerrá esta ventana, eliminá la integración y probá de nuevo.',
     },
   ],
   getItemId: (item) => item.id,

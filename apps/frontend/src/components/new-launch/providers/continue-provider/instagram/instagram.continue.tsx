@@ -34,11 +34,11 @@ export const InstagramContinue = withContinueProvider<
     },
     {
       key: 'we_recommend_you_to_connect_all_the_pages_and_all_the_businesses',
-      text: 'We recommend you to connect all the pages and all the businesses.',
+      text: 'Te recomendamos conectar todas las páginas y todos los negocios.',
     },
     {
       key: 'please_close_this_dialog_delete_your_integration_and_add_a_new_channel_again',
-      text: 'Please close this dialog, delete your integration and add a new channel again.',
+      text: 'Cerrá esta ventana, eliminá la integración y volvé a agregar el canal.',
     },
   ],
   getItemId: (item) => item.id,

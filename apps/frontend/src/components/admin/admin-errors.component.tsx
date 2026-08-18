@@ -233,7 +233,7 @@ export const AdminErrorsComponent: FC = () => {
   if (!user?.isSuperAdmin) {
     return (
       <div className="text-textColor p-[20px]">
-        You do not have access to this page.
+        No tenés acceso a esta página.
       </div>
     );
   }
@@ -294,7 +294,7 @@ export const AdminErrorsComponent: FC = () => {
               setUnknownFirst(e.target.checked);
             }}
           />
-          Unknown Error first
+          Error desconocido
         </label>
 
         <div className="flex flex-col gap-[6px]">
@@ -323,7 +323,7 @@ export const AdminErrorsComponent: FC = () => {
       {isLoading ? (
         <LoadingComponent />
       ) : error ? (
-        <div className="text-red-400">Failed to load errors.</div>
+        <div className="text-red-400">No se pudieron cargar los errores.</div>
       ) : !data || data.items.length === 0 ? (
         <div className="opacity-70">No errors found.</div>
       ) : (
@@ -331,7 +331,7 @@ export const AdminErrorsComponent: FC = () => {
           <div className="grid grid-cols-[170px_120px_220px_1fr_220px] gap-[12px] px-[12px] py-[10px] bg-newBgColorInner text-[12px] uppercase opacity-70 border-b border-newTableBorder">
             <div>Created</div>
             <div>Platform</div>
-            <div>User / Org</div>
+            <div>Usuario / Organización</div>
             <div>Message</div>
             <div className="text-right">Actions</div>
           </div>
@@ -376,7 +376,7 @@ export const AdminErrorsComponent: FC = () => {
                 </div>
                 <div className="flex gap-[8px] justify-end">
                   <Button secondary onClick={() => openDetails(row)}>
-                    View
+                    Ver
                   </Button>
                   <Button onClick={() => copyRow(row)}>Copy</Button>
                 </div>
@@ -396,13 +396,13 @@ export const AdminErrorsComponent: FC = () => {
             disabled={page === 0}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             disabled={!data?.hasMore}
             onClick={() => setPage((p) => p + 1)}
           >
-            Next
+            Siguiente
           </Button>
         </div>
       </div>

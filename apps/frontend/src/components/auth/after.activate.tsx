@@ -46,7 +46,7 @@ export const AfterActivate = () => {
         <LoadingComponent />
       ) : (
         <>
-          This user is already activated,
+          Este usuario ya está activado,
           <br />
           <Link href="/auth/login" className="underline">
             {t(

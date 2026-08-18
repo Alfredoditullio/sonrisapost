@@ -53,7 +53,7 @@ export const CheckPaymentInner: FC<{
         onlyApprove: true,
         approveLabel: 'OK',
         description:
-          'We could not validate your payment method, please try again',
+          'No pudimos validar tu medio de pago. Probá de nuevo',
       });
       setShowLoader(false);
     }

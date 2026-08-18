@@ -34,7 +34,7 @@ export const WrapcasterProvider: FC<Web3ProviderInterface> = (props) => {
         </div>
       ) : (
         <div className="justify-center items-center py-[20px] flex-col w-[500px]">
-          <div>Click on the bottom below to start the process</div>
+          <div>Tocá el botón de abajo para empezar</div>
           <ButtonCaster login={auth} />
         </div>
       )}

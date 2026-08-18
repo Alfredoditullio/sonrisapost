@@ -30,7 +30,7 @@ export const LinkedinContinue = withContinueProvider<
     },
     {
       key: 'please_close_this_dialog_create_a_new_page_and_add_a_new_channel_again',
-      text: 'Please close this dialog, create a new page, and add a new channel again.',
+      text: 'Cerrá esta ventana, creá una página nueva y volvé a agregar el canal.',
     },
   ],
   getItemId: (item) => item.id,

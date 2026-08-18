@@ -6,7 +6,7 @@ import { isUSCitizen } from '@gitroom/frontend/components/launches/helpers/isusc
 import timezones from 'timezones-list';
 const dateMetrics = [
   { label: 'AM:PM', value: 'US' },
-  { label: '24 hours', value: 'GLOBAL' },
+  { label: '24 horas', value: 'GLOBAL' },
 ];
 
 import dayjs from 'dayjs';
@@ -33,7 +33,7 @@ const MetricComponent = () => {
   };
   return (
     <div className="my-[16px] mt-[16px] bg-sixth border-fifth border rounded-[4px] p-[24px] flex flex-col gap-[24px]">
-      <div className="mt-[4px]">Date Metrics</div>
+      <div className="mt-[4px]">Formato de hora</div>
       <Select name="metric" disableForm={true} label="" onChange={changeMetric} value={currentMetric ? 'US' : 'GLOBAL'}>
         {dateMetrics.map((metric) => (
           <option

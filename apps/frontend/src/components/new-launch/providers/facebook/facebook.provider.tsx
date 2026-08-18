@@ -78,7 +78,7 @@ export const FacebookSettings = () => {
       {presetAvailable && (
         <>
           <Select
-            label="Background (applies to text-only posts shorter than 130 characters)"
+            label="Fondo (sólo para publicaciones de texto de menos de 130 caracteres)"
             hideErrors
             {...register('text_format_preset_id')}
             style={

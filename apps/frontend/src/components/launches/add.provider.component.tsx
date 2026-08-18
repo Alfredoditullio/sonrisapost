@@ -343,7 +343,7 @@ const ChromeExtensionWarning: FC<{
           )}
         </li>
         <li>
-          We will store your cookies securely to facilitate the connection.
+          Vamos a guardar tus cookies de forma segura para mantener la conexión.
         </li>
         <li>
           SonrisaPost does not take responsibility for any issues arising or account

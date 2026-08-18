@@ -295,7 +295,8 @@ export const ContinueIntegration: FC<{
             {successState.message ||
               t(
                 'channel_connected_description',
-                `Your ${providerDisplayName} channel has been successfully connected. You can close this window now.`
+                'Tu canal de {{provider}} quedó conectado. Ya podés cerrar esta ventana.',
+                { provider: providerDisplayName }
               )}
           </div>
         </div>
@@ -323,7 +324,8 @@ export const ContinueIntegration: FC<{
               <p className="text-[14px] text-gray-400">
                 {t(
                   'select_the_page_or_account',
-                  `Select the ${providerDisplayName} page or account you want to connect.`
+                  'Elegí la página o cuenta de {{provider}} que querés conectar.',
+                  { provider: providerDisplayName }
                 )}
               </p>
             </div>

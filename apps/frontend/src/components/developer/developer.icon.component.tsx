@@ -22,7 +22,7 @@ export const DeveloperIconComponent: FC = () => {
         });
       }}
     >
-      Developers
+      Desarrolladores
     </div>
   );
 };

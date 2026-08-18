@@ -80,7 +80,7 @@ export const SelectCurrent: FC = () => {
       const open = await modals.open({
         title: 'Quitar la cuenta',
         description:
-          'Are you sure you want to remove this social from scheduling?',
+          '¿Seguro que querés sacar esta red de la programación?',
       });
 
       if (!open) {

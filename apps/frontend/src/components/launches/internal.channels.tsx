@@ -18,31 +18,31 @@ const delayOptions = [
     value: 0,
   },
   {
-    name: '1 hour',
+    name: '1 hora',
     value: 3600000,
   },
   {
-    name: '2 hours',
+    name: '2 horas',
     value: 7200000,
   },
   {
-    name: '3 hours',
+    name: '3 horas',
     value: 10800000,
   },
   {
-    name: '8 hours',
+    name: '8 horas',
     value: 28800000,
   },
   {
-    name: '12 hours',
+    name: '12 horas',
     value: 43200000,
   },
   {
-    name: '15 hours',
+    name: '15 horas',
     value: 54000000,
   },
   {
-    name: '24 hours',
+    name: '24 horas',
     value: 86400000,
   },
 ];

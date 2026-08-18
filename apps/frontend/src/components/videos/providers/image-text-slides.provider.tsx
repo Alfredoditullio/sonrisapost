@@ -109,7 +109,7 @@ const VoiceSelector: FC = () => {
   return (
     <div className="space-y-3">
       <div className="text-sm font-medium text-textColor mb-4">
-        Select a Voice
+        Elegí una voz
       </div>
       <div className="space-y-2">
         {data.voices.map((voice) => (

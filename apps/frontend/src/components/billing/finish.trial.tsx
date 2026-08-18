@@ -66,7 +66,7 @@ export const FinishTrial: FC<{ close: () => void }> = (props) => {
                 {finished && (
                   <div className="flex flex-col">
                     <div>
-                      You trial has been successfully finished and you have been charged.
+                      Terminó tu período de prueba y se realizó el cobro.
                     </div>
                     <div className="flex gap-[10px] mt-[20px]">
                       <Button className="flex-1" onClick={() => window.close()}>Cerrar la ventana</Button>

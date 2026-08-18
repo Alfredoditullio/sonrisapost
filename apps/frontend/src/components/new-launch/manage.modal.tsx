@@ -633,7 +633,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
                 }
                 onClick={schedule('draft')}
               >
-                Save Set
+                Guardar conjunto
               </button>
             )}
             {!addEditSets && (

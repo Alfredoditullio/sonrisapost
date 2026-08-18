@@ -153,11 +153,11 @@ const Accept: FC<{ resolve: (res: boolean) => void }> = ({ resolve }) => {
   return (
     <div>
       <div className="mb-[20px]">
-        Would you accept 50% discount for 3 months instead? 🙏🏻
+        ¿Aceptarías mejor un 50% de descuento por 3 meses? 🙏🏻
       </div>
       <div className="flex gap-[10px]">
         <Button loading={loading} onClick={apply}>
-          Apply 50% discount for 3 months
+          Aplicar 50% de descuento por 3 meses
         </Button>
         <Button onClick={() => resolve(false)} className="!bg-red-800">
           Cancelar mi suscripción

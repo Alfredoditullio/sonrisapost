@@ -108,7 +108,7 @@ const PerSocialTable: FC<{ title: string; block: StatsBlock }> = ({
     </div>
     {block.perSocial.length === 0 ? (
       <div className="px-[12px] py-[10px] text-[13px] opacity-70">
-        No data for this timeframe.
+        No hay datos para este período.
       </div>
     ) : (
       block.perSocial.map((row) => (
@@ -143,7 +143,7 @@ export const AdminStatsComponent: FC = () => {
   if (!user?.isSuperAdmin) {
     return (
       <div className="text-textColor p-[20px]">
-        You do not have access to this page.
+        No tenés acceso a esta página.
       </div>
     );
   }
@@ -226,7 +226,7 @@ export const AdminStatsComponent: FC = () => {
       {isLoading ? (
         <LoadingComponent />
       ) : error || !data ? (
-        <div className="text-red-400">Failed to load stats.</div>
+        <div className="text-red-400">No se pudieron cargar las estadísticas.</div>
       ) : (
         <div className="overflow-x-auto pb-[8px] scrollbar scrollbar-thumb-fifth scrollbar-track-newBgColor flex flex-col gap-[16px]">
           <div className="flex gap-[12px]">

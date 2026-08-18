@@ -366,7 +366,7 @@ export const MediaComponentInner: FC<{
     <div className="mt-[10px] flex flex-col gap-[20px]">
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-textColor font-medium">
-          Alt Text (for accessibility)
+          Texto alternativo (accesibilidad)
         </label>
         <input
           type="text"
@@ -444,7 +444,7 @@ export const MediaComponentInner: FC<{
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span>Back</span>
+                    <span>Volver</span>
                   </button>
                 </div>
 
@@ -479,13 +479,13 @@ export const MediaComponentInner: FC<{
             onClick={onClose}
             className="flex-1 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={save}
             className="flex-1 bg-forth text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all"
           >
-            Save Changes
+            Guardar cambios
           </button>
         </div>
       )}

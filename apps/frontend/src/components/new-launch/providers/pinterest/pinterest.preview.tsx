@@ -135,7 +135,7 @@ export const PinterestPreview: FC<{
           </div>
         </div>
         <div className="h-full flex rounded-[12px] text-[16px] font-[600] w-[100px] bg-[#E70024] text-white justify-center items-center">
-          Save
+          Guardar
         </div>
       </div>
       <div

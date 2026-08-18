@@ -106,7 +106,7 @@ export const Modal: FC<{
                       onClick={() => setPosition('horizontal')}
                       secondary={position === 'vertical'}
                     >
-                      Horizontal (Normal Post)
+                      Horizontal (publicación normal)
                     </Button>
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export const Modal: FC<{
             </div>
             <div className="flex">
               <Button type="submit" className="flex-1">
-                Generate
+                Generar
               </Button>
             </div>
           </div>

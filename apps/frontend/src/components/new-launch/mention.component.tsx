@@ -82,7 +82,7 @@ const MentionList: FC = (props: any) => {
     <div className="dropdown-menu bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto p-2">
       {props?.items?.none ? (
         <div className="flex items-center justify-center p-2 text-gray-500">
-          We don't have autocomplete for this social media
+          No tenemos autocompletado para esta red social
         </div>
       ) : props?.loading ? (
         <div className="flex items-center justify-center p-2 text-gray-500">

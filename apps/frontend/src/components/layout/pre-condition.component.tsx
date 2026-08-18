@@ -22,7 +22,7 @@ export const PreConditionComponentModal: FC = () => {
         >
           Fast track - Charge me now
         </Button>
-        <Button onClick={modal.closeCurrent} secondary={true}>Cancel</Button>
+        <Button onClick={modal.closeCurrent} secondary={true}>Cancelar</Button>
       </div>
     </div>
   );

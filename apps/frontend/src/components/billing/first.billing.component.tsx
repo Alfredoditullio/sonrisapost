@@ -137,7 +137,7 @@ export const FirstBillingComponent = () => {
                 alt="YouTube"
               />
             </div>
-            <div>See the power of SonrisaPost (click here)</div>
+            <div>Descubrí todo lo que hace SonrisaPost (tocá acá)</div>
           </div>
         </div>
 

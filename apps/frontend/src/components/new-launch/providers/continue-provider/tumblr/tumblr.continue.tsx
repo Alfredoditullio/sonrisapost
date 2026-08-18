@@ -34,11 +34,11 @@ export const TumblrContinue = withContinueProvider<
     },
     {
       key: 'tumblr_ensure_blog_exists',
-      text: 'Please ensure your Tumblr account has a blog you can post to.',
+      text: 'Verificá que tu cuenta de Tumblr tenga un blog donde publicar.',
     },
     {
       key: 'tumblr_try_again',
-      text: 'Please close this dialog, delete the integration and try again.',
+      text: 'Cerrá esta ventana, eliminá la integración y probá de nuevo.',
     },
   ],
   getItemId: (item) => item.id,

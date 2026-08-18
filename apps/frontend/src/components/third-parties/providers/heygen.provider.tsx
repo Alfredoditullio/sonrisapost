@@ -159,11 +159,11 @@ const HeygenProviderComponent = () => {
     <div>
       {form.formState.isSubmitting && (
         <div className="fixed left-0 top-0 w-full leading-[50px] pt-[200px] h-screen bg-black/90 z-50 flex flex-col justify-center items-center text-center text-3xl">
-          Grab a coffee and relax, this may take a while...
+          Tomate un café: esto puede tardar un rato...
           <br />
-          You can also track the progress directly in HeyGen Dashboard.
+          También podés seguir el progreso desde el panel de HeyGen.
           <br />
-          DO NOT CLOSE THIS WINDOW!
+          ¡NO CIERRES ESTA VENTANA!
           <br />
           <LoadingComponent width={200} height={200} />
         </div>
@@ -195,13 +195,13 @@ const HeygenProviderComponent = () => {
           <div className="text-lg mb-3">Voz para generar</div>
           {!hideVoiceGenerator && (
             <Button onClick={generateVoice} loading={voiceLoading}>
-              Generate Voice From My Post Text
+              Generar voz a partir del texto de mi publicación
             </Button>
           )}
           <Textarea label="" {...form.register('voice')} />
           {!!data?.length && (
             <>
-              <div className="text-lg my-3">Select Avatar</div>
+              <div className="text-lg my-3">Elegir avatar</div>
               <SelectAvatarComponent
                 avatarList={data.map((p: any) => ({
                   avatar_id: p.avatar_id || p.id,
@@ -226,7 +226,7 @@ const HeygenProviderComponent = () => {
 
           {!!voices?.length && (
             <>
-              <div className="text-lg my-3">Select Voice</div>
+              <div className="text-lg my-3">Elegir voz</div>
               <SelectVoiceComponent
                 voiceList={voices}
                 onChange={(id: string) => form.setValue('selectedVoice', id)}
@@ -237,7 +237,7 @@ const HeygenProviderComponent = () => {
             </>
           )}
 
-          <Button type="submit">Generate Video</Button>
+          <Button type="submit">Generar video</Button>
         </form>
       </FormProvider>
     </div>
