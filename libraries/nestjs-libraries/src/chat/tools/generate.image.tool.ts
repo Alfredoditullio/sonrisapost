@@ -5,12 +5,16 @@ import { Injectable } from '@nestjs/common';
 import { MediaService } from '@gitroom/nestjs-libraries/database/prisma/media/media.service';
 import { UploadFactory } from '@gitroom/nestjs-libraries/upload/upload.factory';
 import { checkAuth } from '@gitroom/nestjs-libraries/chat/auth.context';
+import { AiUsageService } from '@gitroom/nestjs-libraries/database/prisma/ai-usage/ai.usage.service';
 
 @Injectable()
 export class GenerateImageTool implements AgentToolInterface {
   private storage = UploadFactory.createStorage();
 
-  constructor(private _mediaService: MediaService) {}
+  constructor(
+    private _mediaService: MediaService,
+    private _aiUsage: AiUsageService
+  ) {}
   name = 'generateImageTool';
 
   run() {
@@ -43,6 +47,15 @@ export class GenerateImageTool implements AgentToolInterface {
           inputData.prompt,
           org
         );
+
+        // Se mide despues de generar: si la llamada falla, no hubo costo.
+        await this._aiUsage.registrar({
+          organizationId: org.id,
+          kind: 'image',
+          model: 'chatgpt-image-latest',
+          units: 1,
+          imagenes: 1,
+        });
 
         const file = await this.storage.uploadSimple(
           'data:image/png;base64,' + image

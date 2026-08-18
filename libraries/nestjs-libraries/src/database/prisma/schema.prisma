@@ -47,6 +47,7 @@ model Organization {
   oauthApp            OAuthApp[]
   oauthAuthorizations OAuthAuthorization[]
   promoClicks         PromoClick[]
+  aiUsage             AiUsage[]
 
   @@index([apiKey])
   @@index([streakSince])
@@ -990,4 +991,36 @@ model PromoClick {
   @@index([organizationId])
   @@index([userId])
   @@index([createdAt])
+}
+
+/// Consumo real de IA, una fila por llamada.
+///
+/// Se guardan SIEMPRE las unidades crudas (tokens, imagenes) ademas del costo.
+/// El costo se calcula con la tabla de precios del momento, y esa tabla puede
+/// estar mal o quedar vieja: con las unidades guardadas se puede recalcular
+/// todo el historico. Guardar solo el costo seria irreversible.
+model AiUsage {
+  id             String       @id @default(uuid())
+  organizationId String
+  /// "agent" | "image" | "video"
+  kind           String
+  /// Identificador del modelo tal como lo devuelve el proveedor.
+  model          String
+  inputTokens    Int          @default(0)
+  outputTokens   Int          @default(0)
+  /// Unidades no medidas en tokens: cantidad de imagenes o videos.
+  units          Int          @default(0)
+  /// Costo en millonesimas de dolar. Entero a proposito: en centavos se pierde
+  /// precision (una llamada puede costar menos de un centavo) y en decimal
+  /// aparecen errores de redondeo al sumar miles de filas.
+  costMicros     Int          @default(0)
+  /// Cuantos pasos dio el agente. Sirve para saber si el tope quedo corto.
+  steps          Int          @default(0)
+  /// true si la llamada se corto por haber alcanzado el tope de pasos.
+  hitLimit       Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([kind, createdAt])
 }

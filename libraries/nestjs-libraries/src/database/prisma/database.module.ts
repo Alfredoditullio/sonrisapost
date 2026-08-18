@@ -44,6 +44,8 @@ import { ErrorsRepository } from '@gitroom/nestjs-libraries/database/prisma/erro
 import { ErrorsService } from '@gitroom/nestjs-libraries/database/prisma/errors/errors.service';
 import { AdminStatsRepository } from '@gitroom/nestjs-libraries/database/prisma/admin-stats/admin-stats.repository';
 import { AdminStatsService } from '@gitroom/nestjs-libraries/database/prisma/admin-stats/admin-stats.service';
+import { AiUsageRepository } from '@gitroom/nestjs-libraries/database/prisma/ai-usage/ai.usage.repository';
+import { AiUsageService } from '@gitroom/nestjs-libraries/database/prisma/ai-usage/ai.usage.service';
 import { PromoRepository } from '@gitroom/nestjs-libraries/database/prisma/promo/promo.repository';
 import { PromoService } from '@gitroom/nestjs-libraries/database/prisma/promo/promo.service';
 
@@ -101,6 +103,8 @@ import { PromoService } from '@gitroom/nestjs-libraries/database/prisma/promo/pr
     AdminStatsService,
     PromoRepository,
     PromoService,
+    AiUsageRepository,
+    AiUsageService,
   ],
   get exports() {
     return this.providers;

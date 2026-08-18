@@ -7,6 +7,8 @@ import { array, object, string } from 'zod';
 import { ModuleRef } from '@nestjs/core';
 import { toolList } from '@gitroom/nestjs-libraries/chat/tools/tool.list';
 import dayjs from 'dayjs';
+import { topeDePasos } from '@gitroom/nestjs-libraries/ai/ai.pricing';
+import { AiUsageService } from '@gitroom/nestjs-libraries/database/prisma/ai-usage/ai.usage.service';
 
 export const AgentState = object({
   proverbs: array(string()).default([]),
@@ -19,7 +21,10 @@ const renderArray = (list: string[], show: boolean) => {
 
 @Injectable()
 export class LoadToolsService {
-  constructor(private _moduleRef: ModuleRef) {}
+  constructor(
+    private _moduleRef: ModuleRef,
+    private _aiUsage: AiUsageService
+  ) {}
 
   async loadTools() {
     return (
@@ -95,6 +100,46 @@ export class LoadToolsService {
       },
       model: openai('gpt-5.2'),
       tools,
+      // Tope de pasos y medicion, juntos a proposito: son las dos mitades de
+      // lo mismo. El tope acota lo que puede gastar una conversacion; la
+      // medicion dice cuanto gasto de verdad. Sin el tope no hay precio
+      // posible, porque el peor caso es infinito.
+      // El tipo de defaultOptions es una union en la que una rama exige
+      // structuredOutput; aca solo se fijan maxSteps y onFinish, asi que se
+      // afirma el tipo en vez de completar campos que no aplican.
+      defaultOptions: (({ requestContext }: any) => {
+        const maxSteps = topeDePasos();
+        return {
+          maxSteps,
+          onFinish: async (evento: any) => {
+            const crudo = requestContext?.get('organization' as never) as
+              | string
+              | undefined;
+            if (!crudo) return;
+
+            let organizationId: string | undefined;
+            try {
+              organizationId = JSON.parse(crudo)?.id;
+            } catch {
+              return;
+            }
+            if (!organizationId) return;
+
+            const pasos = evento?.steps?.length || 0;
+            await this._aiUsage.registrar({
+              organizationId,
+              kind: 'agent',
+              model: evento?.model?.modelId || 'gpt-5.2',
+              inputTokens: evento?.totalUsage?.inputTokens || 0,
+              outputTokens: evento?.totalUsage?.outputTokens || 0,
+              steps: pasos,
+              // Si llego al tope, la respuesta puede haber quedado a medias.
+              // Queda marcado para saber si el tope quedo corto.
+              hitLimit: pasos >= maxSteps,
+            });
+          },
+        };
+      }) as any,
       memory: new Memory({
         storage: pStore,
         options: {
