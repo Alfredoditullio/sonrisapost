@@ -1,9 +1,12 @@
 import {
   IsArray,
   IsBoolean,
+  IsInt,
   IsOptional,
   IsString,
+  Max,
   MaxLength,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -37,4 +40,11 @@ export class CommentAutomationDto {
   @IsString()
   @MaxLength(1000)
   fallbackReply?: string;
+
+  // El maximo evita que alguien escriba 5000 y anule el freno sin querer.
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(500)
+  dailyLimit?: number;
 }

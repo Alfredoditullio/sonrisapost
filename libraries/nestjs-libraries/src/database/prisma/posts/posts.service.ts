@@ -943,7 +943,8 @@ export class PostsService {
         body.tags,
         creationMethod,
         body.inter,
-        keepGroup
+        keepGroup,
+        body.autoReplyComments !== false
       );
 
       if (!posts?.length) {

@@ -7,6 +7,7 @@ export interface GuardarAutomatizacion {
   rules: ReglaComentario[];
   stopWords: string[];
   fallbackReply?: string | null;
+  dailyLimit?: number;
 }
 
 @Injectable()
@@ -46,6 +47,7 @@ export class CommentAutomationRepository {
       rules: datos.rules as any,
       stopWords: datos.stopWords as any,
       fallbackReply: datos.fallbackReply || null,
+      dailyLimit: datos.dailyLimit || 30,
       // Reactiva una automatizacion que se habia borrado, en vez de dejar una
       // fila borrada bloqueando el unique de integrationId.
       deletedAt: null as Date | null,
@@ -82,6 +84,18 @@ export class CommentAutomationRepository {
       // Choque con el unique: ya estaba procesado.
       return false;
     }
+  }
+
+  /**
+   * Cuantas respuestas automaticas salieron hoy en este canal.
+   *
+   * Solo cuenta las respondidas: los comentarios frenados o ignorados no
+   * gastan cupo porque no generan actividad hacia la red social.
+   */
+  async respuestasDeHoy(integrationId: string, desde: Date) {
+    return this._handled.model.commentHandled.count({
+      where: { integrationId, status: 'replied', createdAt: { gte: desde } },
+    });
   }
 
   /** Ids ya procesados de una lista, para no volver a mirarlos. */

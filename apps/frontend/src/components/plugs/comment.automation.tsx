@@ -131,6 +131,7 @@ export const CommentAutomation: FC<{ integration: any }> = ({
   const [activo, setActivo] = useState(false);
   const [reglas, setReglas] = useState<ReglaComentario[]>([]);
   const [frenos, setFrenos] = useState<string[]>([]);
+  const [tope, setTope] = useState(30);
   const [prueba, setPrueba] = useState('');
   const [guardando, setGuardando] = useState(false);
 
@@ -141,6 +142,7 @@ export const CommentAutomation: FC<{ integration: any }> = ({
       data?.rules?.length ? (data.rules as ReglaComentario[]) : REGLAS_SUGERIDAS
     );
     setFrenos(data?.stopWords?.length ? data.stopWords : FRENOS_POR_DEFECTO);
+    setTope(data?.dailyLimit || 30);
   }, [data, isLoading]);
 
   // La prueba usa exactamente la misma funcion que corre en el servidor, asi
@@ -168,6 +170,7 @@ export const CommentAutomation: FC<{ integration: any }> = ({
             (r) => r.respuesta?.trim() && r.palabras?.length
           ),
           stopWords: frenos,
+          dailyLimit: tope,
         }),
       });
       toaster.show(t('saved', 'Guardado'), 'success');
@@ -296,6 +299,26 @@ export const CommentAutomation: FC<{ integration: any }> = ({
           tono="alerta"
           placeholder={t('add_a_word', 'Agregar una palabra')}
           onChange={setFrenos}
+        />
+      </div>
+
+      <div>
+        <div className="text-[15px] font-[600] mb-[4px]">
+          {t('daily_limit', 'Máximo de respuestas por día')}
+        </div>
+        <div className="text-[13px] text-customColor18 mb-[10px]">
+          {t(
+            'daily_limit_explanation',
+            'Red de seguridad por si una publicación recibe muchísimos comentarios. Al llegar al tope se deja de responder hasta el día siguiente.'
+          )}
+        </div>
+        <input
+          type="number"
+          min={1}
+          max={500}
+          value={tope}
+          onChange={(e) => setTope(Math.max(1, Math.min(500, +e.target.value)))}
+          className="w-[120px] bg-customColor2 border border-customColor6 rounded-[4px] p-[10px] text-[14px] outline-none"
         />
       </div>
 

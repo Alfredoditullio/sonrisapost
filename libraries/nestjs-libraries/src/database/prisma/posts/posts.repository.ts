@@ -516,7 +516,9 @@ export class PostsRepository {
     // Keep the existing group instead of rotating it, so open clients
     // (calendar) holding the group stay valid. Used by out-of-band updates
     // (agent / MCP / public API); the dashboard keeps the rotate-and-sweep.
-    keepGroup = false
+    keepGroup = false,
+    // Ausente = participa, igual que antes de existir el interruptor.
+    autoReplyComments = true
   ) {
     const posts: Post[] = [];
     const uuid = uuidv4();
@@ -550,6 +552,7 @@ export class PostsRepository {
         delay: value.delay || 0,
         group,
         intervalInDays: inter ? +inter : null,
+        autoReplyComments,
         approvedSubmitForOrder: APPROVED_SUBMIT_FOR_ORDER.NO,
         ...(type === 'create' ? { creationMethod } : {}),
         ...(state === 'update'

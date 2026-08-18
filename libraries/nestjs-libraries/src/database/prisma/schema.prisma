@@ -420,6 +420,10 @@ model Post {
   creationMethod             CreationMethod            @default(UNKNOWN)
   lastMessageId              String?
   intervalInDays             Int?
+  /// Si esta publicacion participa de las respuestas automaticas a
+  /// comentarios. Se apaga en los posts hechos para traccionar, donde
+  /// responder cientos de comentarios con la misma plantilla parece spam.
+  autoReplyComments          Boolean                   @default(true)
   error                      String?
   createdAt                  DateTime                  @default(now())
   updatedAt                  DateTime                  @updatedAt
@@ -1045,6 +1049,12 @@ model CommentAutomation {
   /// Respuesta para los comentarios que no coinciden con ninguna regla.
   /// Vacia = no responder nada, que es lo que conviene por defecto.
   fallbackReply  String?
+  /// Tope de respuestas automaticas por dia en este canal.
+  ///
+  /// Es la red de seguridad del interruptor por publicacion: si alguien se
+  /// olvida de apagarlo en un post que explota, el tope evita que salgan
+  /// cientos de respuestas iguales y que la red lo tome por spam.
+  dailyLimit     Int          @default(30)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?

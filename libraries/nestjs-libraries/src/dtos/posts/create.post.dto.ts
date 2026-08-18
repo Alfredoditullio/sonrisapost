@@ -103,6 +103,12 @@ export class CreatePostDto {
   @IsBoolean()
   shortLink: boolean;
 
+  // Ausente = participa. Los posts existentes y los clientes que todavia no
+  // mandan el campo siguen comportandose igual que antes.
+  @IsOptional()
+  @IsBoolean()
+  autoReplyComments?: boolean;
+
   @IsOptional()
   @IsNumber()
   inter?: number;

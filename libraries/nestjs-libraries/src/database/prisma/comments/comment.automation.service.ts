@@ -97,6 +97,10 @@ export class CommentAutomationService {
         state: 'PUBLISHED',
         deletedAt: null,
         releaseId: { not: null },
+        // Los posts de traccion se excluyen: responder cientos de comentarios
+        // con la misma plantilla se lee como spam, y la red puede limitar la
+        // cuenta del consultorio.
+        autoReplyComments: true,
         publishDate: {
           gte: dayjs().subtract(DIAS_DE_VENTANA, 'day').toDate(),
         },
@@ -106,6 +110,24 @@ export class CommentAutomationService {
 
     const reglas = (automatizacion.rules || []) as ReglaComentario[];
     const frenos = (automatizacion.stopWords || []) as string[];
+
+    // Tope diario: red de seguridad para cuando alguien se olvida de apagar
+    // el interruptor en un post que explota. Se calcula una vez y se lleva en
+    // memoria durante la pasada, restando cada respuesta enviada.
+    const tope = automatizacion.dailyLimit ?? 30;
+    let restantes =
+      tope -
+      (await this._repo.respuestasDeHoy(
+        integracion.id,
+        dayjs().startOf('day').toDate()
+      ));
+
+    if (restantes <= 0) {
+      this.logger.warn(
+        `Canal ${integracion.id}: alcanzo el tope diario de ${tope} respuestas automaticas`
+      );
+      return;
+    }
 
     for (const publicacion of publicaciones) {
       const comentarios = await proveedor.fetchComments(
@@ -154,6 +176,9 @@ export class CommentAutomationService {
         });
 
         if (!primeraVez || decision.accion !== 'responder') continue;
+
+        if (restantes <= 0) return;
+        restantes--;
 
         await proveedor.replyComment(
           integracion.internalId,

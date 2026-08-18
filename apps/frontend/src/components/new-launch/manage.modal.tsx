@@ -53,6 +53,9 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
   const toaster = useToaster();
   const modal = useModals();
   const [showSettings, setShowSettings] = useState(false);
+  // Encendido por defecto: si queda encendido sin querer no pasa nada malo,
+  // mientras que apagado por defecto haria parecer rota la automatizacion.
+  const [autoReplyComments, setAutoReplyComments] = useState(true);
   const { data: shortlinkPreferenceData } = useShortlinkPreference();
 
   const { addEditSets, mutate, customClose, dummy } = props;
@@ -416,6 +419,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
         ...(repeater ? { inter: repeater } : {}),
         tags,
         shortLink,
+        autoReplyComments,
         date: date.utc().format('YYYY-MM-DDTHH:mm:ss'),
         posts,
       };
@@ -592,6 +596,31 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
 
             {!dummy && (
               <RepeatComponent repeat={repeater} onChange={setRepeater} />
+            )}
+
+            {!dummy && !addEditSets && (
+              <label className="flex items-start gap-[10px] cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={autoReplyComments}
+                  onChange={(e) => setAutoReplyComments(e.target.checked)}
+                  className="mt-[3px] w-[16px] h-[16px] cursor-pointer"
+                />
+                <span>
+                  <span className="text-[14px]">
+                    {t(
+                      'auto_reply_on_this_post',
+                      'Responder comentarios automáticamente en esta publicación'
+                    )}
+                  </span>
+                  <span className="block text-[12px] text-customColor18">
+                    {t(
+                      'auto_reply_on_this_post_hint',
+                      'Destildalo en publicaciones hechas para llegar a mucha gente: cientos de respuestas iguales parecen spam.'
+                    )}
+                  </span>
+                </span>
+              </label>
             )}
           </div>
           <div className="pe-[20px] flex items-center justify-end gap-[8px]">
