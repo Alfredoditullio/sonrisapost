@@ -18,6 +18,10 @@ interface MenuItemInterface {
   onClick?: () => void;
 }
 
+
+/** Interruptor de la seccion Integraciones. Ver el comentario en el menu. */
+const MOSTRAR_INTEGRACIONES_EXTERNAS = false;
+
 export const useMenuItem = () => {
   const { isGeneral } = useVariables();
   const t = useT();
@@ -155,6 +159,13 @@ export const useMenuItem = () => {
         </svg>
       ),
       path: '/third-party',
+      // Escondido: conecta servicios de video con IA (HeyGen, Reel.Farm)
+      // pidiendo la clave de API del usuario. Son suscripciones en dolares y
+      // el concepto de "clave de API" no le dice nada a un odontologo, asi que
+      // era un callejon sin salida en el menu. El codigo queda: si aparece un
+      // servicio con precio razonable para la region, se muestra de nuevo
+      // poniendo MOSTRAR_INTEGRACIONES_EXTERNAS en true.
+      hide: !MOSTRAR_INTEGRACIONES_EXTERNAS,
     },
   ] satisfies MenuItemInterface[] as MenuItemInterface[];
 
