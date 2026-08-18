@@ -168,8 +168,28 @@ export class IntegrationManager {
     };
   }
 
+  /**
+   * Redes que se le OFRECEN al usuario para conectar.
+   *
+   * Por defecto se ofrecen las 35 que trae upstream, varias de las cuales no
+   * existen en el mercado latinoamericano y solo agregan ruido a la pantalla
+   * de conexion. Con SOCIAL_PROVIDERS se restringe a una lista blanca
+   * separada por comas.
+   *
+   * El listado completo se conserva intacto: getSocialIntegration sigue
+   * resolviendo cualquier identificador, asi que una cuenta ya conectada a
+   * una red que despues se saca de la lista no se rompe.
+   */
   getAllowedSocialsIntegrations() {
-    return socialIntegrationList.map((p) => p.identifier);
+    const todas = socialIntegrationList.map((p) => p.identifier);
+    const permitidas = (process.env.SOCIAL_PROVIDERS || '')
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean);
+
+    return permitidas.length
+      ? todas.filter((i) => permitidas.includes(i))
+      : todas;
   }
   getSocialIntegration(integration: string): SocialProvider {
     return socialIntegrationList.find((i) => i.identifier === integration)!;

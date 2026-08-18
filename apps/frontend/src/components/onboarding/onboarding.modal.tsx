@@ -240,28 +240,73 @@ const OnboardingStep2: FC<{ onBack: () => void; onFinish: () => void }> = ({
     <div className="flex flex-col gap-[24px] flex-1">
       <div className="flex gap-[4px] flex-col text-center">
         <div className="text-[24px] font-semibold">
-          {t('watch_tutorial_title', 'Learn How to Use SonrisaPost')}
+          {t('watch_tutorial_title', 'Cómo usar SonrisaPost')}
         </div>
         <div className="text-[14px] text-customColor18">
           {t(
             'watch_tutorial_description',
-            'Watch this short video to learn how to get the most out of SonrisaPost'
+            'Tres pasos para publicar tu primer contenido'
           )}
         </div>
       </div>
 
-      {/* YouTube Video Embed */}
-      <div className="relative flex-1 rounded-[12px] overflow-hidden">
-        <div className="absolute left-0 top-0 w-full h-full flex justify-center">
-          <iframe
-            className="h-full aspect-video"
-            src="https://www.youtube.com/embed/BdsCVvEYgHU?si=vvhaZJ8I5oXXvVJS?autoplay=1"
-            title="SonrisaPost Tutorial"
-            allow="autoplay"
-            allowFullScreen
-          />
+      {/* Video propio si esta configurado; si no, los primeros pasos.
+          Antes habia un video de YouTube de upstream, con su marca y su
+          creador dentro del onboarding. */}
+      {process.env.NEXT_PUBLIC_TUTORIAL_VIDEO_URL ? (
+        <div className="relative flex-1 rounded-[12px] overflow-hidden">
+          <div className="absolute left-0 top-0 w-full h-full flex justify-center">
+            <iframe
+              className="h-full aspect-video"
+              src={process.env.NEXT_PUBLIC_TUTORIAL_VIDEO_URL}
+              title="SonrisaPost"
+              allow="autoplay"
+              allowFullScreen
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex-1 flex flex-col gap-[12px] justify-center max-w-[560px] mx-auto w-full">
+          {[
+            [
+              t('paso_calendario', 'Abrí el calendario'),
+              t(
+                'paso_calendario_texto',
+                'Hacé clic en cualquier día para crear una publicación.'
+              ),
+            ],
+            [
+              t('paso_efemerides', 'Mirá las fechas sugeridas'),
+              t(
+                'paso_efemerides_texto',
+                'En la vista de mes aparecen las efemérides odontológicas, con el texto ya escrito.'
+              ),
+            ],
+            [
+              t('paso_programar', 'Elegí día y hora'),
+              t(
+                'paso_programar_texto',
+                'La publicación sale sola, sin que tengas que estar presente.'
+              ),
+            ],
+          ].map(([titulo, texto], i) => (
+            <div
+              key={titulo}
+              className="flex gap-[14px] items-start p-[16px] rounded-[10px] bg-newTableHeader border border-tableBorder"
+            >
+              <div className="w-[28px] h-[28px] shrink-0 rounded-full bg-forth text-white flex items-center justify-center text-[13px] font-[700]">
+                {i + 1}
+              </div>
+              <div>
+                <div className="text-[15px] font-[600]">{titulo}</div>
+                <div className="text-[13px] text-customColor18 mt-[2px]">
+                  {texto}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Action buttons */}
       <div className="flex justify-between pt-[24px] mt-[8px]">
