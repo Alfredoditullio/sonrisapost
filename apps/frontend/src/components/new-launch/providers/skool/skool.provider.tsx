@@ -21,7 +21,7 @@ const SkoolComponent: FC = () => {
   };
   return (
     <div>
-      <Input label="Title" {...form.register('title')} />
+      <Input label="Título" {...form.register('title')} />
       <SkoolGroupSelect {...groupRegister} onChange={onGroupChange} />
       <SkoolLabelSelect {...form.register('label')} groupId={selectedGroup} />
     </div>

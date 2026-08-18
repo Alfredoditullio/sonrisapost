@@ -41,9 +41,9 @@ const YoutubeSettings: FC = () => {
   const { register, control } = useSettings();
   return (
     <div className="flex flex-col">
-      <Input label="Title" {...register('title')} maxLength={100} />
+      <Input label="Título" {...register('title')} maxLength={100} />
       <Select
-        label="Type"
+        label="Tipo"
         {...register('type', {
           value: 'public',
         })}
@@ -55,7 +55,7 @@ const YoutubeSettings: FC = () => {
         ))}
       </Select>
       <Select
-        label="Made for kids"
+        label="Contenido para niños"
         {...register('selfDeclaredMadeForKids', {
           value: 'no',
         })}
@@ -66,13 +66,13 @@ const YoutubeSettings: FC = () => {
           </option>
         ))}
       </Select>
-      <MediumTags label="Tags" {...register('tags')} />
+      <MediumTags label="Etiquetas" {...register('tags')} />
       <div className="mt-[20px]">
         <MediaComponent
           type="image"
           width={1280}
           height={720}
-          label="Thumbnail"
+          label="Miniatura"
           description="Thumbnail picture (optional)"
           {...register('thumbnail')}
         />

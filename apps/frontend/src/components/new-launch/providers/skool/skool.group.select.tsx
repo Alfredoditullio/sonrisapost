@@ -42,7 +42,7 @@ export const SkoolGroupSelect: FC<{
   return (
     <Select
       name={name}
-      label="Select Group"
+      label="Elegí un grupo"
       onChange={onChangeInner}
       value={currentGroup}
     >

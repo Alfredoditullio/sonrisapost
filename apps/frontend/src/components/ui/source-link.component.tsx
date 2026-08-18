@@ -22,7 +22,7 @@ export const SourceLinkComponent = () => {
         rel="noreferrer"
         className="underline hover:text-white"
       >
-        Source code
+        Código fuente
       </a>{' '}
       — AGPL-3.0. Based on{' '}
       <a

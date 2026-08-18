@@ -174,7 +174,7 @@ const Plug: FC<{
           >
             <div>{plug.description}</div>
             <Select
-              label="Delay"
+              label="Demora"
               hideErrors={true}
               {...register(`plug--${plug.identifier}--delay`)}
             >

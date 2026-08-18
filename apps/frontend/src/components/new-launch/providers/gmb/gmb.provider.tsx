@@ -69,7 +69,7 @@ const GmbSettings: FC = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <Select
-        label="Post Type"
+        label="Tipo de publicación"
         {...register('topicType', {
           value: 'STANDARD',
         })}
@@ -82,7 +82,7 @@ const GmbSettings: FC = () => {
       </Select>
 
       <Select
-        label="Call to Action"
+        label="Llamado a la acción"
         {...register('callToActionType', {
           value: 'NONE',
         })}
@@ -98,7 +98,7 @@ const GmbSettings: FC = () => {
         callToActionType !== 'NONE' &&
         callToActionType !== 'CALL' && (
           <Input
-            label="Call to Action URL"
+            label="URL del llamado a la acción"
             placeholder="https://example.com"
             {...register('callToActionUrl')}
           />
@@ -108,26 +108,26 @@ const GmbSettings: FC = () => {
         <div className="flex flex-col gap-[10px] mt-[10px] p-[15px] border border-input rounded-[8px]">
           <div className="text-[14px] font-medium mb-[5px]">Event Details</div>
           <Input
-            label="Event Title"
-            placeholder="Event name"
+            label="Título del evento"
+            placeholder="Nombre del evento"
             {...register('eventTitle')}
           />
           <div className="grid grid-cols-2 gap-[10px]">
             <Input
-              label="Start Date"
+              label="Fecha de inicio"
               type="date"
               {...register('eventStartDate')}
             />
-            <Input label="End Date" type="date" {...register('eventEndDate')} />
+            <Input label="Fecha de fin" type="date" {...register('eventEndDate')} />
           </div>
           <div className="grid grid-cols-2 gap-[10px]">
             <Input
-              label="Start Time (optional)"
+              label="Hora de inicio (opcional)"
               type="time"
               {...register('eventStartTime')}
             />
             <Input
-              label="End Time (optional)"
+              label="Hora de fin (opcional)"
               type="time"
               {...register('eventEndTime')}
             />
@@ -139,18 +139,18 @@ const GmbSettings: FC = () => {
         <div className="flex flex-col gap-[10px] mt-[10px] p-[15px] border border-input rounded-[8px]">
           <div className="text-[14px] font-medium mb-[5px]">Offer Details</div>
           <Input
-            label="Coupon Code (optional)"
+            label="Código de cupón (opcional)"
             placeholder="SAVE20"
             {...register('offerCouponCode')}
           />
           <Input
-            label="Redeem Online URL (optional)"
+            label="URL de canje online (opcional)"
             placeholder="https://example.com/redeem"
             {...register('offerRedeemUrl')}
           />
           <Input
-            label="Terms & Conditions (optional)"
-            placeholder="Valid until..."
+            label="Términos y condiciones (opcional)"
+            placeholder="Válido hasta..."
             {...register('offerTerms')}
           />
         </div>

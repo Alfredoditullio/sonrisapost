@@ -81,7 +81,7 @@ export const ApiModal: FC<{
           onSubmit={methods.handleSubmit(submit)}
         >
           <div className="pt-[10px]">
-            <Input label="API Key" name="api" />
+            <Input label="Clave de API" name="api" />
           </div>
           <div>
             <Button loading={loading} type="submit">

@@ -43,7 +43,7 @@ export const WhopCompanySelect: FC<{
   return (
     <Select
       name={name}
-      label="Select Company"
+      label="Elegí una empresa"
       onChange={onChangeInner}
       value={currentCompany}
     >

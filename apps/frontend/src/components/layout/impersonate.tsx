@@ -760,11 +760,11 @@ const AddTeamMemberModal: FC<{ close: () => void }> = ({ close }) => {
       <form onSubmit={form.handleSubmit(submit)}>
         <div className="flex flex-col gap-[10px] min-w-[400px]">
           <Input
-            label="Email"
+            label="Correo electrónico"
             placeholder={t('enter_email', 'Enter email')}
             name="email"
           />
-          <Select label="Role" name="role">
+          <Select label="Rol" name="role">
             <option value="">{t('select_role', 'Select Role')}</option>
             <option value="USER">{t('user', 'User')}</option>
             <option value="ADMIN">{t('admin', 'Admin')}</option>
@@ -1118,7 +1118,7 @@ export const Impersonate = () => {
                 <div className="flex-1">
                   <Input
                     autoComplete="off"
-                    placeholder="Write the user details"
+                    placeholder="Escribí los datos del usuario"
                     name="impersonate"
                     disableForm={true}
                     label=""

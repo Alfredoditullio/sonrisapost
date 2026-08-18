@@ -219,7 +219,7 @@ export const AdminStatsComponent: FC = () => {
             checked={unknownOnly}
             onChange={(e) => setUnknownOnly(e.target.checked)}
           />
-          Unknown errors only
+          Sólo errores desconocidos
         </label>
       </div>
 
@@ -232,13 +232,13 @@ export const AdminStatsComponent: FC = () => {
           <div className="flex gap-[12px]">
             <div className="flex-1 min-w-[220px] shrink-0">
               <SummaryCard
-                label="Total posts published"
+                label="Publicaciones totales"
                 value={data.posts.total}
               />
             </div>
             <div className="flex-1 min-w-[220px] shrink-0">
               <SummaryCard
-                label="Total connected accounts"
+                label="Cuentas conectadas en total"
                 value={data.connected.total}
               />
             </div>
@@ -251,7 +251,7 @@ export const AdminStatsComponent: FC = () => {
             {data.publishingChannels && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <SummaryCard
-                  label="Unique channels - published (all platforms combined)"
+                  label="Canales únicos — publicado (todas las plataformas)"
                   value={data.publishingChannels.total}
                 />
               </div>
@@ -259,7 +259,7 @@ export const AdminStatsComponent: FC = () => {
             {data.scheduledChannels && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <SummaryCard
-                  label="Unique channels - scheduled (all platforms combined)"
+                  label="Canales únicos — programado (todas las plataformas)"
                   value={data.scheduledChannels.total}
                 />
               </div>
@@ -267,7 +267,7 @@ export const AdminStatsComponent: FC = () => {
             {data.publishingAccounts && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <SummaryCard
-                  label="Unique users - published (all platforms combined)"
+                  label="Usuarios únicos — publicado (todas las plataformas)"
                   value={data.publishingAccounts.total}
                 />
               </div>
@@ -275,7 +275,7 @@ export const AdminStatsComponent: FC = () => {
             {data.scheduledAccounts && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <SummaryCard
-                  label="Unique users - scheduled (all platforms combined)"
+                  label="Usuarios únicos — programado (todas las plataformas)"
                   value={data.scheduledAccounts.total}
                 />
               </div>
@@ -285,13 +285,13 @@ export const AdminStatsComponent: FC = () => {
           <div className="flex gap-[12px] items-start">
             <div className="flex-1 min-w-[220px] shrink-0">
               <PerSocialTable
-                title="Posts published per social"
+                title="Publicaciones por red"
                 block={data.posts}
               />
             </div>
             <div className="flex-1 min-w-[220px] shrink-0">
               <PerSocialTable
-                title="Connected accounts per social"
+                title="Cuentas conectadas por red"
                 block={data.connected}
               />
             </div>
@@ -308,7 +308,7 @@ export const AdminStatsComponent: FC = () => {
             {data.publishingChannels && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <PerSocialTable
-                  title="Unique channels - published"
+                  title="Canales únicos — publicado"
                   block={data.publishingChannels}
                 />
               </div>
@@ -316,7 +316,7 @@ export const AdminStatsComponent: FC = () => {
             {data.scheduledChannels && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <PerSocialTable
-                  title="Unique channels - scheduled"
+                  title="Canales únicos — programado"
                   block={data.scheduledChannels}
                 />
               </div>
@@ -324,7 +324,7 @@ export const AdminStatsComponent: FC = () => {
             {data.publishingAccounts && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <PerSocialTable
-                  title="Unique users - published"
+                  title="Usuarios únicos — publicado"
                   block={data.publishingAccounts}
                 />
               </div>
@@ -332,7 +332,7 @@ export const AdminStatsComponent: FC = () => {
             {data.scheduledAccounts && (
               <div className="flex-1 min-w-[220px] shrink-0">
                 <PerSocialTable
-                  title="Unique users - scheduled"
+                  title="Usuarios únicos — programado"
                   block={data.scheduledAccounts}
                 />
               </div>

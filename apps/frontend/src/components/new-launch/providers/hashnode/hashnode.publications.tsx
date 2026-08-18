@@ -42,7 +42,7 @@ export const HashnodePublications: FC<{
   return (
     <Select
       name={name}
-      label="Select publication"
+      label="Elegí una publicación"
       onChange={onChangeInner}
       value={currentMedia}
     >

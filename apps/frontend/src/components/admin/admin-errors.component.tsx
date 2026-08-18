@@ -260,7 +260,7 @@ export const AdminErrorsComponent: FC = () => {
             }}
             className="bg-newBgColorInner h-[38px] border border-newTableBorder rounded-[8px] px-[10px] text-[14px] text-textColor min-w-[180px]"
           >
-            <option value="">All platforms</option>
+            <option value="">Todas las plataformas</option>
             {(platforms || []).map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -270,7 +270,7 @@ export const AdminErrorsComponent: FC = () => {
         </div>
 
         <div className="flex flex-col gap-[6px]">
-          <div className="text-[12px] opacity-70">Email contains</div>
+          <div className="text-[12px] opacity-70">El correo contiene</div>
           <div className="flex gap-[8px]">
             <input
               value={emailInput}
@@ -298,7 +298,7 @@ export const AdminErrorsComponent: FC = () => {
         </label>
 
         <div className="flex flex-col gap-[6px]">
-          <div className="text-[12px] opacity-70">Per page</div>
+          <div className="text-[12px] opacity-70">Por página</div>
           <select
             value={limit}
             onChange={(e) => {
@@ -316,7 +316,7 @@ export const AdminErrorsComponent: FC = () => {
         </div>
 
         <Button secondary onClick={onClear}>
-          Clear filters
+          Limpiar filtros
         </Button>
       </div>
 

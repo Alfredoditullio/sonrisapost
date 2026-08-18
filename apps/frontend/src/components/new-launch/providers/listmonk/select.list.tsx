@@ -42,7 +42,7 @@ export const SelectList: FC<{
   return (
     <Select
       name={name}
-      label="Select List"
+      label="Elegí una lista"
       onChange={onChangeInner}
       value={currentMedia}
     >

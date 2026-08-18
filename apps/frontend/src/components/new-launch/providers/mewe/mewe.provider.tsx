@@ -18,7 +18,7 @@ const MeweComponent: FC = () => {
   return (
     <div>
       <Select
-        label="Post To"
+        label="Publicar en"
         {...form.register('postType')}
       >
         <option value="timeline">My Timeline</option>

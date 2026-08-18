@@ -106,14 +106,14 @@ export const Subreddit: FC<{
             disableForm={true}
             value={value.subreddit}
             readOnly={true}
-            label="Community"
+            label="Comunidad"
             name="subreddit"
           />
           <Input
             error={errors?.title?.message}
             value={value.title}
             disableForm={true}
-            label="Title"
+            label="Título"
             name="title"
             onChange={setTitle}
           />
@@ -129,9 +129,9 @@ export const Subreddit: FC<{
       ) : (
         <div className="relative">
           <Input
-            placeholder="Community"
+            placeholder="Comunidad"
             name="search"
-            label="Search Community"
+            label="Buscar comunidad"
             readOnly={loading}
             value={searchValue}
             error={errors?.message}

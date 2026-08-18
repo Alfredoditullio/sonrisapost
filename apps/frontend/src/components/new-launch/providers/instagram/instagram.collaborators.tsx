@@ -48,7 +48,7 @@ const InstagramCollaborators: FC<{
   return (
     <>
       <Select
-        label="Post Type"
+        label="Tipo de publicación"
         {...register('post_type', {
           value: 'post',
         })}
@@ -63,7 +63,7 @@ const InstagramCollaborators: FC<{
 
       {postCurrentType !== 'story' && (
         <InstagramCollaboratorsTags
-          label="Collaborators (max 3) - accounts can't be private"
+          label="Colaboradores (máx. 3) — no pueden ser cuentas privadas"
           {...register('collaborators', {
             value: [],
           })}
@@ -94,7 +94,7 @@ const InstagramCollaborators: FC<{
 
           {isTrialReel && (
             <Select
-              label="Graduation Strategy"
+              label="Estrategia de graduación"
               {...register('graduation_strategy', {
                 value: 'MANUAL',
               })}

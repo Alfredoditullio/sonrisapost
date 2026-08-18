@@ -15,8 +15,8 @@ const SettingsComponent = () => {
 
   return (
     <>
-      <Input label="Subject" {...form.register('subject')} />
-      <Input label="Preview" {...form.register('preview')} />
+      <Input label="Asunto" {...form.register('subject')} />
+      <Input label="Vista previa" {...form.register('preview')} />
       <SelectList {...form.register('list')} />
       <SelectTemplates {...form.register('template')} />
     </>

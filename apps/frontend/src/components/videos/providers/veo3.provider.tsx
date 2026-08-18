@@ -25,7 +25,7 @@ const VEO3Settings: FC = () => {
   return (
     <div>
       <Textarea
-        label="Prompt"
+        label="Instrucción"
         name="prompt"
         {...register('prompt', {
           required: true,
@@ -41,7 +41,7 @@ const VEO3Settings: FC = () => {
         text="Images"
         description="Images"
         name="images"
-        label="Media"
+        label="Medios"
         value={mediaValue}
         onChange={(val) =>
           setValue(

@@ -247,7 +247,7 @@ export const AddOrEditWebhook: FC<{
         <div className="relative flex gap-[20px] flex-col flex-1 rounded-[4px] pt-0">
           <div>
             <Input
-              label="Name"
+              label="Nombre"
               translationKey="label_name"
               {...form.register('name')}
             />
@@ -259,7 +259,7 @@ export const AddOrEditWebhook: FC<{
             <Select
               value={allIntegrations.value}
               name="integrations"
-              label="Integrations"
+              label="Integraciones"
               translationKey="label_integrations"
               disableForm={true}
               onChange={changeIntegration}

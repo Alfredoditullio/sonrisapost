@@ -106,16 +106,16 @@ export const Subreddit: FC<{
             disableForm={true}
             value={value.subreddit}
             readOnly={true}
-            label="Channel"
+            label="Canal"
             name="subreddit"
           />
         </>
       ) : (
         <div className="relative">
           <Input
-            placeholder="Channel"
+            placeholder="Canal"
             name="search"
-            label="Search Channel"
+            label="Buscar canal"
             readOnly={loading}
             value={searchValue}
             error={errors?.message}

@@ -33,7 +33,7 @@ export const AttachToFeedbackIcon: FC = () => {
     <button
       ref={buttonRef}
       type="button"
-      aria-label="Feedback"
+      aria-label="Comentarios"
       className="hover:text-newTextColor"
     >
       <svg

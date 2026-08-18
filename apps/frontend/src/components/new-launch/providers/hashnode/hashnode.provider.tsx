@@ -21,15 +21,15 @@ const HashnodeSettings: FC = () => {
   const { date } = useIntegration();
   return (
     <>
-      <Input label="Title" {...form.register('title')} />
-      <Input label="Subtitle" {...form.register('subtitle')} />
+      <Input label="Título" {...form.register('title')} />
+      <Input label="Subtítulo" {...form.register('subtitle')} />
       <Canonical
         date={date}
-        label="Canonical Link"
+        label="Enlace canónico"
         {...form.register('canonical')}
       />
       <MediaComponent
-        label="Cover picture"
+        label="Imagen de portada"
         description="Add a cover picture"
         {...form.register('main_image')}
       />
@@ -37,7 +37,7 @@ const HashnodeSettings: FC = () => {
         <HashnodePublications {...form.register('publication')} />
       </div>
       <div>
-        <HashnodeTags label="Tags" {...form.register('tags')} />
+        <HashnodeTags label="Etiquetas" {...form.register('tags')} />
       </div>
     </>
   );

@@ -160,7 +160,7 @@ const Accept: FC<{ resolve: (res: boolean) => void }> = ({ resolve }) => {
           Apply 50% discount for 3 months
         </Button>
         <Button onClick={() => resolve(false)} className="!bg-red-800">
-          Cancel my subscription
+          Cancelar mi suscripción
         </Button>
       </div>
     </div>

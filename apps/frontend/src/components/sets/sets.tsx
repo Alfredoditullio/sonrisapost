@@ -35,13 +35,13 @@ const SaveSetModal: FC<{
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
         <Input
-          label="Set Name"
+          label="Nombre del conjunto"
           translationKey="label_set_name"
           name="setName"
           value={name}
           disableForm={true}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter a name for this set"
+          placeholder="Escribí un nombre para este conjunto"
           autoFocus
         />
       </div>
@@ -202,7 +202,7 @@ export const Sets: FC = () => {
               onClick={addSet()}
               className={clsx((data?.length || 0) > 0 && 'my-[16px]')}
             >
-              Add a set
+              Agregar un conjunto
             </Button>
           </div>
         </div>

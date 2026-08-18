@@ -179,9 +179,9 @@ export default function OAuthAuthorizePage() {
               will be able to:
             </div>
             <ul className="text-[14px] list-disc list-inside space-y-[4px]">
-              <li>Access your integrations and channels</li>
-              <li>Create and schedule posts on your behalf</li>
-              <li>Read your post analytics</li>
+              <li>Acceder a tus integraciones y canales</li>
+              <li>Crear y programar publicaciones en tu nombre</li>
+              <li>Leer las estadísticas de tus publicaciones</li>
             </ul>
           </div>
 

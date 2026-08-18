@@ -90,7 +90,7 @@ const MentionList: FC = (props: any) => {
         </div>
       ) : props?.items ? (
         props.items.length === 0 ? (
-          <div className="p-2 text-gray-500 text-center">No results found</div>
+          <div className="p-2 text-gray-500 text-center">Sin resultados</div>
         ) : (
           props?.items?.map((item: any, index: any) => (
             <button

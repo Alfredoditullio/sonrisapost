@@ -174,7 +174,7 @@ const HeygenProviderComponent = () => {
           onSubmit={form.handleSubmit(submit)}
           className="w-full flex flex-col"
         >
-          <Select label="Aspect Ratio" {...form.register('aspect_ratio')}>
+          <Select label="Relación de aspecto" {...form.register('aspect_ratio')}>
             <option value="">--SELECT--</option>
             {aspectRatio.map((p) => (
               <option key={p.key} value={p.key}>
@@ -183,7 +183,7 @@ const HeygenProviderComponent = () => {
             ))}
           </Select>
 
-          <Select label="Generate Captions" {...form.register('captions')}>
+          <Select label="Generar subtítulos" {...form.register('captions')}>
             <option value="">--SELECT--</option>
             {generateCaptions.map((p) => (
               <option key={p.key} value={p.key}>
@@ -192,7 +192,7 @@ const HeygenProviderComponent = () => {
             ))}
           </Select>
 
-          <div className="text-lg mb-3">Voice to generate</div>
+          <div className="text-lg mb-3">Voz para generar</div>
           {!hideVoiceGenerator && (
             <Button onClick={generateVoice} loading={voiceLoading}>
               Generate Voice From My Post Text

@@ -187,14 +187,14 @@ export function RegisterAfter({
                 {!isAfterProvider && (
                   <>
                     <Input
-                      label="Email"
+                      label="Correo electrónico"
                       translationKey="label_email"
                       {...form.register('email')}
                       type="email"
                       placeholder={t('email_address', 'Email Address')}
                     />
                     <Input
-                      label="Password"
+                      label="Contraseña"
                       translationKey="label_password"
                       {...form.register('password')}
                       autoComplete="off"
@@ -204,7 +204,7 @@ export function RegisterAfter({
                   </>
                 )}
                 <Input
-                  label="Company"
+                  label="Empresa"
                   translationKey="label_company"
                   {...form.register('company')}
                   autoComplete="off"

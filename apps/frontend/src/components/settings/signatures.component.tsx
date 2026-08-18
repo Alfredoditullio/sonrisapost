@@ -210,7 +210,7 @@ const AddOrRemoveSignature: FC<{
               onChange={(e) => {
                 form.setValue('content', e.target.value);
               }}
-              placeholder="Write your signature..."
+              placeholder="Escribí tu firma..."
               autosuggestionsConfig={{
                 textareaPurpose: `Assist me in writing social media signature`,
                 chatApiConfigs: {},
@@ -219,7 +219,7 @@ const AddOrRemoveSignature: FC<{
           </div>
 
           <Select
-            label="Auto add signature?"
+            label="¿Agregar la firma automáticamente?"
             translationKey="label_auto_add_signature"
             {...form.register('autoAdd', {
               setValueAs: (value) => value === 'true',

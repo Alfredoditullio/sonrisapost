@@ -13,10 +13,10 @@ const TumblrSettings = () => {
 
   return (
     <>
-      <Input label="Title" {...form.register('title')} />
-      <Input label="Link URL" {...form.register('link')} />
-      <Input label="Source URL" {...form.register('sourceUrl')} />
-      <Input label="Tags" {...form.register('tags')} />
+      <Input label="Título" {...form.register('title')} />
+      <Input label="URL del enlace" {...form.register('link')} />
+      <Input label="URL de origen" {...form.register('sourceUrl')} />
+      <Input label="Etiquetas" {...form.register('tags')} />
     </>
   );
 };

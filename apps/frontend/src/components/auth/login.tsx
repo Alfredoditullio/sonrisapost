@@ -95,14 +95,14 @@ export function Login() {
             <div className="flex flex-col gap-[12px]">
               <div className="text-textColor">
                 <Input
-                  label="Email"
+                  label="Correo electrónico"
                   translationKey="label_email"
                   {...form.register('email')}
                   type="email"
                   placeholder={t('email_address', 'Email Address')}
                 />
                 <Input
-                  label="Password"
+                  label="Contraseña"
                   translationKey="label_password"
                   {...form.register('password')}
                   autoComplete="off"

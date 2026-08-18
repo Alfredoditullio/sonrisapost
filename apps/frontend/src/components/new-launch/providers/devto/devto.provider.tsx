@@ -21,14 +21,14 @@ const DevtoSettings: FC = () => {
   const { date } = useIntegration();
   return (
     <>
-      <Input label="Title" {...form.register('title')} />
+      <Input label="Título" {...form.register('title')} />
       <Canonical
         date={date}
-        label="Canonical Link"
+        label="Enlace canónico"
         {...form.register('canonical')}
       />
       <MediaComponent
-        label="Cover picture"
+        label="Imagen de portada"
         description="Add a cover picture"
         {...form.register('main_image')}
       />
@@ -37,7 +37,7 @@ const DevtoSettings: FC = () => {
       </div>
       <div>
         <DevtoTags
-          label="Tags (Maximum 4)"
+          label="Etiquetas (máximo 4)"
           {...form.register('tags', {
             value: [],
           })}

@@ -31,7 +31,7 @@ const WhopSettings: FC = () => {
         {...form.register('experience')}
         companyId={selectedCompany}
       />
-      <Input label="Title (optional)" {...form.register('title')} />
+      <Input label="Título (opcional)" {...form.register('title')} />
     </div>
   );
 };

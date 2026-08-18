@@ -108,7 +108,7 @@ const ConnectComponent: FC<{
           onChange={(e) => setUrl(e.target.value)}
           name="github"
           label=""
-          placeholder="Full GitHub URL"
+          placeholder="URL completa de GitHub"
         />
         <Button
           className="h-[44px] mt-[7px]"

@@ -48,7 +48,7 @@ export function Forgot() {
             <>
               <div className="space-y-4 text-textColor">
                 <Input
-                  label="Email"
+                  label="Correo electrónico"
                   translationKey="label_email"
                   {...form.register('email')}
                   type="email"

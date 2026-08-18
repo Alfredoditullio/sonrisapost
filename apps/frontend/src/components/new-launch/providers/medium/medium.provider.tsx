@@ -18,18 +18,18 @@ const MediumSettings: FC = () => {
   const { date } = useIntegration();
   return (
     <>
-      <Input label="Title" {...form.register('title')} />
-      <Input label="Subtitle" {...form.register('subtitle')} />
+      <Input label="Título" {...form.register('title')} />
+      <Input label="Subtítulo" {...form.register('subtitle')} />
       <Canonical
         date={date}
-        label="Canonical Link"
+        label="Enlace canónico"
         {...form.register('canonical')}
       />
       <div>
         <MediumPublications {...form.register('publication')} />
       </div>
       <div>
-        <MediumTags label="Topics" {...form.register('tags')} />
+        <MediumTags label="Temas" {...form.register('tags')} />
       </div>
     </>
   );
