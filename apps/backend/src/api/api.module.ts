@@ -19,6 +19,7 @@ import { NotificationsController } from '@gitroom/backend/api/routes/notificatio
 import { OpenaiService } from '@gitroom/nestjs-libraries/openai/openai.service';
 import { ExtractContentService } from '@gitroom/nestjs-libraries/openai/extract.content.service';
 import { CodesService } from '@gitroom/nestjs-libraries/services/codes.service';
+import { CommentAutomationController } from '@gitroom/backend/api/routes/comment-automation.controller';
 import { CopilotController } from '@gitroom/backend/api/routes/copilot.controller';
 import { PublicController } from '@gitroom/backend/api/routes/public.controller';
 import { RootController } from '@gitroom/backend/api/routes/root.controller';
@@ -66,6 +67,7 @@ const authenticatedController = [
   AnnouncementsController,
   AdminController,
   PromoController,
+  CommentAutomationController,
 ];
 @Module({
   imports: [UploadModule],

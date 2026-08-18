@@ -15,6 +15,19 @@ export class InfiniteWorkflowRegister implements OnModuleInit {
             taskQueue: 'main',
           });
       } catch (err) {}
+
+      // Respuestas automaticas a comentarios. Un solo flujo para toda la
+      // instalacion: recorre las automatizaciones activas en cada pasada.
+      // El workflowId fijo hace que arrancar de nuevo sea inofensivo, porque
+      // Temporal rechaza un segundo flujo con el mismo id.
+      try {
+        await this._temporalService.client
+          ?.getRawClient()
+          ?.workflow?.start('commentAutomationWorkflow', {
+            workflowId: 'comment-automation-workflow',
+            taskQueue: 'main',
+          });
+      } catch (err) {}
     }
   }
 }

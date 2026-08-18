@@ -48,6 +48,7 @@ model Organization {
   oauthAuthorizations OAuthAuthorization[]
   promoClicks         PromoClick[]
   aiUsage             AiUsage[]
+  commentAutomations  CommentAutomation[]
 
   @@index([apiKey])
   @@index([streakSince])
@@ -359,6 +360,7 @@ model Integration {
   @@index([inBetweenSteps])
   @@index([refreshNeeded])
   @@index([disabled])
+  commentAutomation     CommentAutomation?
 }
 
 model Signatures {
@@ -1023,4 +1025,60 @@ model AiUsage {
 
   @@index([organizationId, createdAt])
   @@index([kind, createdAt])
+}
+
+/// Respuestas automaticas a los comentarios de un canal.
+///
+/// Una por canal: el odontologo la prende, escribe sus reglas y se olvida.
+model CommentAutomation {
+  id             String       @id @default(uuid())
+  organizationId String
+  integrationId  String       @unique
+  active         Boolean      @default(false)
+  /// Reglas en orden, como JSON: [{ palabras: string[], respuesta: string }].
+  /// Gana la primera que coincide, por eso el orden importa y se respeta.
+  rules          Json
+  /// Si el comentario contiene alguna de estas palabras NO se responde y se
+  /// marca para que conteste el profesional. Es el freno que evita que una
+  /// plantilla conteste una consulta clinica.
+  stopWords      Json
+  /// Respuesta para los comentarios que no coinciden con ninguna regla.
+  /// Vacia = no responder nada, que es lo que conviene por defecto.
+  fallbackReply  String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  integration    Integration  @relation(fields: [integrationId], references: [id])
+
+  @@index([organizationId])
+  @@index([active])
+}
+
+/// Comentarios ya procesados.
+///
+/// Existe para no responder dos veces al mismo comentario: la revision es
+/// periodica y vuelve a ver los comentarios viejos en cada pasada. Sin esta
+/// tabla, un comentario recibiria una respuesta cada diez minutos.
+model CommentHandled {
+  id             String   @id @default(uuid())
+  organizationId String
+  integrationId  String
+  /// Id del comentario en la red social.
+  commentId      String
+  /// "replied" respondido | "flagged" frenado por palabra de alerta |
+  /// "ignored" ninguna regla coincidio
+  status         String
+  /// Texto del comentario, para poder mostrarle al profesional que quedo
+  /// pendiente sin tener que volver a pedirselo a la red.
+  comment        String?
+  authorName     String?
+  postId         String?
+  /// Se marca cuando el profesional ya vio el comentario frenado.
+  seen           Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@unique([integrationId, commentId])
+  @@index([organizationId, status])
+  @@index([createdAt])
 }

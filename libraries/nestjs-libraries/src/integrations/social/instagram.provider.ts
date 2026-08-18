@@ -7,6 +7,7 @@ import {
   SocialProvider,
   variacionDeSerie,
   variacionEntre,
+  ComentarioExterno,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import { timer } from '@gitroom/helpers/utils/timer';
@@ -1075,6 +1076,50 @@ export class InstagramProvider
     }
 
     return '';
+  }
+
+  /**
+   * Comentarios de una publicacion.
+   *
+   * Solo el primer nivel: no se traen las respuestas a los comentarios. Si se
+   * trajeran, la automatizacion podria contestar su propia respuesta y armar
+   * un ida y vuelta infinito con ella misma.
+   */
+  async fetchComments(
+    id: string,
+    token: string,
+    postId: string
+  ): Promise<ComentarioExterno[]> {
+    const [accessToken] = token.split('___');
+
+    const { data } = await (
+      await this.fetch(
+        `https://graph.facebook.com/v20.0/${postId}/comments?fields=id,text,username,from&access_token=${accessToken}`
+      )
+    ).json();
+
+    return (data || []).map((c: any) => ({
+      id: c.id,
+      texto: c.text || '',
+      autor: c.username || c?.from?.username,
+      autorId: c?.from?.id,
+    }));
+  }
+
+  async replyComment(
+    id: string,
+    token: string,
+    commentId: string,
+    message: string
+  ): Promise<void> {
+    const [accessToken] = token.split('___');
+
+    await this.fetch(
+      `https://graph.facebook.com/v20.0/${commentId}/replies?message=${encodeURIComponent(
+        message
+      )}&access_token=${accessToken}`,
+      { method: 'POST' }
+    );
   }
 
   async analytics(

@@ -13,10 +13,22 @@ import { useRouter } from 'next/navigation';
 import { useToaster } from '@gitroom/react/toaster/toaster';
 import { PlugsContext } from '@gitroom/frontend/components/plugs/plugs.context';
 import { Plug } from '@gitroom/frontend/components/plugs/plug';
+import { CommentAutomation } from '@gitroom/frontend/components/plugs/comment.automation';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
 import useCookie from 'react-use-cookie';
 import { SVGLine } from '@gitroom/frontend/components/launches/launches.component';
 import { LoadingComponent } from '@gitroom/frontend/components/layout/loading';
+/**
+ * Canales donde funcionan las respuestas automaticas a comentarios.
+ *
+ * Se repite del backend a proposito: pedirle la lista al servidor solo para
+ * decidir que dibujar agregaria una espera antes de mostrar la pantalla. Si
+ * se agrega una red, hay que tocar las dos puntas.
+ */
+const CON_RESPUESTAS = ['instagram', 'instagram-standalone', 'facebook'];
+const soportaRespuestas = (identifier: string) =>
+  CON_RESPUESTAS.includes(identifier);
+
 export const Plugs = () => {
   const fetch = useFetch();
   const router = useRouter();
@@ -58,10 +70,11 @@ export const Plugs = () => {
 
   const sortedIntegrations = useMemo(() => {
     return orderBy(
-      data.filter((integration: any) =>
-        plugList?.plugs?.some(
-          (f: any) => f.identifier === integration.identifier
-        )
+      data.filter(
+        (integration: any) =>
+          plugList?.plugs?.some(
+            (f: any) => f.identifier === integration.identifier
+          ) || soportaRespuestas(integration.identifier)
       ),
       // data.filter((integration) => !integration.disabled),
       ['type', 'disabled', 'identifier'],
@@ -105,8 +118,8 @@ export const Plugs = () => {
           )}
           <br />
           {t(
-            'you_have_to_add_x_linkedin_page_threads_or_bluesky',
-            'You have to add: X, LinkedIn Page, Threads or Bluesky'
+            'you_have_to_add_supported_channels',
+            'Tenés que agregar Instagram, Facebook, X, LinkedIn Page, Threads o Bluesky'
           )}
         </div>
         <Button onClick={() => router.push('/launches')}>
@@ -220,10 +233,18 @@ export const Plugs = () => {
           ))}
         </div>
       </div>
-      <div className="bg-newBgColorInner flex-1 flex-col flex p-[20px] gap-[12px]">
-        <PlugsContext.Provider value={currentIntegrationPlug}>
-          <Plug />
-        </PlugsContext.Provider>
+      <div className="bg-newBgColorInner flex-1 flex-col flex p-[20px] gap-[12px] overflow-auto">
+        {soportaRespuestas(currentIntegration?.identifier) && (
+          <CommentAutomation
+            key={currentIntegration.id}
+            integration={currentIntegration}
+          />
+        )}
+        {!!currentIntegrationPlug && (
+          <PlugsContext.Provider value={currentIntegrationPlug}>
+            <Plug />
+          </PlugsContext.Provider>
+        )}
       </div>
     </>
   );

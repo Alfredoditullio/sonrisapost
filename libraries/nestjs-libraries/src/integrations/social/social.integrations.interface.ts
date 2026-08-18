@@ -202,10 +202,38 @@ export type FetchPageInformationResult = {
   username: string;
 };
 
+/** Un comentario tal como lo devuelve la red social. */
+export interface ComentarioExterno {
+  id: string;
+  texto: string;
+  autor?: string;
+  /** Id del autor, para no responderle a la propia cuenta del consultorio. */
+  autorId?: string;
+}
+
 export interface SocialProvider
   extends IAuthenticator,
     ISocialMediaIntegration {
   identifier: string;
+  /**
+   * Comentarios de una publicacion ya publicada.
+   *
+   * Opcional a proposito: solo algunas redes lo permiten. TikTok no expone
+   * comentarios en su API estandar, y X exige un plan pago. Las que no lo
+   * implementan simplemente no ofrecen respuestas automaticas.
+   */
+  fetchComments?(
+    id: string,
+    accessToken: string,
+    postId: string
+  ): Promise<ComentarioExterno[]>;
+  /** Responde un comentario. Va de la mano de fetchComments. */
+  replyComment?(
+    id: string,
+    accessToken: string,
+    commentId: string,
+    message: string
+  ): Promise<void>;
   refreshWait?: boolean;
   convertToJPEG?: boolean;
   stripLinks?: () => boolean;

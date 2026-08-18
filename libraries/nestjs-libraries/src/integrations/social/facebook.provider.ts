@@ -6,6 +6,7 @@ import {
   PostResponse,
   SocialProvider,
   variacionDeSerie,
+  ComentarioExterno,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import dayjs from 'dayjs';
@@ -946,6 +947,45 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
         status: 'success',
       },
     ];
+  }
+
+  /**
+   * Comentarios de una publicacion de la pagina.
+   *
+   * filter=toplevel deja afuera las respuestas: sin eso, la automatizacion
+   * podria contestar su propia respuesta y quedar hablando sola.
+   */
+  async fetchComments(
+    id: string,
+    accessToken: string,
+    postId: string
+  ): Promise<ComentarioExterno[]> {
+    const { data } = await (
+      await this.fetch(
+        `https://graph.facebook.com/v20.0/${postId}/comments?filter=toplevel&fields=id,message,from{id,name}&access_token=${accessToken}`
+      )
+    ).json();
+
+    return (data || []).map((c: any) => ({
+      id: c.id,
+      texto: c.message || '',
+      autor: c?.from?.name,
+      autorId: c?.from?.id,
+    }));
+  }
+
+  async replyComment(
+    id: string,
+    accessToken: string,
+    commentId: string,
+    message: string
+  ): Promise<void> {
+    await this.fetch(
+      `https://graph.facebook.com/v20.0/${commentId}/comments?message=${encodeURIComponent(
+        message
+      )}&access_token=${accessToken}`,
+      { method: 'POST' }
+    );
   }
 
   async analytics(
