@@ -481,7 +481,14 @@ export const LaunchesComponent = () => {
         '*'
       );
     }
-    if (window.opener) {
+    // Cerrar SOLO si esta pagina es la ventana emergente del flujo de conexion
+    // de un canal, que se reconoce por estos parametros.
+    //
+    // Antes cerraba ante cualquier window.opener presente. El enlace de
+    // activacion del correo abre la pestaña con esa referencia, asi que al
+    // activar la cuenta el usuario veia /launches por un segundo y la pestaña
+    // se cerraba sola.
+    if (window.opener && (search.get('msg') || search.get('added'))) {
       window.close();
     }
   }, []);
