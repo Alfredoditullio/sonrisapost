@@ -5,6 +5,7 @@ import {
   PostDetails,
   PostResponse,
   SocialProvider,
+  variacionDeSerie,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import dayjs from 'dayjs';
@@ -989,11 +990,14 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
             : d.name === 'page_daily_follows'
             ? 'Page followers'
             : 'Media views',
-        percentageChange: 5,
-        data: d?.values?.map((v: any) => ({
-          total: sumValue(v.value),
-          date: dayjs(v.end_time).format('YYYY-MM-DD'),
-        })),
+        ...(() => {
+          const data =
+            d?.values?.map((v: any) => ({
+              total: sumValue(v.value),
+              date: dayjs(v.end_time).format('YYYY-MM-DD'),
+            })) || [];
+          return { data, percentageChange: variacionDeSerie(data) };
+        })(),
       })) || []
     );
   }

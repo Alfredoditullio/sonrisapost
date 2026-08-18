@@ -4,6 +4,7 @@ import {
   PostDetails,
   PostResponse,
   SocialProvider,
+  variacionDeSerie,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import { LinkedinProvider } from '@gitroom/nestjs-libraries/integrations/social/linkedin.provider';
@@ -431,13 +432,15 @@ export class LinkedinPageProvider
       }
     );
 
-    return Object.keys(analytics).map((key) => ({
-      label: key,
-      data: analytics[
-        key as 'Page Views' | 'Organic Followers' | 'Paid Followers'
-      ],
-      percentageChange: 5,
-    }));
+    return Object.keys(analytics).map((key) => {
+      const data =
+        analytics[key as 'Page Views' | 'Organic Followers' | 'Paid Followers'];
+      return {
+        label: key,
+        data,
+        percentageChange: variacionDeSerie(data),
+      };
+    });
   }
 
   async postAnalytics(

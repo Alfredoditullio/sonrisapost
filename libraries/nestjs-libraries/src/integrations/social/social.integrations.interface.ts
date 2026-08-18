@@ -56,6 +56,49 @@ export interface AnalyticsData {
   percentageChange: number;
 }
 
+/**
+ * Variacion porcentual entre dos valores.
+ *
+ * Devuelve 0 cuando no se puede calcular de forma honesta. La pantalla no
+ * dibuja el indicador si el valor es 0, asi que "no se puede calcular" y "no
+ * se muestra" son lo mismo, que es justo lo que queremos: antes habia un +5%
+ * fijo escrito a mano que se mostraba aunque la metrica hubiera bajado.
+ *
+ * Partir de cero no da un porcentaje con sentido (todo aumento seria
+ * infinito), asi que ese caso tambien devuelve 0.
+ */
+export const variacionEntre = (anterior: number, actual: number): number => {
+  if (!Number.isFinite(anterior) || !Number.isFinite(actual)) return 0;
+  if (anterior <= 0) return 0;
+  return Math.round(((actual - anterior) / anterior) * 1000) / 10;
+};
+
+/**
+ * Variacion de una serie diaria: se compara la suma de la segunda mitad del
+ * periodo contra la de la primera.
+ *
+ * Se comparan mitades y no el primer dia contra el ultimo porque un solo dia
+ * es ruido: un domingo flojo daria una caida que no significa nada.
+ *
+ * Con menos de 4 puntos no hay dos mitades que comparar y devuelve 0.
+ */
+export const variacionDeSerie = (
+  datos?: Array<{ total: string | number }>
+): number => {
+  if (!datos || datos.length < 4) return 0;
+
+  const valores = datos.map((d) => Number(d.total) || 0);
+  const corte = Math.floor(valores.length / 2);
+  const suma = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+
+  // Con cantidad impar de dias se descarta el del medio, para que las dos
+  // mitades tengan la misma cantidad de dias y sean comparables.
+  const primera = suma(valores.slice(0, corte));
+  const segunda = suma(valores.slice(valores.length - corte));
+
+  return variacionEntre(primera, segunda);
+};
+
 
 export type GenerateAuthUrlResponse = {
   url: string;

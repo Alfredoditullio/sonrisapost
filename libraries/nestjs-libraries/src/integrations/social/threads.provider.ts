@@ -5,6 +5,8 @@ import {
   PostDetails,
   PostResponse,
   SocialProvider,
+  variacionDeSerie,
+  variacionEntre,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import { timer } from '@gitroom/helpers/utils/timer';
@@ -729,17 +731,59 @@ export class ThreadsProvider extends SocialAbstract implements SocialProvider {
       )
     ).json();
 
+    // Varias de estas metricas vienen como un total unico del periodo, sin
+    // serie diaria: no hay con que compararlas dentro de la propia respuesta.
+    // Se pide el periodo anterior de la misma duracion.
+    //
+    // Si falla, la variacion queda en 0 y la pantalla no dibuja el indicador.
+    const sinceAnterior = dayjs()
+      .subtract(date * 2, 'day')
+      .unix();
+
+    let previos: Record<string, number> = {};
+    try {
+      const { data: dataPrevia } = await (
+        await fetch(
+          `https://graph.threads.net/v1.0/${id}/threads_insights?metric=views,likes,replies,reposts,quotes&access_token=${accessToken}&period=day&since=${sinceAnterior}&until=${since}`
+        )
+      ).json();
+
+      previos = Object.fromEntries(
+        (dataPrevia || []).map((d: any) => [
+          d.name,
+          Number(d?.total_value?.value) || 0,
+        ])
+      );
+    } catch (err) {
+      previos = {};
+    }
+
     return (
-      data?.map((d: any) => ({
-        label: capitalize(d.name),
-        percentageChange: 5,
-        data: d.total_value
-          ? [{ total: d.total_value.value, date: dayjs().format('YYYY-MM-DD') }]
-          : d.values.map((v: any) => ({
-              total: v.value,
-              date: dayjs(v.end_time).format('YYYY-MM-DD'),
-            })),
-      })) || []
+      data?.map((d: any) => {
+        if (d.total_value) {
+          return {
+            label: capitalize(d.name),
+            percentageChange: variacionEntre(
+              previos[d.name] || 0,
+              Number(d.total_value.value) || 0
+            ),
+            data: [
+              { total: d.total_value.value, date: dayjs().format('YYYY-MM-DD') },
+            ],
+          };
+        }
+
+        const serie = d.values.map((v: any) => ({
+          total: v.value,
+          date: dayjs(v.end_time).format('YYYY-MM-DD'),
+        }));
+
+        return {
+          label: capitalize(d.name),
+          percentageChange: variacionDeSerie(serie),
+          data: serie,
+        };
+      }) || []
     );
   }
 

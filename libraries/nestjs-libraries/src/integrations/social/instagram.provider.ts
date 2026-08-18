@@ -5,6 +5,8 @@ import {
   PostDetails,
   PostResponse,
   SocialProvider,
+  variacionDeSerie,
+  variacionEntre,
 } from '@gitroom/nestjs-libraries/integrations/social/social.integrations.interface';
 import { makeId } from '@gitroom/nestjs-libraries/services/make.is';
 import { timer } from '@gitroom/helpers/utils/timer';
@@ -1096,23 +1098,59 @@ export class InstagramProvider
         `https://${type}/v21.0/${id}/insights?metric_type=total_value&metric=likes,views,comments,shares,saves,replies&access_token=${accessToken}&period=day&since=${since}&until=${until}`
       )
     ).json();
+
+    // Estas metricas vienen como un unico total del periodo, sin serie diaria,
+    // asi que no hay con que comparar dentro de la propia respuesta: hay que
+    // pedir el periodo anterior de la misma duracion.
+    //
+    // Si esta llamada falla no se rompe nada: sin datos previos la variacion
+    // da 0 y la pantalla no dibuja el indicador. Preferible a inventarlo.
+    const sinceAnterior = dayjs()
+      .subtract(date * 2, 'day')
+      .unix();
+
+    let previos: Record<string, number> = {};
+    try {
+      const { data: dataPrevia } = await (
+        await fetch(
+          `https://${type}/v21.0/${id}/insights?metric_type=total_value&metric=likes,views,comments,shares,saves,replies&access_token=${accessToken}&period=day&since=${sinceAnterior}&until=${since}`
+        )
+      ).json();
+
+      previos = Object.fromEntries(
+        (dataPrevia || []).map((d: any) => [
+          d.name,
+          Number(d?.total_value?.value) || 0,
+        ])
+      );
+    } catch (err) {
+      previos = {};
+    }
+
     const analytics = [];
 
     analytics.push(
-      ...(data?.map((d: any) => ({
-        label: this.setTitle(d.name),
-        percentageChange: 5,
-        data: d.values.map((v: any) => ({
+      ...(data?.map((d: any) => {
+        const serie = d.values.map((v: any) => ({
           total: v.value,
           date: dayjs(v.end_time).format('YYYY-MM-DD'),
-        })),
-      })) || [])
+        }));
+
+        return {
+          label: this.setTitle(d.name),
+          percentageChange: variacionDeSerie(serie),
+          data: serie,
+        };
+      }) || [])
     );
 
     analytics.push(
       ...data2.map((d: any) => ({
         label: this.setTitle(d.name),
-        percentageChange: 5,
+        percentageChange: variacionEntre(
+          previos[d.name] || 0,
+          Number(d?.total_value?.value) || 0
+        ),
         data: [
           {
             total: d.total_value.value,

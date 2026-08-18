@@ -1479,7 +1479,13 @@ export class XProvider extends SocialAbstract implements SocialProvider {
 
       return Object.entries(metrics).map(([key, value]) => ({
         label: key.replace('_count', '').replace('_', ' ').toUpperCase(),
-        percentageChange: 5,
+        // Estos numeros salen de sumar las metricas de los tweets del periodo,
+        // y la serie de abajo es artificial (arranca en 0 a proposito para que
+        // el grafico dibuje una linea). No hay periodo anterior con que
+        // comparar sin volver a pedir todos los tweets, cosa que la API de X
+        // limita fuerte. En 0 el indicador no se dibuja, que es lo correcto:
+        // antes mostraba un +5% fijo que no salia de ningun dato.
+        percentageChange: 0,
         data: [
           {
             total: String(0),
