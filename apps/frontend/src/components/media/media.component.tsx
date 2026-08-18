@@ -53,8 +53,12 @@ import { useLaunchStore } from '@gitroom/frontend/components/new-launch/store';
 import { useShallow } from 'zustand/react/shallow';
 import { LoadingComponent } from '@gitroom/frontend/components/layout/loading';
 import { useDebounce } from 'use-debounce';
-const Polonto = dynamic(
-  () => import('@gitroom/frontend/components/launches/polonto')
+// Carga diferida: el editor arrastra el motor de lienzo y no tiene sentido
+// que pese en la carga inicial de la app, donde casi nadie lo abre.
+const Editor = dynamic(
+  () =>
+    import('@gitroom/frontend/components/editor/editor').then((m) => m.Editor),
+  { ssr: false }
 );
 const showModalEmitter = new EventEmitter();
 export const Pagination: FC<{
@@ -740,17 +744,25 @@ export const MultiMediaComponent: FC<{
   );
 
   const designMedia = useCallback(() => {
-    if (!!user?.tier?.ai && !dummy) {
-      modals.openModal({
-        askClose: false,
-        title: t('design_media', 'Design Media'),
-        size: '80%',
-        children: (close) => (
-          <Polonto setMedia={changeMedia} closeModal={close} />
-        ),
-      });
+    if (dummy) {
+      return;
     }
-  }, [changeMedia, t]);
+    modals.openModal({
+      askClose: false,
+      title: t('design_media', 'Diseñar'),
+      size: 'calc(100% - 60px)',
+      height: 'calc(100% - 60px)',
+      children: (close) => (
+        <Editor
+          onGuardar={(media) => {
+            changeMedia([media]);
+            close();
+          }}
+          cerrar={close}
+        />
+      ),
+    });
+  }, [changeMedia, t, dummy]);
 
   return (
     <>
@@ -930,11 +942,12 @@ export const MediaComponent: FC<{
       size: 'calc(100% - 80px)',
       height: 'calc(100% - 80px)',
       children: (close) => (
-        <Polonto
-          width={width}
-          height={height}
-          setMedia={changeMedia}
-          closeModal={close}
+        <Editor
+          onGuardar={(media) => {
+            changeMedia([media]);
+            close();
+          }}
+          cerrar={close}
         />
       ),
     });
