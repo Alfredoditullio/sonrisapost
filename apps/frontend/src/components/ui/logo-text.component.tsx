@@ -1,31 +1,38 @@
 import React from 'react';
 
+/**
+ * Logotipo horizontal de SonrisaPost: isotipo (arco de sonrisa con punto) mas
+ * la marca denominativa.
+ *
+ * El texto usa `currentColor` para adaptarse al contexto donde se monte; el
+ * arco y el punto conservan los colores de marca.
+ */
 export const LogoTextComponent = () => {
   return (
     <svg
-      width="230"
-      height="48"
-      viewBox="0 0 230 48"
+      width="219"
+      height="50"
+      viewBox="0 0 1120 256"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="48" height="48" rx="12" fill="#131019" />
       <path
-        d="M24 9c-9 0-14 5-14 12 0 6 2 10 3.5 15 1 3.5 1.5 7 3.5 7s2.5-4 3.5-7.5c.7-2.5 1.8-4 3.5-4s2.8 1.5 3.5 4c1 3.5 1.5 7.5 3.5 7.5s2.5-3.5 3.5-7c1.5-5 3.5-9 3.5-15 0-7-5-12-14-12Z"
-        fill="#2DD4BF"
+        d="M59.4 111.7A74 74 0 0 0 196.6 111.7"
+        fill="none"
+        stroke="#2DD4BF"
+        strokeWidth="34"
+        strokeLinecap="round"
       />
-      <circle cx="35.5" cy="13.5" r="4.5" fill="#131019" />
-      <circle cx="35.5" cy="13.5" r="2.5" fill="#F472B6" />
+      <circle cx="200" cy="56" r="23" fill="#F472B6" />
       <text
-        x="60"
-        y="25"
-        fontSize="21"
-        fontWeight="700"
+        x="356"
+        y="150"
+        fontSize="112"
+        fontWeight="600"
+        letterSpacing="-3.9"
         fill="currentColor"
-        dominantBaseline="middle"
       >
-        Sonrisa
-        <tspan fill="#2DD4BF">Post</tspan>
+        Sonrisa<tspan fill="#2DD4BF">Post</tspan>
       </text>
     </svg>
   );
