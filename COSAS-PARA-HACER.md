@@ -8,38 +8,16 @@ puedo hacer por vos).
 
 ---
 
-## 🚨 Bloqueante — no se puede subir ninguna imagen
+## ✅ Subida de imágenes — resuelto, falta confirmar
 
-Hasta que esto esté, la app no sirve: sin subir imágenes no hay publicaciones.
-
-- [ ] 👤 **Cargar la política de CORS en el bucket de R2.**
-      El navegador sube las partes del archivo **directo a Cloudflare**, no a
-      tu servidor. Sin esta política, R2 responde 403 al preflight y la
-      subida se cancela.
-
-      Cloudflare → R2 → tu bucket → Settings → CORS Policy:
-
-      ```json
-      [
-        {
-          "AllowedOrigins": ["https://sonrisapost.com", "http://localhost:4200"],
-          "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
-          "AllowedHeaders": ["*"],
-          "ExposeHeaders": ["ETag"],
-          "MaxAgeSeconds": 3600
-        }
-      ]
-      ```
-
-      `ExposeHeaders: ["ETag"]` no es opcional: en una subida por partes el
-      navegador necesita leer el ETag de cada parte para armar el archivo. Sin
-      eso las partes suben pero el último paso falla, con un error mucho más
-      confuso.
-
-      Se aplica al instante, no hay que reiniciar nada.
-
-- [ ] Las credenciales de R2 **ya quedaron bien** (32 y 64 caracteres). Ese
-      problema está resuelto: `sign-part` devuelve 200.
+- [x] ~~Credenciales de R2.~~ A la Access Key ID le faltaba un carácter (31 en
+      vez de 32). Se generó un token nuevo.
+- [x] ~~Política de CORS en el bucket.~~ Cargada el 19/8. El navegador sube
+      las partes **directo a Cloudflare**, no al servidor: sin esa política R2
+      respondía 403 al preflight.
+- [ ] **Confirmar subiendo una imagen de verdad**, en producción y en local.
+      Es lo único que lo da por cerrado. Si vuelve a fallar, el error va a ser
+      distinto y ya estaríamos en el último tramo.
 
 ---
 
