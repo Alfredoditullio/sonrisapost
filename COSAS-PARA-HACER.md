@@ -4,7 +4,42 @@ Pendientes de SonrisaPost. Lo que tiene que hacer Alfredo está marcado con 👤
 (son cosas que requieren tus claves, tu tarjeta o tu decisión, y que yo no
 puedo hacer por vos).
 
-Última actualización: 18 de agosto de 2026
+Última actualización: 19 de agosto de 2026
+
+---
+
+## 🚨 Bloqueante — no se puede subir ninguna imagen
+
+Hasta que esto esté, la app no sirve: sin subir imágenes no hay publicaciones.
+
+- [ ] 👤 **Cargar la política de CORS en el bucket de R2.**
+      El navegador sube las partes del archivo **directo a Cloudflare**, no a
+      tu servidor. Sin esta política, R2 responde 403 al preflight y la
+      subida se cancela.
+
+      Cloudflare → R2 → tu bucket → Settings → CORS Policy:
+
+      ```json
+      [
+        {
+          "AllowedOrigins": ["https://sonrisapost.com", "http://localhost:4200"],
+          "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+          "AllowedHeaders": ["*"],
+          "ExposeHeaders": ["ETag"],
+          "MaxAgeSeconds": 3600
+        }
+      ]
+      ```
+
+      `ExposeHeaders: ["ETag"]` no es opcional: en una subida por partes el
+      navegador necesita leer el ETag de cada parte para armar el archivo. Sin
+      eso las partes suben pero el último paso falla, con un error mucho más
+      confuso.
+
+      Se aplica al instante, no hay que reiniciar nada.
+
+- [ ] Las credenciales de R2 **ya quedaron bien** (32 y 64 caracteres). Ese
+      problema está resuelto: `sign-part` devuelve 200.
 
 ---
 
@@ -67,25 +102,22 @@ barato y no hacerlo es una deuda que crece.
       sonrisapost.com y confirmar que dice "Notificaciones por correo" y
       "Formato de hora" (no el inglés de antes).
 
-- [ ] **Arreglo del Dockerfile — el que hace que el deploy deje de tardar
-      media hora.** Está pendiente desde antes y es el de mayor impacto en tu
-      día a día.
+- [x] ~~**Arreglo del Dockerfile.**~~ Hecho el 19/8. Se agregó una etapa
+      `deps` que arma `node_modules` sólo desde los manifiestos, con las
+      fechas de modificación aplanadas. Verificado corriendo la imagen: el
+      frontend sirve 200, el backend carga todo y el orchestrator se conecta
+      a Temporal.
 
-      Medido entre v1.7.0 y v1.8.0: **se rebaja el 91% de la imagen (795 MB de
-      874)** aunque no cambie ninguna dependencia. Las tres capas grandes son
-      `node_modules`, y se invalidan porque `pnpm run build`, `pnpm prune` y
-      `prisma generate` escriben adentro de esa carpeta después del `COPY`.
+      > El **primer** despliegue con este cambio va a ser lento igual, porque
+      > al reorganizar las capas cambian todos los digests. La mejora se ve
+      > en el segundo. No es que falló.
 
-      La solución es una etapa `deps` separada que instale sólo desde los
-      manifiestos. El pull pasaría de ~10 minutos a ~1.
+- [ ] **Desplegar.** Hay **nueve commits** después de v1.8.0 sin publicar:
+      editor de diseño, respuestas automáticas a comentarios con sus dos
+      frenos, variación real en analíticas, medición de IA, Integraciones
+      escondida y el arreglo del Dockerfile.
 
-      > El deploy que aplique este arreglo **va a ser lento igual**, porque al
-      > reorganizar las capas cambian todos los digests y se bajan una última
-      > vez. La mejora se ve recién en el siguiente. No es que falló.
-
-- [ ] **Desplegar lo que está sin publicar.** Hay dos commits después de
-      v1.8.0 (arreglo de Temporal en desarrollo + medición de IA) que todavía
-      no tienen tag ni imagen.
+      Producción sigue en v1.8.0, que sólo tiene las traducciones.
 
 ---
 
@@ -112,6 +144,12 @@ que van a querer los consultorios.
 ---
 
 ## 🧪 Nunca se probó
+
+- [ ] **El editor de diseño, en el navegador.** Compila y el build de
+      producción pasa, pero nadie arrastró un texto todavía. Lo más
+      importante a mirar es **"Usar diseño"**: que el PNG salga a 1080 y no
+      achicado al tamaño de la pantalla.
+
 
 - [ ] **Publicar de verdad en una red social, de punta a punta.** Programar un
       post y ver que salga. Es la función principal del producto y todavía no
