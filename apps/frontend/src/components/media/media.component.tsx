@@ -280,6 +280,26 @@ export const MediaBox: FC<{
     modals.closeCurrent();
   }, [selected]);
 
+  // Abre el editor y, al guardar, refresca la grilla para que el diseño
+  // nuevo aparezca sin recargar la pagina.
+  const abrirEditor = useCallback(() => {
+    modals.openModal({
+      askClose: false,
+      title: t('design_media', 'Diseñar'),
+      size: 'calc(100% - 60px)',
+      height: 'calc(100% - 60px)',
+      children: (close) => (
+        <Editor
+          onGuardar={() => {
+            mutate();
+            close();
+          }}
+          cerrar={close}
+        />
+      ),
+    });
+  }, [t, mutate]);
+
   const addToUpload = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       const files = Array.from(e.target.files || []);
@@ -447,6 +467,16 @@ export const MediaBox: FC<{
           />
           <div className="flex gap-[8px]">
             {btn}
+            {/* En la biblioteca suelta este era el unico lugar sin acceso al
+                editor: el boton "Diseñar" vivia solo en la barra del editor de
+                publicaciones. Quien entraba a Medios no tenia forma de crear
+                ni retocar un diseño. */}
+            <Button
+              onClick={abrirEditor}
+              className="!bg-customColor45 whitespace-nowrap"
+            >
+              {t('design_media', 'Diseñar')}
+            </Button>
             <ThirdPartyMediaLibrary onImported={() => mutate()} />
           </div>
         </div>
