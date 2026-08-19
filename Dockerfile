@@ -33,7 +33,80 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 WORKDIR /app
 
 # --------------------------------------------------------------------------
-# builder — instala todo, compila, y despues poda lo que no corre en produccion
+# deps — node_modules de produccion, y NADA MAS
+# --------------------------------------------------------------------------
+#
+# Esta etapa existe por una razon concreta y medida: entre dos versiones que
+# solo cambiaban textos, el servidor volvia a descargar 795 MB de los 874 que
+# pesa la imagen. El 91%.
+#
+# El culpable no era el install —ese ya estaba cacheado por los manifiestos—
+# sino lo que pasaba DESPUES. En la etapa de compilacion, `pnpm run build`,
+# `pnpm prune --prod` y `prisma generate` escriben todos adentro de
+# node_modules. Con eso, cambiar un texto cambiaba el contenido de la carpeta,
+# Docker la veia como una capa nueva y se rebajaba entera.
+#
+# Aca node_modules se arma partiendo SOLO de los manifiestos y no se vuelve a
+# tocar. Mientras no cambien las dependencias, la capa es identica y el
+# servidor no la baja.
+FROM base AS deps
+ARG PRISMA_VERSION
+
+# Modulos nativos (bcrypt, sharp y demas) necesitan compilador.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      g++ make python3 \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY apps/backend/package.json ./apps/backend/
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/orchestrator/package.json ./apps/orchestrator/
+COPY apps/commands/package.json ./apps/commands/
+COPY apps/extension/package.json ./apps/extension/
+COPY apps/sdk/package.json ./apps/sdk/
+# Los postinstall necesitan estos dos: prisma generate lee el esquema, y el
+# del frontend ejecuta su propio script.
+COPY libraries/nestjs-libraries/src/database/prisma ./libraries/nestjs-libraries/src/database/prisma
+COPY apps/frontend/scripts ./apps/frontend/scripts
+
+# --prod desde el arranque, en vez de instalar todo y podar despues: podar
+# deja la carpeta modificada, que es justo lo que queremos evitar.
+#
+# El postinstall de prisma usa `pnpm dlx`, que descarga la CLI en el momento,
+# asi que funciona igual sin las dependencias de desarrollo.
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --prod
+
+# Fechas de modificacion a cero.
+#
+# Docker calcula el digest de una capa incluyendo las fechas de cada archivo.
+# Sin esto, un install rehecho —porque expiro la cache del CI— genera el mismo
+# contenido con fechas nuevas: digest distinto y el servidor rebaja los 750 MB
+# igual. Aplanarlas hace que la capa sea reproducible aunque se reconstruya.
+RUN find /app/node_modules -exec touch -h -d @0 {} +
+
+# node_modules pesa ~3.5 GB y en una sola capa cualquier corte de red durante
+# el pull obliga a rebajar los 800 MB comprimidos desde cero. Separando los
+# paquetes mas grandes en dos grupos, la imagen queda en tres capas parejas y
+# Docker reintenta solo la que fallo.
+#
+# No se borra nada: los mismos archivos terminan en la misma ruta final.
+RUN set -eu; \
+    mkdir -p /nm-a /nm-b; \
+    for p in @walletconnect @next next @langchain @temporalio @mastra @meronex; do \
+      [ -e "/app/node_modules/$p" ] || continue; \
+      mkdir -p "/nm-a/$(dirname "$p")"; \
+      mv "/app/node_modules/$p" "/nm-a/$p"; \
+    done; \
+    for p in googleapis @swc @opentelemetry @copilotkit posthog-js @nestjs @sentry konva; do \
+      [ -e "/app/node_modules/$p" ] || continue; \
+      mkdir -p "/nm-b/$(dirname "$p")"; \
+      mv "/app/node_modules/$p" "/nm-b/$p"; \
+    done
+
+# --------------------------------------------------------------------------
+# builder — compila. Su node_modules es descartable: a la imagen final solo
+#           llega el codigo compilado, nunca las dependencias de esta etapa.
 # --------------------------------------------------------------------------
 FROM base AS builder
 ARG PRISMA_VERSION
@@ -76,13 +149,6 @@ COPY . .
 # El build de Next es lo que mas memoria consume del pipeline.
 RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
 
-# Podar las dependencias de desarrollo. El cliente de Prisma vive dentro de
-# node_modules, asi que la poda se lo lleva puesto y hay que regenerarlo
-# despues — de ahi el orden.
-RUN pnpm prune --prod \
- && pnpm dlx prisma@${PRISMA_VERSION} generate \
-      --schema ./libraries/nestjs-libraries/src/database/prisma/schema.prisma
-
 # Artefactos de build que no sirven en runtime y solo ocupan espacio.
 RUN rm -rf \
       /app/apps/frontend/.next/cache \
@@ -90,39 +156,21 @@ RUN rm -rf \
       /app/.git \
       /root/.cache
 
-# node_modules pesa ~3.9 GB y en una sola capa cualquier corte de red durante
-# el pull obliga a rebajar los 800 MB comprimidos desde cero. Separando los
-# paquetes mas grandes en dos grupos, la imagen queda en tres capas parejas y
-# Docker reintenta solo la que fallo.
+# Se aparta SOLO el codigo compilado. node_modules de esta etapa queda atras:
+# el de produccion sale de `deps`, que nunca se toco despues de instalarse.
 #
-# No se borra nada: los mismos archivos terminan en la misma ruta final.
-RUN set -eu; \
-    mkdir -p /nm-a /nm-b; \
-    for p in @walletconnect @next next @langchain @temporalio @mastra @meronex; do \
-      [ -e "/app/node_modules/$p" ] || continue; \
-      mkdir -p "/nm-a/$(dirname "$p")"; \
-      mv "/app/node_modules/$p" "/nm-a/$p"; \
-    done; \
-    for p in googleapis @blueprintjs @swc @opentelemetry @copilotkit posthog-js @nestjs @sentry; do \
-      [ -e "/app/node_modules/$p" ] || continue; \
-      mkdir -p "/nm-b/$(dirname "$p")"; \
-      mv "/app/node_modules/$p" "/nm-b/$p"; \
-    done
-
-# Separar dependencias de codigo.
-#
-# node_modules son 363.000 archivos que cambian solo al tocar package.json.
-# El codigo compilado son 3.145 y cambia en cada despliegue. Juntos en una
-# capa, editar un texto obliga a rebajar y re-extraer los 366.000 — eso
-# convertia un cambio trivial en media hora de espera.
-#
-# Separados, un cambio de codigo mueve 3.145 archivos y el resto se reutiliza
-# de lo que el servidor ya tiene en disco.
+# La separacion importa por los numeros: node_modules son ~363.000 archivos
+# que cambian solo al tocar package.json, y el codigo compilado son ~3.145
+# que cambian en cada despliegue. Juntos en una capa, editar un texto obliga
+# al servidor a rebajar y re-extraer los 366.000.
 RUN set -eu; \
     mkdir -p /stage; \
-    mv /app/node_modules /stage/node_modules; \
     mv /app/apps /stage/apps; \
-    mv /app/libraries /stage/libraries
+    mv /app/libraries /stage/libraries; \
+    # Imprescindible: la imagen final copia /app de esta etapa para llevarse la
+    # configuracion de la raiz. Si node_modules siguiera aca, se copiaria ENCIMA
+    # del de `deps` y perderiamos toda la ventaja de haberlo separado.
+    rm -rf /app/node_modules
 
 # --------------------------------------------------------------------------
 # runtime — imagen final
@@ -144,10 +192,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # digest: si el contenido de una capa no cambia, el servidor no la vuelve a
 # descargar ni a extraer.
 
-# 1. Dependencias — 363.000 archivos, cambian solo al tocar package.json
-COPY --from=builder --chown=sonrisapost:sonrisapost /stage/node_modules /app/node_modules
-COPY --from=builder --chown=sonrisapost:sonrisapost /nm-a/ /app/node_modules/
-COPY --from=builder --chown=sonrisapost:sonrisapost /nm-b/ /app/node_modules/
+# 1. Dependencias — ~363.000 archivos. Vienen de `deps`, que las armo a partir
+#    de los manifiestos y no las volvio a tocar: mientras no cambie
+#    package.json ni el lockfile, estas tres capas tienen el mismo digest y el
+#    servidor no las descarga.
+COPY --from=deps --chown=sonrisapost:sonrisapost /app/node_modules /app/node_modules
+COPY --from=deps --chown=sonrisapost:sonrisapost /nm-a/ /app/node_modules/
+COPY --from=deps --chown=sonrisapost:sonrisapost /nm-b/ /app/node_modules/
 
 # 2. Configuracion de la raiz del monorepo — unos pocos archivos
 COPY --from=builder --chown=sonrisapost:sonrisapost /app /app
