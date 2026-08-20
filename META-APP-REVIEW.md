@@ -139,21 +139,65 @@ trámite.
 
 ## 7. Grabar el video
 
-Meta pide un video por cada permiso, mostrando **para qué lo usás**. Es lo que
-más rechazos genera: no alcanza con mostrar la pantalla, hay que mostrar el
-flujo completo desde el login.
+### El problema del idioma — leelo antes de grabar
 
-Grabá una sola pasada larga que muestre, en este orden:
+SonrisaPost está **enteramente en español**, y quien revisa probablemente no
+lo hable. Es de las causas de rechazo más tontas y más frecuentes: el revisor
+no entiende qué está viendo y rechaza por las dudas.
 
-1. Iniciar sesión en SonrisaPost
-2. Agregar canal → elegir Instagram → autorizar en Meta
-3. Ver la lista de páginas/cuentas y elegir una
-4. Crear una publicación con imagen y programarla
-5. Verla publicada en Instagram
-6. Entrar a Analíticas y mostrar los datos de esa cuenta
-7. Entrar a Automatizaciones y mostrar las respuestas a comentarios
+Dos formas de resolverlo, y conviene hacer las dos:
 
-Después recortás los tramos que corresponden a cada permiso.
+- **Subtítulos o carteles en inglés** sobre el video, indicando qué pasa en
+  cada paso ("User connects their Instagram account", "User schedules a
+  post", "Post is published automatically").
+- **Instrucciones escritas en inglés** en el formulario, paso por paso.
+
+No hace falta traducir la aplicación. Alcanza con que el revisor pueda seguir
+lo que ocurre.
+
+### Qué grabar
+
+**Una sola toma continua**, sin cortes. Los cortes generan sospecha: el
+revisor tiene que poder ver que el flujo es real y no una secuencia armada.
+
+Guion, en este orden exacto:
+
+1. **Login** en sonrisapost.com. Que se vea la URL en la barra.
+2. **Agregar canal → Instagram**. Que se vea la pantalla de autorización de
+   Instagram y que la aceptás.
+3. **Volver a SonrisaPost** con la cuenta ya conectada, mostrando el nombre y
+   la foto de la cuenta. ← esto justifica `instagram_business_basic`
+4. **Crear una publicación** con imagen y texto, y **programarla**.
+   ← `instagram_business_content_publish`
+5. **Esperar a que salga** y mostrarla publicada en Instagram, abriendo la
+   cuenta real. Este es el tramo más importante de todo el video.
+6. **Analíticas**, mostrando los datos de esa cuenta.
+   ← `instagram_business_manage_insights`
+7. **Automatizaciones**, mostrando las respuestas a comentarios configuradas,
+   y si se puede un comentario respondido de verdad.
+   ← `instagram_business_manage_comments`
+
+Duración razonable: entre 3 y 6 minutos. Si esperar a que el post salga lo
+alarga mucho, ahí sí se puede acelerar ese tramo — pero dejando ver que el
+tiempo pasa.
+
+### Cómo editarlo
+
+**Lo mínimo posible.** No hace falta música, ni cortina, ni edición linda.
+Meta no evalúa producción: evalúa si se entiende que el permiso se usa para
+lo que decís.
+
+Lo único que sí conviene agregar son los carteles en inglés. Con QuickTime
+para grabar y iMovie para los carteles alcanza — las dos vienen en la Mac.
+
+### Un video o varios
+
+Se puede subir **el mismo video en todos los permisos**, indicando en las
+instrucciones en qué minuto se ve cada uno:
+
+> The screencast shows this permission in use at 2:15.
+
+Es más simple que cortar cuatro videos y a los revisores les sirve igual.
 
 ## 8. Los permisos a solicitar
 
@@ -191,13 +235,44 @@ Ejemplo para `instagram_content_publish`:
 
 ## 9. Enviar
 
-App Review → Permissions and Features → pedir cada permiso → adjuntar video e
-instrucciones de prueba.
+Por cada permiso, Meta pide tres cosas en un formulario:
 
-**Dales un usuario de prueba** con una cuenta ya conectada. Si el revisor no
-puede reproducir el flujo, rechaza sin más.
+**1. Cómo lo usa la app.** El texto va acá, no en el video. Las
+justificaciones están en la tabla de arriba — usalas como base y escribilas
+en inglés.
 
----
+**2. Instrucciones paso a paso para reproducirlo.** Numeradas, empezando por
+el login. Ejemplo:
+
+> 1. Go to https://sonrisapost.com and log in with the test account below.
+> 2. Click "Agregar canal" (Add channel) and select Instagram.
+> 3. Authorize the Instagram professional account.
+> 4. Open the calendar, click any day, write a caption and attach an image.
+> 5. Choose a time and click schedule.
+> 6. The post is published automatically at the scheduled time.
+
+**3. El video.**
+
+### El usuario de prueba
+
+Esto es lo que más rechazos evita y casi nadie lo hace bien: **creá una
+cuenta en SonrisaPost con la cuenta de Instagram ya conectada** y pasale al
+revisor el correo y la contraseña en las instrucciones.
+
+Si el revisor tiene que registrarse, conectar su propio Instagram y esperar,
+no lo va a hacer: rechaza y sigue.
+
+### Después de enviar
+
+La respuesta suele tardar días. Puede volver:
+
+- **Aprobado** — el permiso pasa a acceso avanzado y funciona con cualquiera.
+- **Rechazado** — dice el motivo. Se corrige y se vuelve a enviar; no hay
+  penalización por reintentar, sólo se pierde el tiempo del ciclo.
+- **Necesita más información** — respondés en el mismo hilo.
+
+Cada permiso se resuelve por separado: pueden aprobarte tres y rechazarte
+uno.
 
 ## Errores que te van a hacer perder tiempo
 
