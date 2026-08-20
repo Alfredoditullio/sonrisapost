@@ -97,7 +97,31 @@ docker compose up -d --force-recreate backend orchestrator frontend
 > Cargá lo mismo en el panel de Coolify. Si algún día desplegás desde ahí,
 > Coolify reescribe el `.env` con lo que tiene y te rompe la conexión.
 
-## 5. Probar con tu propia cuenta
+## 5. Dar rol a la cuenta de Instagram — el paso que traba a todos
+
+Antes de poder conectar nada, la cuenta de Instagram necesita un rol en la
+app. Sin esto, Instagram corta la autorización con **"Rol de desarrollador
+insuficiente"** y ni siquiera intenta volver a SonrisaPost.
+
+Ser administrador de la app **no alcanza**: ese rol es de tu cuenta de
+Facebook, y son sistemas de identidad distintos.
+
+1. **Roles de la app → Roles → Más ▾ → Evaluadores de Instagram**
+   Ahí se agrega por **nombre de usuario de Instagram**, no por cuenta de
+   Facebook. El diálogo general de "Agregar personas" busca cuentas de
+   Facebook y no sirve para esto.
+
+2. **Aceptar la invitación desde Instagram.** En la app, con esa cuenta:
+   Configuración → Apps y sitios web → Invitaciones de evaluador → Aceptar.
+
+   Este segundo paso es el que más tiempo hace perder: en el panel de Meta
+   figura asignado, pero hasta que no se acepta el error es idéntico.
+
+> El rol llamado "Evaluador de Instagram" en el diálogo de personas dice que
+> es para la Instagram Basic Display API. Esa descripción está desactualizada
+> — el rol es igual el que habilita el modo desarrollo.
+
+## 6. Probar con tu propia cuenta
 
 Necesitás:
 
@@ -113,7 +137,7 @@ Entrá a SonrisaPost → Agregar canal → Instagram, y conectá.
 **Si esto funciona, la parte técnica está terminada.** Lo que sigue es
 trámite.
 
-## 6. Grabar el video
+## 7. Grabar el video
 
 Meta pide un video por cada permiso, mostrando **para qué lo usás**. Es lo que
 más rechazos genera: no alcanza con mostrar la pantalla, hay que mostrar el
@@ -131,7 +155,7 @@ Grabá una sola pasada larga que muestre, en este orden:
 
 Después recortás los tramos que corresponden a cada permiso.
 
-## 7. Los permisos a solicitar
+## 8. Los permisos a solicitar
 
 **Instagram (vía Facebook Login)** — 7:
 
@@ -165,7 +189,7 @@ Ejemplo para `instagram_content_publish`:
 > SonrisaPost. Al llegar la fecha, la aplicación las publica en la cuenta de
 > Instagram profesional que él mismo conectó y autorizó.
 
-## 8. Enviar
+## 9. Enviar
 
 App Review → Permissions and Features → pedir cada permiso → adjuntar video e
 instrucciones de prueba.
